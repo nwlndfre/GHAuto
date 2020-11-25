@@ -1,8 +1,8 @@
-# HHauto
+# GHAuto
 
-To install : https://github.com/Roukys/HHauto/raw/main/HHAuto.user.js
+To install : https://github.com/nwlndfre/GHAuto/raw/modification/GHAuto.user.js
 
-## Functionnalities : 
+## Functions : 
 
 | Name | Function |
 | --- | --- |
@@ -17,7 +17,6 @@ To install : https://github.com/Roukys/HHauto/raw/main/HHAuto.user.js
 | AutoMission<br>Collect | if enabled : Automatically do missions<br>if enabled : Automatically collect missions |  
 | AutoQuest | if enabled : Automatically do quest |  
 | AutoTrollBattle<br>Troll selector<br>Event<br>Event Troll Order **(integers with ; separator)** | if enabled : Automatically battle troll selected<br>Allow to select which troll is automatically battled<br>If enabled : ignore selector during event to battle event trolls<br>Allow to select in which order event troll are automatically battled |  
-| ~AutoArenaBattle~ | ~if enabled : Automatically do Arena (deprecated)~ |  
 | AutoSeason<br>Collect | if enabled : Automatically fight in Seasons (Opponent chosen following PowerCalculation)<br>if enabled : Automatically collect Seasons ( if multiple to collect, will collect one per kiss usage) |  
 | AutoPachinko(Free) | if enabled : Automatically collect free Pachinkos |  
 | Paranoia mode | if enabled : will simulate sleep, and human user (To be documented further) |  
