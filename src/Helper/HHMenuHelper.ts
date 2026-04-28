@@ -179,10 +179,10 @@ export class HHMenu {
 
     fillRaidStarsMenu() {
         var raidStarsOptions = <HTMLSelectElement>document.getElementById("raidStarsSelector");
-        raidStarsOptions.add(this._createHtmlOption('0', getTextForUI("raidStarsOff", "elementText")));
-        raidStarsOptions.add(this._createHtmlOption('3', getTextForUI("raidStars3", "elementText")));
-        raidStarsOptions.add(this._createHtmlOption('5', getTextForUI("raidStars5", "elementText")));
-        raidStarsOptions.add(this._createHtmlOption('6', getTextForUI("raidStars6", "elementText")));
+        raidStarsOptions.add(this._createHtmlOption('off', getTextForUI("raidStarsOff", "elementText")));
+        raidStarsOptions.add(this._createHtmlOption('exact3', getTextForUI("raidStarsExact3", "elementText")));
+        raidStarsOptions.add(this._createHtmlOption('min3', getTextForUI("raidStarsMin3", "elementText")));
+        raidStarsOptions.add(this._createHtmlOption('exact5', getTextForUI("raidStarsExact5", "elementText")));
     }
 
     fillLabyDifficultyMenu() {
@@ -709,7 +709,9 @@ export function getMenu() {
                             + hhMenuSwitch('autoSeasonIgnoreNoGirls')
                         +`</div>`
                         +`<div class="internalOptionsRow">`
+                            + `<div style="${debugEnabled ? '' : 'display:none;'}">` // #1533 hidden: 0% usage in survey (168 responses). Remove div wrapper to restore.
                             + hhMenuSwitch('autoSeasonPassReds', '', true)
+                            + `</div>`
                             + hhMenuSwitch('autoSeasonBoostedOnly')
                             + hhMenuSwitch('autoSeasonSkipLowMojo')
                             +`<div class="labelAndButton" style="width: 70px;">`
@@ -772,26 +774,23 @@ export function getMenu() {
                         + `<div style="border-left:1px solid #ffa23e;height:36px;"> </div>`
                     +`</div>`
                     +`<div class="internalOptionsRow">`
+                        + `<div style="${debugEnabled ? '' : 'display:none;'}">` // #1533 hidden: 0% usage in survey (168 responses). Remove div wrapper to restore.
                         + hhMenuSwitch('useX10Fights', '', true)
                         + hhMenuSwitch('useX10FightsAllowNormalEvent')
                         + hhMenuInput('minShardsX10', HHAuto_inputPattern.minShardsX, 'text-align:center; width:7em')
                         + hhMenuSwitch('useX50Fights', '', true)
                         + hhMenuSwitch('useX50FightsAllowNormalEvent')
                         + hhMenuInput('minShardsX50', HHAuto_inputPattern.minShardsX, 'text-align:center; width:7em')
+                        + `</div>`
                         + hhMenuSwitch('plusGirlSkins')
+                        + hhMenuInput('sandalwoodMinShardsThreshold', HHAuto_inputPattern.sandalwoodLimit, 'text-align:center; width:7em')
                     +`</div>`
-                    +`<div class="internalOptionsRow">`
-                        + hhMenuInput('sandalwoodShardsX10Limit', HHAuto_inputPattern.sandalwoodLimit, 'text-align:center; width:7em')
-                        + hhMenuInput('sandalwoodShardsX1Limit', HHAuto_inputPattern.sandalwoodLimit, 'text-align:center; width:7em')
-                        + hhMenuInput('sandalwoodDosesX10Limit', HHAuto_inputPattern.sandalwoodLimit, 'text-align:center; width:7em')
-                        + hhMenuInput('sandalwoodDosesX1Limit', HHAuto_inputPattern.sandalwoodLimit, 'text-align:center; width:7em')
-                    +`</div>`
-                    +`<div class="internalOptionsRow">`
+                    +`<div class="internalOptionsRow separator">`
                         + hhMenuSwitch('plusEvent')
                         + hhMenuInput('eventTrollOrder', HHAuto_inputPattern.eventTrollOrder, 'width:150px')
                         + hhMenuSwitch('buyCombat', '', true)
+                        + `<div style="${debugEnabled ? '' : 'display:none;'}">` + hhMenuInput('buyCombTimer', HHAuto_inputPattern.buyCombTimer, 'text-align:center; width:40px', '', 'numeric') + `</div>` // #1565 hidden: replaced by immediate buy when energy empty and girl not won
                         + hhMenuInput('autoBuyTrollNumber', HHAuto_inputPattern.autoBuyTrollNumber, 'width:40px')
-                        + hhMenuInput('buyCombTimer', HHAuto_inputPattern.buyCombTimer, 'text-align:center; width:40px', '', 'numeric')
                         + hhMenuSwitch('plusEventSandalWood')
                     +`</div>`
                     +`<div class="internalOptionsRow separator">`
@@ -799,7 +798,7 @@ export function getMenu() {
                         + hhMenuSwitch('autoTrollMythicByPassParanoia')
                         + hhMenuSwitch('buyMythicCombat', '', true)
                         + hhMenuInput('autoBuyMythicTrollNumber', HHAuto_inputPattern.autoBuyTrollNumber, 'width:40px')
-                        + hhMenuInput('buyMythicCombTimer', HHAuto_inputPattern.buyMythicCombTimer, 'text-align:center; width:40px', '', 'numeric')
+                        + `<div style="${debugEnabled ? '' : 'display:none;'}">` + hhMenuInput('buyMythicCombTimer', HHAuto_inputPattern.buyMythicCombTimer, 'text-align:center; width:40px', '', 'numeric') + `</div>` // #1565 hidden: replaced by immediate buy when energy empty and girl not won
                         + hhMenuSwitch('plusEventMythicSandalWood')
                     +`</div>`
                     +`<div class="internalOptionsRow separator">`

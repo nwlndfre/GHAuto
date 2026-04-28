@@ -176,8 +176,7 @@ export class Troll {
         const eventGirl = EventModule.getEventGirl();
         const eventMythicGirl = EventModule.getEventMythicGirl();
         const allTrollRaids:LoveRaid[] = LoveRaidManager.isAnyActivated() ? LoveRaidManager.getTrollRaids() : [];
-        const minRaidStars = LoveRaidManager.getMinRaidStars();
-        const raidStarsRaids:LoveRaid[] = minRaidStars > 0 ? allTrollRaids.filter(raid => raid.girlGrade >= minRaidStars) : [];
+        const raidStarsRaids:LoveRaid[] = LoveRaidManager.filterByRaidStars(allTrollRaids);
         // +Raid: user-selected girl bypasses grade filter, auto-mode ("first") respects it
         const loveRaids:LoveRaid[] = LoveRaidManager.isActivated() ? allTrollRaids : [];
         if (debugEnabled && logging) {
@@ -191,8 +190,8 @@ export class Troll {
             TTF = Troll.getTrollIdFromEvent(eventMythicGirl);
         }
         else if (raidStarsRaids.length > 0){
-            if (logging) logHHAuto("Raid Stars troll fight (min grade " + minRaidStars + ")");
-            const loveRaid = LoveRaidManager.getRaidToFight(raidStarsRaids, logging);
+            if (logging) logHHAuto("Raid Stars troll fight (selection " + LoveRaidManager.getRaidStarsSelection() + ")");
+            const loveRaid = LoveRaidManager.getRaidStarsRaidToFight(raidStarsRaids, logging);
             if (loveRaid) {
                 TTF = loveRaid.trollId;
             }
@@ -218,12 +217,30 @@ export class Troll {
                 if (autoTrollSelectedIndex === 98) {
                     if (debugEnabled && logging) logHHAuto("First troll with girls from storage");
                     TTF = trollWithGirls.findIndex((troll: number) => troll > 0) + 1;
+                    if (TTF > lastTrollIdAvailable) {
+                        if (logging) logHHAuto(`First troll with girls (${TTF}) is beyond last available (${lastTrollIdAvailable}), no valid troll target.`);
+                        TTF = 0;
+                    }
                 }
                 else if (autoTrollSelectedIndex === 99) {
                     if (debugEnabled && logging) logHHAuto("Last troll with girls from storage");
                     TTF = trollWithGirls.findLastIndex((troll: number) => troll > 0) + 1;
                     if(TTF > lastTrollIdAvailable) {
-                        TTF=lastTrollIdAvailable;
+                        // Find the last troll with girls that is actually unlocked
+                        let found = false;
+                        for (let i = lastTrollIdAvailable - 1; i >= 0; i--) {
+                            if (trollWithGirls[i] > 0) {
+                                TTF = i + 1;
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found) {
+                            if (logging) logHHAuto(`No unlocked troll has girls (last available: ${lastTrollIdAvailable}), no valid troll target.`);
+                            TTF = 0;
+                        } else {
+                            if (logging) logHHAuto(`Last troll with girls capped to ${TTF} (last available: ${lastTrollIdAvailable}).`);
+                        }
                     }
                 }
             } else if(getPage()!==ConfigHelper.getHHScriptVars("pagesIDHome")) {
@@ -232,6 +249,16 @@ export class Troll {
             } else {
                 if (logging) logHHAuto("Can't get troll with girls, going to last troll.");
                 TTF=lastTrollIdAvailable;
+            }
+
+            // No troll with girls found - fall through to love raids before giving up
+            if (TTF <= 0 && LoveRaidManager.isActivated() && loveRaids.length > 0) {
+                if (logging) logHHAuto("No troll with girls, checking love raids as fallback.");
+                const loveRaid = LoveRaidManager.getRaidToFight(loveRaids, logging);
+                if (loveRaid) {
+                    TTF = loveRaid.trollId;
+                    if (logging) logHHAuto(`Love raid fallback: fighting troll ${TTF} for raid girl ${loveRaid.id_girl}.`);
+                }
             }
         }
         else if (LoveRaidManager.isActivated() && loveRaids.length > 0){
@@ -270,13 +297,14 @@ export class Troll {
         }
 
         if (TTF <= 0) {
-            if (getStoredValue(HHStoredVarPrefixKey + SK.autoTrollBattle) === "true") {
-                // Only fallback to last troll if normal troll fighting is enabled
+            if (getStoredValue(HHStoredVarPrefixKey + SK.autoTrollBattle) === "true"
+                && autoTrollSelectedIndex !== 98 && autoTrollSelectedIndex !== 99) {
+                // Only fallback to last troll when not using first/last troll with girls mode
                 TTF = lastTrollIdAvailable > 0 ? lastTrollIdAvailable : 1;
                 if (logging) logHHAuto(`Error: wrong troll target found. Backup to ${TTF}`);
             } else {
-                // Events/Raids only mode — no target available, skip fight
-                if (logging) logHHAuto("No event/raid troll target available, skipping.");
+                // First/last troll with girls found no valid target, or events/raids only mode
+                if (logging) logHHAuto("No valid troll target found, skipping.");
                 return 0;
             }
         }
@@ -305,11 +333,16 @@ export class Troll {
         {
             const eventGirl = EventModule.getEventGirl();
             const eventMythicGirl = EventModule.getEventMythicGirl();
-            const loveRaid = LoveRaidManager.isAnyActivated() ? LoveRaidManager.getRaidToFight(LoveRaidManager.getTrollRaids(), false) : undefined;
+            const allTrollRaids = LoveRaidManager.isAnyActivated() ? LoveRaidManager.getTrollRaids() : [];
+            const raidStarsFiltered = LoveRaidManager.filterByRaidStars(allTrollRaids);
+            const raidStarsRaid: LoveRaid = LoveRaidManager.getRaidStarsRaidToFight(raidStarsFiltered);
+            const loveRaid: LoveRaid = LoveRaidManager.isActivated()
+                ? LoveRaidManager.getRaidToFight(allTrollRaids, false)
+                : undefined;
             //logHHAuto("No power for battle.");
             if (
                 !Troll.canBuyFight(eventGirl).canBuy && !Troll.canBuyFight(eventMythicGirl).canBuy &&
-                !Troll.canBuyFightForRaid(loveRaid).canBuy)
+                !Troll.canBuyFightForRaid(loveRaid).canBuy && !Troll.canBuyFightForRaid(raidStarsRaid).canBuy)
             {
                 return false;
             }
@@ -325,7 +358,10 @@ export class Troll {
         const currentPage = getPage();
 
         if (!TTF || TTF <= 0) {
-            if (getStoredValue(HHStoredVarPrefixKey + SK.autoTrollBattle) === "true") {
+            const autoTrollSelectedIndex = Troll.getTrollSelectedIndex();
+            if (getStoredValue(HHStoredVarPrefixKey + SK.autoTrollBattle) === "true"
+                && autoTrollSelectedIndex !== 98 && autoTrollSelectedIndex !== 99) {
+                // Fixed troll or "last troll" mode: retry once, then fallback to troll 1
                 if (getStoredValue(HHStoredVarPrefixKey + TK.TrollInvalid) === "true") {
                     logHHAuto(`ERROR: Invalid troll N°${TTF}, again, going to first troll`);
                     TTF = 1;
@@ -335,7 +371,8 @@ export class Troll {
                     return true;
                 }
             } else {
-                logHHAuto("No troll target found (events/raids only mode), skipping fight.");
+                // First/last troll with girls found no valid target, or events/raids only mode
+                logHHAuto("No troll target found, skipping fight.");
                 return false;
             }
         }
@@ -444,14 +481,16 @@ export class Troll {
                 {
                     logHHAuto(`Seems no more girls available at troll ${trollz[Number(TTF)]}, looking for next troll.`);
                     let trollWithGirls = getStoredJSON(HHStoredVarPrefixKey + TK.trollWithGirls, []);
-                    trollWithGirls[TTF] = 0;
+                    trollWithGirls[TTF - 1] = 0;
                     setStoredValue(HHStoredVarPrefixKey + TK.trollWithGirls, JSON.stringify(trollWithGirls));
                     const newTroll = Troll.getTrollIdToFight();
-                    if (TTF != newTroll) {
+                    if (newTroll > 0 && TTF != newTroll) {
                         gotoPage(ConfigHelper.getHHScriptVars("pagesIDTrollPreBattle"), { id_opponent: newTroll });
                         return true;
                     } else {
-                        logHHAuto(`Same troll found, go for it.`);
+                        logHHAuto(`Same troll found and no girls available, stopping troll fight.`);
+                        gotoPage(ConfigHelper.getHHScriptVars("pagesIDHome"));
+                        return;
                     }
                 }
                 let canBuyFightsResult = Troll.canBuyFight(eventTrollGirl);
@@ -543,23 +582,6 @@ export class Troll {
                         )
                     );
 
-                    // Sandalwood batch-sizing: compute recommended batch based on doses + shards
-                    const dosesRemaining = Booster.getSandalwoodDosesRemaining();
-                    logHHAuto(`[SW-DEBUG] CrushThemFights: eventShards=${remainingEventShards}, raidShards=${remainingLoveRaidShards}, totalRemaining=${remainingShards}, dosesRemaining=${dosesRemaining}, isMythic=${eventTrollGirl?.is_mythic}, power=${currentPower}`);
-                    const recommendedBatch = Booster.getRecommendedBatchSize(
-                        Math.min(remainingEventShards || 100, remainingLoveRaidShards || 100),
-                        dosesRemaining,
-                        {
-                            useX50: getStoredValue(HHStoredVarPrefixKey+SK.useX50Fights) === "true",
-                            useX10: getStoredValue(HHStoredVarPrefixKey+SK.useX10Fights) === "true",
-                            sandalwoodShardsX10Limit: Number(getStoredValue(HHStoredVarPrefixKey+SK.sandalwoodShardsX10Limit)) || 80,
-                            sandalwoodShardsX1Limit: Number(getStoredValue(HHStoredVarPrefixKey+SK.sandalwoodShardsX1Limit)) || 95,
-                            sandalwoodDosesX10Limit: Number(getStoredValue(HHStoredVarPrefixKey+SK.sandalwoodDosesX10Limit)) || 6,
-                            sandalwoodDosesX1Limit: Number(getStoredValue(HHStoredVarPrefixKey+SK.sandalwoodDosesX1Limit)) || 3,
-                        }
-                    );
-                    logHHAuto(`[SW-DEBUG] CrushThemFights: recommendedBatch=${recommendedBatch}`);
-
                     const minShardsx50 = getStoredValue(HHStoredVarPrefixKey + SK.minShardsX50);
                     if (getStoredValue(HHStoredVarPrefixKey+SK.useX50Fights) === "true"
                         && minShardsx50 && Number.isInteger(Number(minShardsx50)) && remainingShards >= Number(minShardsx50)
@@ -569,7 +591,6 @@ export class Troll {
                             || bypassThreshold
                         )
                         && (eventTrollGirl?.is_mythic || getStoredValue(HHStoredVarPrefixKey+SK.useX50FightsAllowNormalEvent) === "true")
-                        && recommendedBatch >= 50
                     )
                     {
                         logHHAuto("Going to crush 50 times: "+trollz[Number(TTF)]+' for '+battleButtonX50Price+' kobans.');
@@ -596,8 +617,7 @@ export class Troll {
                     {
                         if (getStoredValue(HHStoredVarPrefixKey+SK.useX50Fights) === "true")
                         {
-                            const x50BlockedBy = recommendedBatch < 50 ? ` (SW batch cap: ${recommendedBatch})` : '';
-                            logHHAuto(`Unable to use x50 for ${battleButtonX50Price} kobans,fights : ${Troll.getEnergy()}/50, remaining shards : ${remainingShards}/${getStoredValue(HHStoredVarPrefixKey + SK.minShardsX50)}, kobans : ${HeroHelper.getKoban()}/${Number(getStoredValue(HHStoredVarPrefixKey + SK.kobanBank))}${x50BlockedBy}`);
+                            logHHAuto(`Unable to use x50 for ${battleButtonX50Price} kobans,fights : ${Troll.getEnergy()}/50, remaining shards : ${remainingShards}/${getStoredValue(HHStoredVarPrefixKey + SK.minShardsX50)}, kobans : ${HeroHelper.getKoban()}/${Number(getStoredValue(HHStoredVarPrefixKey + SK.kobanBank))}`);
                         }
                     }
 
@@ -610,7 +630,6 @@ export class Troll {
                             || bypassThreshold
                         )
                         && (eventTrollGirl?.is_mythic || getStoredValue(HHStoredVarPrefixKey+SK.useX10FightsAllowNormalEvent) === "true")
-                        && recommendedBatch >= 10
                     )
                     {
                         logHHAuto(`Going to crush 10 times: ${trollz[Number(TTF)]} for ${battleButtonX10Price} kobans.`);
@@ -637,8 +656,7 @@ export class Troll {
                     {
                         if (getStoredValue(HHStoredVarPrefixKey+SK.useX10Fights) === "true")
                         {
-                            const x10BlockedBy = recommendedBatch < 10 ? ` (SW batch cap: ${recommendedBatch})` : '';
-                            logHHAuto(`Unable to use x10 for ${battleButtonX10Price} kobans,fights : ${Troll.getEnergy()}/10, remaining shards : ${remainingShards}/${getStoredValue(HHStoredVarPrefixKey + SK.minShardsX10)}, kobans : ${HeroHelper.getKoban()}/${Number(getStoredValue(HHStoredVarPrefixKey + SK.kobanBank))}${x10BlockedBy}`);
+                            logHHAuto(`Unable to use x10 for ${battleButtonX10Price} kobans,fights : ${Troll.getEnergy()}/10, remaining shards : ${remainingShards}/${getStoredValue(HHStoredVarPrefixKey + SK.minShardsX10)}, kobans : ${HeroHelper.getKoban()}/${Number(getStoredValue(HHStoredVarPrefixKey + SK.kobanBank))}`);
                         }
                     }
                 }
@@ -742,15 +760,14 @@ export class Troll {
         const pricePerFight = hero.energies[type].seconds_per_point * (unsafeWindow.hh_prices[type + '_cost_per_minute'] / 60);
         let remainingShards:number;
 
-        if (Number.isInteger(eventGirl?.shards))
+        // #1565: only buy when energy is empty (0) and girl not yet won (shards < 100)
+        if (Number.isInteger(eventGirl?.shards) && currentFight === 0 && eventGirl.shards < 100)
         {
             if (
                 (
                     getStoredValue(HHStoredVarPrefixKey+SK.buyCombat) =="true"
                     && getStoredValue(HHStoredVarPrefixKey+SK.plusEvent) ==="true"
                     && getSecondsLeft("eventGoing") !== 0
-                    && !Number.isNaN(Number(getStoredValue(HHStoredVarPrefixKey + SK.buyCombTimer)))
-                    && getSecondsLeft("eventGoing") < getStoredValue(HHStoredVarPrefixKey+SK.buyCombTimer)*3600
                     && eventGirl.girl_id && !eventGirl.is_mythic
                 )
                 ||
@@ -758,8 +775,6 @@ export class Troll {
                     getStoredValue(HHStoredVarPrefixKey+SK.plusEventMythic) ==="true"
                     && getStoredValue(HHStoredVarPrefixKey+SK.buyMythicCombat) === "true"
                     && getSecondsLeft("eventMythicGoing") !== 0
-                    && !Number.isNaN(Number(getStoredValue(HHStoredVarPrefixKey + SK.buyMythicCombTimer)))
-                    && getSecondsLeft("eventMythicGoing") < getStoredValue(HHStoredVarPrefixKey+SK.buyMythicCombTimer)*3600
                     && eventGirl.is_mythic
                 )
             )
@@ -828,7 +843,8 @@ export class Troll {
         const pricePerFight = hero.energies[type].seconds_per_point * (unsafeWindow.hh_prices[type + '_cost_per_minute'] / 60);
         let remainingShards:number;
 
-        if (Number.isInteger(raid?.girl_shards))
+        // #1565: only buy when energy is empty (0) and girl not yet won (shards < 100)
+        if (Number.isInteger(raid?.girl_shards) && currentFight === 0 && raid.girl_shards < 100)
         {
             if (
                     getStoredValue(HHStoredVarPrefixKey +SK.buyLoveRaidCombat) =="true"

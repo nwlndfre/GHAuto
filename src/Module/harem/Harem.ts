@@ -23,7 +23,7 @@ import {
     getStoredJSON
 } from '../../Helper/index';
 import { addNutakuSession, gotoPage } from '../../Service/index';
-import { fillHHPopUp, getHHAjax, isJSON, logHHAuto, maskHHPopUp } from '../../Utils/index';
+import { fillHHPopUp, getHHAjax, logHHAuto } from '../../Utils/index';
 import { HHStoredVarPrefixKey, SK, TK } from '../../config/index';
 import { KKHaremGirl, KKHaremSalaryGirl, TeamData } from '../../model/index';
 import { HaremFilter, HaremGirl } from '../index';
@@ -50,6 +50,9 @@ export class Harem {
         deleteStoredValue(HHStoredVarPrefixKey + TK.haremTeamScrolls);
         deleteStoredValue(HHStoredVarPrefixKey + TK.haremTeamSettings);
         
+        setStoredValue(HHStoredVarPrefixKey + TK.autoLoop, "true");
+        logHHAuto("clearHaremToolVariables: re-enabling autoLoop.");
+
         const lastActionPerformed:string = getStoredValue(HHStoredVarPrefixKey+TK.lastActionPerformed);
         if(lastActionPerformed == Harem.HAREM_UPGRADE_LAST_ACTION) {
             setStoredValue(HHStoredVarPrefixKey+TK.lastActionPerformed, "none");
@@ -280,9 +283,8 @@ export class Harem {
             const haremGirlMode = getStoredValue(HHStoredVarPrefixKey + TK.haremGirlMode);
             if (getPage() === ConfigHelper.getHHScriptVars("pagesIDWaifu")) {
 
-                HaremGirl.HaremDisplayGirlPopup(HaremGirl.SKILLS_TYPE, "Get scrolls", 1, 0);
-                
                 if (!!haremItem && haremGirlMode === 'team') {
+                    HaremGirl.HaremDisplayGirlPopup(HaremGirl.SKILLS_TYPE, "Get scrolls", 1, 0);
                     if (debugEnabled) logHHAuto("Waifu page detected, get girls with skills");
                     const girlDictionary = getHHVars("girls_data_list");
                     const skilledGirls = Object.values(girlDictionary).filter((girl: KKHaremGirl) => {
@@ -307,7 +309,6 @@ export class Harem {
 
                     return true;
                 }
-
             } else if (getPage() === ConfigHelper.getHHScriptVars("pagesIDHarem")) {
 
                 if (!!haremItem && haremGirlMode === 'team') {
@@ -400,7 +401,7 @@ export class Harem {
                         gotoPage('/girl/' + nextGirlId, { resource: (HaremGirl.EQUIPMENT_TYPE) }, randomInterval(1500, 2500));
                         return true;
                     } else {
-                        // Harem.clearHaremToolVariables();
+                        Harem.clearHaremToolVariables();
                     }
                 }
             }

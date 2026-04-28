@@ -24,12 +24,17 @@ HHAuto_ToolTips.de['autoSalary'] = { version: "5.6.24", elementText: "Auto Einko
 //HHAuto_ToolTips.de['autoSalaryMinTimer'] = { version: "5.6.24", elementText: "min Warten", tooltip: "(Ganze pos. Zahl)<br>X Sek bis zum Sammeln des Einkommens"};
 HHAuto_ToolTips.de['autoMission'] = { version: "5.6.24", elementText: "AutoMission", tooltip: "Wenn aktiv : Macht automatisch Missionen"};
 HHAuto_ToolTips.de['autoMissionCollect'] = { version: "5.6.24", elementText: "Einsammeln", tooltip: "Wenn aktiv : Sammelt automatisch Missionsgewinne"};
-HHAuto_ToolTips.de['autoTrollBattle'] = { version: "5.6.24", elementText: "AutoTrollKampf", tooltip: "Wenn aktiv : Macht automatisch aktivierte Trollkämpfe"};
+HHAuto_ToolTips.de['autoTrollBattle'] = { version: "7.35.4", elementText: "Standard Troll an/aus", tooltip: "Wenn aktiv: Macht automatisch Kämpfe gegen den Standard-Troll"};
 HHAuto_ToolTips.de['autoTrollSelector'] = { version: "5.6.24", elementText: "Troll Wähler", tooltip: "Wähle Trolle die bekämpfte werden sollen."};
 HHAuto_ToolTips.de['autoTrollThreshold'] = { version: "5.6.24", elementText: "Schwellwert", tooltip: "Minimum an Trollpunkten die aufgehoben werden"};
 HHAuto_ToolTips.de['eventTrollOrder'] = { version: "5.6.24", elementText: "Event Troll Reihenfolge", tooltip: "Erlaubt eine Auswahl in welcher Reihenfolge die Trolle automatisch bekämpft werden"};
 HHAuto_ToolTips.de['plusEvent'] = { version: "5.6.24", elementText: "+Event", tooltip: "Wenn aktiv : Ignoriere ausgewählte Trolle währende eines Events, zugunsten des Events"};
 HHAuto_ToolTips.de['plusEventMythic'] = { version: "5.6.24", elementText: "+Mythisches Event", tooltip: "Erlaubt es Mädels beim mystischen Event abzugreifen, sollte sie nur versuchen wenn auch Teile vorhanden sind"};
+HHAuto_ToolTips.de['raidStarsSelector'] = { version: "7.35.5", elementText: "+Raid Sterne", tooltip: "Kämpfe Love Raids nach Mädchen-Grad. Unabhängig von +Raid und Auto Troll.<br>Wählt automatisch den als nächstes endenden Raid mit passendem Grad (ignoriert das Raid selector-Dropdown).<br>Passende Raids werden von +Raid Sterne beansprucht; übrige Raids gehen an +Raid (falls aktiv).<br>Ignoriert die Energie-Schwelle wie +Mythisches Event."};
+HHAuto_ToolTips.de['raidStarsOff'] = { version: "7.35.5", elementText: "Aus"};
+HHAuto_ToolTips.de['raidStarsExact3'] = { version: "7.35.5", elementText: "=3 ★★★"};
+HHAuto_ToolTips.de['raidStarsMin3'] = { version: "7.35.5", elementText: "≥3 ★★★"};
+HHAuto_ToolTips.de['raidStarsExact5'] = { version: "7.35.5", elementText: "=5 ★★★★★"};
 //HHAuto_ToolTips.de['eventMythicPrio'] = { version: "5.6.24", elementText: "Priorisiere über Event Troll Reihenfolge", tooltip: "Mystische Event Mädels werden über die Event Troll Reihenfolge gestellt, sofern Teile erhältlich sind"};
 //HHAuto_ToolTips.de['autoTrollMythicByPassThreshold'] = { version: "5.6.24", elementText: "Mystische über Schwellenwert", tooltip: "Erlaubt es Punkt über den Schwellwert für das mystische Events zu nutzen"};
 HHAuto_ToolTips.de['autoTrollMythicByPassParanoia'] = { version: "5.6.24", elementText: "Mythisch über Paranoia", tooltip: "Wenn aktiv: Erlaubt es den Paranoia Modus zu übergehen. Wenn du noch kämpfen kannst oder dir Energie kaufen kannst, wird gekämpft. Sollte die nächste Welle an Splittern während der Ruhephase sein, wird der Modus unterbrochen und es wird gekämpft"};
@@ -63,5 +68,7 @@ HHAuto_ToolTips.de['autoAff'] = { version: "5.6.24", elementText: "Min Geld verb
 HHAuto_ToolTips.de['maxAff'] = { version: "5.6.24", elementText: "Max AnziehungKauf", tooltip: "Maximum an Anziehung die gekauft wird"};
 HHAuto_ToolTips.de['OpponentListBuilding'] = { version: "5.6.24", elementText: "Gegnerliste wird erstellt", tooltip: ""};
 HHAuto_ToolTips.de['OpponentParsed'] = { version: "5.6.24", elementText: "Gegner analysiert", tooltip: ""};
+HHAuto_ToolTips.de['sandalwoodMinShardsThreshold'] = { version: "7.34.16", elementText: "SW min. Shards", tooltip: "Kein Sandalwood mehr ausrüsten, wenn verbleibende Shards diesen Wert erreichen oder unterschreiten. 0 = Sandalwood immer ausrüsten."};
+
 HHAuto_ToolTips.de['povTitle'] = { version: "5.20.3", elementText: "Pfad der Tapferkeit (PoV)"};
 HHAuto_ToolTips.de['pogTitle'] = { version: "5.20.3", elementText: "Pfad des Ruhmes (PoG)"};

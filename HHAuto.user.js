@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         HaremHeroes Automatic++
-// @namespace    https://github.com/Roukys/HHauto
-// @version      7.33.1
+// @namespace    https://github.com/OldRon1977/HHauto
+// @version      7.35.15
 // @description  Open the menu in HaremHeroes(topright) to toggle AutoControlls. Supports AutoSalary, AutoContest, AutoMission, AutoQuest, AutoTrollBattle, AutoArenaBattle and AutoPachinko(Free), AutoLeagues, AutoChampions and AutoStatUpgrades. Messages are printed in local console.
 // @author       JD and Dorten(a bit), Roukys, cossname, YotoTheOne, CLSchwab, deuxge, react31, PrimusVox, OldRon1977, tsokh, UncleBob800
 // @match        http*://*.haremheroes.com/*
@@ -17,11 +17,9 @@
 // @grant        GM_addStyle
 // @grant        GM_registerMenuCommand
 // @grant        GM_unregisterMenuCommand
-// @grant        GM_xmlhttpRequest
-// @grant        GM_setClipboard
 // @license      MIT
-// @updateURL    https://github.com/Roukys/HHauto/raw/main/HHAuto.user.js
-// @downloadURL  https://github.com/Roukys/HHauto/raw/main/HHAuto.user.js
+// @updateURL    https://github.com/OldRon1977/HHauto/raw/main/HHAuto.user.js
+// @downloadURL  https://github.com/OldRon1977/HHauto/raw/main/HHAuto.user.js
 // ==/UserScript==
 
 // WARNING: This file has been generated, DO NOT EDIT.
@@ -228,7 +226,7 @@ HHAuto_ToolTips.en['autoMissionCollect'] = { version: "5.6.24", elementText: "Co
 HHAuto_ToolTips.en['compactMissions'] = { version: "5.24.0", elementText: "Compact", tooltip: "Add styles to compact missions display" };
 HHAuto_ToolTips.en['invertMissions'] = { version: "7.16.2", elementText: "Invert", tooltip: "Start with longer mission instead of shorter" };
 HHAuto_ToolTips.en['autoTrollTitle'] = { version: "5.6.24", elementText: "Battle Troll" };
-HHAuto_ToolTips.en['autoTrollBattle'] = { version: "5.6.24", elementText: "Enable", tooltip: "if enabled : Automatically battle troll selected" };
+HHAuto_ToolTips.en['autoTrollBattle'] = { version: "7.35.4", elementText: "Standard Troll on/off", tooltip: "if enabled : Automatically battle standard troll selected" };
 HHAuto_ToolTips.en['autoTrollSelector'] = { version: "5.6.24", elementText: "Troll selector", tooltip: "Select troll to be fought." };
 HHAuto_ToolTips.en['autoTrollThreshold'] = { version: "5.6.24", elementText: "Threshold", tooltip: "(Integer 0 to 19)<br>Minimum troll fight to keep" };
 HHAuto_ToolTips.en['autoTrollRunThreshold'] = { version: "6.8.0", elementText: "Run Threshold", tooltip: "Minimum troll fights before script start spending<br> 0 to spend as soon as energy above threshold" };
@@ -242,11 +240,11 @@ HHAuto_ToolTips.en['plusLoveRaid'] = { version: "7.32.1", elementText: "+Raid", 
 HHAuto_ToolTips.en['loveRaidSelector'] = { version: "7.32.5", elementText: "Raid selector", tooltip: "Select girl to be targeted during Love Raid.<br>Resets to 'Choose a girl' when girl is won (and skins are done or +Girl Skins is OFF)." };
 HHAuto_ToolTips.en['plusGirlSkins'] = { version: "7.32.5", elementText: "+Girl Skins", tooltip: "Continue fighting after girl shards are complete to collect girl skins.<br>Applies to both Events and Raids.<br>When OFF: stops fighting once girl is won (100 shards).<br>When ON: continues if skin shards are still available." };
 HHAuto_ToolTips.en['autoTrollLoveRaidByPassThreshold'] = { version: "7.32.1", elementText: "Bypass reserve", tooltip: "Bypass energy threshold for +Raid fights as long as a raid girl is available." };
-HHAuto_ToolTips.en['raidStarsSelector'] = { version: "7.32.3", elementText: "+Raid Stars", tooltip: "Fight Love Raids by minimum girl grade. Independent from +Raid and Auto Troll.<br>Raids matching the selected grade are claimed by +Raid Stars; remaining raids go to +Raid (if enabled).<br>Bypasses energy threshold like +Mythic Event." };
-HHAuto_ToolTips.en['raidStarsOff'] = { version: "7.32.3", elementText: "Off" };
-HHAuto_ToolTips.en['raidStars3'] = { version: "7.32.3", elementText: "≥3 ★★★" };
-HHAuto_ToolTips.en['raidStars5'] = { version: "7.32.3", elementText: "≥5 ★★★★★" };
-HHAuto_ToolTips.en['raidStars6'] = { version: "7.32.3", elementText: "6 ★★★★★★" };
+HHAuto_ToolTips.en['raidStarsSelector'] = { version: "7.35.5", elementText: "+Raid Stars", tooltip: "Fight Love Raids by girl grade. Independent from +Raid and Auto Troll.<br>Picks the first ending raid matching the selected grade (ignores the Raid selector dropdown).<br>Raids matching the grade are claimed by +Raid Stars; remaining raids go to +Raid (if enabled).<br>Bypasses energy threshold like +Mythic Event." };
+HHAuto_ToolTips.en['raidStarsOff'] = { version: "7.35.5", elementText: "Off" };
+HHAuto_ToolTips.en['raidStarsExact3'] = { version: "7.35.5", elementText: "=3 ★★★" };
+HHAuto_ToolTips.en['raidStarsMin3'] = { version: "7.35.5", elementText: "≥3 ★★★" };
+HHAuto_ToolTips.en['raidStarsExact5'] = { version: "7.35.5", elementText: "=5 ★★★★★" };
 HHAuto_ToolTips.en['buyLoveRaidCombat'] = { version: "7.25.6", elementText: "Buy comb.for Raid", tooltip: "<p style = 'color:red'>/ !\\ Kobans spending function /!\\<br>(" + HHAuto_ToolTips.en['spendKobans0'].elementText + " must be ON)</p > If enabled: <br>Buying combat point during Love Raid event (if not going under Koban bank value), this will bypass threshold if event girl shards available." };
 HHAuto_ToolTips.en['autoBuyLoveRaidTrollNumber'] = { version: "7.25.6", elementText: "Raid auto buy", tooltip: "Number of combat points to be bought during an love raid event" };
 HHAuto_ToolTips.en['plusEventLoveRaidSandalWood'] = { version: "7.25.8", elementText: "Equip Sandalwood", tooltip: "Will equip sandalwood before LoveRaid fight if enough in inventory<br>Do not equip if less than 10 shards to win<br>Will not buy any." };
@@ -442,10 +440,7 @@ HHAuto_ToolTips.en['useX50FightsAllowNormalEvent'] = { version: "5.6.24", elemen
 HHAuto_ToolTips.en['autoBuy'] = { version: "5.6.24", elementText: "Market" };
 HHAuto_ToolTips.en['minShardsX50'] = { version: "5.6.24", elementText: "Min. shards x50", tooltip: "Only use x50 button if remaining shards of current girl is equal or above this limit." };
 HHAuto_ToolTips.en['minShardsX10'] = { version: "5.6.24", elementText: "Min. shards x10", tooltip: "Only use x10 button if remaining shards of current girl is equal or above this limit." };
-HHAuto_ToolTips.en['sandalwoodShardsX10Limit'] = { version: "7.33.0", elementText: "SW shards x10 limit", tooltip: "When collected shards reach this percentage, downgrade from x50 to x10 battles to avoid wasting Sandalwood doses." };
-HHAuto_ToolTips.en['sandalwoodShardsX1Limit'] = { version: "7.33.0", elementText: "SW shards x1 limit", tooltip: "When collected shards reach this percentage, downgrade from x10 to x1 battles to avoid wasting Sandalwood doses." };
-HHAuto_ToolTips.en['sandalwoodDosesX10Limit'] = { version: "7.33.0", elementText: "SW doses x10 limit", tooltip: "When remaining Sandalwood doses drop to this number or below, downgrade from x50 to x10 battles." };
-HHAuto_ToolTips.en['sandalwoodDosesX1Limit'] = { version: "7.33.0", elementText: "SW doses x1 limit", tooltip: "When remaining Sandalwood doses drop to this number or below, downgrade from x10 to x1 battles." };
+HHAuto_ToolTips.en['sandalwoodMinShardsThreshold'] = { version: "7.34.16", elementText: "SW min shards", tooltip: "Stop equipping Sandalwood when remaining shards fall to this value or below. 0 = always equip Sandalwood." };
 HHAuto_ToolTips.en['mythicGirlNext'] = { version: "5.6.24", elementText: "Mythic girl wave" };
 HHAuto_ToolTips.en['RefreshOppoList'] = { version: "5.6.24", elementText: "Refresh Opponent list", tooltip: "Allow to force a refresh of opponent list." };
 HHAuto_ToolTips.en['HideBeatenOppo'] = { version: "5.7.1", elementText: "Hide", tooltip: "Allow to hide beaten opponent from the list." };
@@ -520,7 +515,7 @@ HHAuto_ToolTips.en['Name'] = { version: "5.6.24", elementText: "Name", tooltip: 
 HHAuto_ToolTips.en['sortPowerCalc'] = { version: "5.6.24", elementText: "Sort by score", tooltip: "Sorting opponents by score." };
 HHAuto_ToolTips.en['translate'] = { version: "5.6.25", elementText: "Translate", tooltip: "" };
 HHAuto_ToolTips.en['saveTranslation'] = { version: "5.6.25", elementText: "Save translation" };
-HHAuto_ToolTips.en['saveTranslationText'] = { version: "5.6.25", elementText: "Below you'll find all text that can be translated.<br>To contribute, modify directly in the cell the translation (if empty click on the blue part ;))<br><p style='margin-block-start:0px;margin-block-end:0px;color:gray'>Gray cells are translations needing update.</p><p style='margin-block-start:0px;margin-block-end:0px;color:blue'>Blue cell are missing translations</p><p style='margin-block-start:0px;margin-block-end:0px;color:red'>Please try to keep the text length to prevent UI issues.</p>At the bottom you'll find a button to generate a txt file with your modification.<br>Please upload it to : <a target='_blank' href='https://github.com/Roukys/HHauto/issues/426'>Github</a>", tooltip: "" };
+HHAuto_ToolTips.en['saveTranslationText'] = { version: "5.6.25", elementText: "Below you'll find all text that can be translated.<br>To contribute, modify directly in the cell the translation (if empty click on the blue part ;))<br><p style='margin-block-start:0px;margin-block-end:0px;color:gray'>Gray cells are translations needing update.</p><p style='margin-block-start:0px;margin-block-end:0px;color:blue'>Blue cell are missing translations</p><p style='margin-block-start:0px;margin-block-end:0px;color:red'>Please try to keep the text length to prevent UI issues.</p>At the bottom you'll find a button to generate a txt file with your modification.<br>Please upload it to : <a target='_blank' href='https://github.com/OldRon1977/HHauto/issues/426'>Github</a>", tooltip: "" };
 HHAuto_ToolTips.en['menuCollectable'] = { version: "5.6.47", elementText: "Collectable preferences.", tooltip: "" };
 HHAuto_ToolTips.en['menuCollectableText'] = { version: "5.6.47", elementText: "Please select the collectables you want to be automatically collected.", tooltip: "" };
 HHAuto_ToolTips.en['menuDailyCollectableText'] = { version: "5.6.49", elementText: "Please select the collectables you want to be immediately collected.", tooltip: "" };
@@ -591,7 +586,7 @@ HHAuto_ToolTips.fr['autoSalaryMinSalary'] = { version: "5.20.3", elementText: "S
 HHAuto_ToolTips.fr['autoMission'] = { version: "5.6.24", elementText: "Missions", tooltip: "Si activé : lance automatiquement les missions." };
 HHAuto_ToolTips.fr['autoMissionCollect'] = { version: "5.6.24", elementText: "Collecter", tooltip: "Si activé : collecte automatiquement les récompenses des missions." };
 HHAuto_ToolTips.fr['compactMissions'] = { version: "5.24.0", elementText: "Compacter", tooltip: "Compacter l'affichage des missions" };
-HHAuto_ToolTips.fr['autoTrollBattle'] = { version: "5.6.24", elementText: "Activer", tooltip: "Si activé : combat automatiquement le troll." };
+HHAuto_ToolTips.fr['autoTrollBattle'] = { version: "7.35.4", elementText: "Troll standard on/off", tooltip: "Si activé : combat automatiquement le troll standard." };
 HHAuto_ToolTips.fr['autoTrollSelector'] = { version: "5.6.24", elementText: "Sélection troll", tooltip: "Sélection du troll à combattre" };
 HHAuto_ToolTips.fr['autoTrollThreshold'] = { version: "5.6.24", elementText: "Réserve", tooltip: "Points de combat de trolls (poings) minimum à conserver" };
 HHAuto_ToolTips.fr['eventTrollOrder'] = { version: "5.6.24", elementText: "Ordre Trolls d'événement", tooltip: "Permet de sélectionner l'ordre dans lequel les trolls d'événements sont automatiquement combattus." };
@@ -670,10 +665,7 @@ HHAuto_ToolTips.fr['useX50Fights'] = { version: "5.6.24", elementText: "Combats 
 HHAuto_ToolTips.fr['autoBuy'] = { version: "5.6.24", elementText: "Marché" };
 HHAuto_ToolTips.fr['minShardsX50'] = { version: "5.6.24", elementText: "Frags min. x50", tooltip: "Utiliser le bouton x50 si le nombre de fragments restant est supérieur ou égal à..." };
 HHAuto_ToolTips.fr['minShardsX10'] = { version: "5.6.24", elementText: "Frags min. x10", tooltip: "Utiliser le bouton x10 si le nombre de fragments restant est supérieur ou égal à..." };
-HHAuto_ToolTips.fr['sandalwoodShardsX10Limit'] = { version: "7.33.0", elementText: "SW frags x10 limite", tooltip: "Quand les fragments collectés atteignent ce pourcentage, réduire de x50 à x10 combats pour éviter le gaspillage de doses Sandalwood." };
-HHAuto_ToolTips.fr['sandalwoodShardsX1Limit'] = { version: "7.33.0", elementText: "SW frags x1 limite", tooltip: "Quand les fragments collectés atteignent ce pourcentage, réduire de x10 à x1 combats pour éviter le gaspillage de doses Sandalwood." };
-HHAuto_ToolTips.fr['sandalwoodDosesX10Limit'] = { version: "7.33.0", elementText: "SW doses x10 limite", tooltip: "Quand les doses Sandalwood restantes descendent à ce nombre ou en dessous, réduire de x50 à x10 combats." };
-HHAuto_ToolTips.fr['sandalwoodDosesX1Limit'] = { version: "7.33.0", elementText: "SW doses x1 limite", tooltip: "Quand les doses Sandalwood restantes descendent à ce nombre ou en dessous, réduire de x10 à x1 combats." };
+HHAuto_ToolTips.fr['sandalwoodMinShardsThreshold'] = { version: "7.34.16", elementText: "SW frags min.", tooltip: "Ne plus équiper Sandalwood quand les fragments restants atteignent cette valeur ou moins. 0 = toujours équiper Sandalwood." };
 HHAuto_ToolTips.fr['autoMissionKFirst'] = { version: "5.6.24", elementText: "Prioriser Kobans", tooltip: "Si activé : commence par les missions qui rapportent des kobans." };
 HHAuto_ToolTips.fr['povpogTitle'] = { version: "5.6.133", elementText: "Voie de la Valeur/Gloire" };
 HHAuto_ToolTips.fr['skills'] = { version: "7.16.0", elementText: "Compétences" };
@@ -743,12 +735,17 @@ HHAuto_ToolTips.de['autoSalary'] = { version: "5.6.24", elementText: "Auto Einko
 //HHAuto_ToolTips.de['autoSalaryMinTimer'] = { version: "5.6.24", elementText: "min Warten", tooltip: "(Ganze pos. Zahl)<br>X Sek bis zum Sammeln des Einkommens"};
 HHAuto_ToolTips.de['autoMission'] = { version: "5.6.24", elementText: "AutoMission", tooltip: "Wenn aktiv : Macht automatisch Missionen" };
 HHAuto_ToolTips.de['autoMissionCollect'] = { version: "5.6.24", elementText: "Einsammeln", tooltip: "Wenn aktiv : Sammelt automatisch Missionsgewinne" };
-HHAuto_ToolTips.de['autoTrollBattle'] = { version: "5.6.24", elementText: "AutoTrollKampf", tooltip: "Wenn aktiv : Macht automatisch aktivierte Trollkämpfe" };
+HHAuto_ToolTips.de['autoTrollBattle'] = { version: "7.35.4", elementText: "Standard Troll an/aus", tooltip: "Wenn aktiv: Macht automatisch Kämpfe gegen den Standard-Troll" };
 HHAuto_ToolTips.de['autoTrollSelector'] = { version: "5.6.24", elementText: "Troll Wähler", tooltip: "Wähle Trolle die bekämpfte werden sollen." };
 HHAuto_ToolTips.de['autoTrollThreshold'] = { version: "5.6.24", elementText: "Schwellwert", tooltip: "Minimum an Trollpunkten die aufgehoben werden" };
 HHAuto_ToolTips.de['eventTrollOrder'] = { version: "5.6.24", elementText: "Event Troll Reihenfolge", tooltip: "Erlaubt eine Auswahl in welcher Reihenfolge die Trolle automatisch bekämpft werden" };
 HHAuto_ToolTips.de['plusEvent'] = { version: "5.6.24", elementText: "+Event", tooltip: "Wenn aktiv : Ignoriere ausgewählte Trolle währende eines Events, zugunsten des Events" };
 HHAuto_ToolTips.de['plusEventMythic'] = { version: "5.6.24", elementText: "+Mythisches Event", tooltip: "Erlaubt es Mädels beim mystischen Event abzugreifen, sollte sie nur versuchen wenn auch Teile vorhanden sind" };
+HHAuto_ToolTips.de['raidStarsSelector'] = { version: "7.35.5", elementText: "+Raid Sterne", tooltip: "Kämpfe Love Raids nach Mädchen-Grad. Unabhängig von +Raid und Auto Troll.<br>Wählt automatisch den als nächstes endenden Raid mit passendem Grad (ignoriert das Raid selector-Dropdown).<br>Passende Raids werden von +Raid Sterne beansprucht; übrige Raids gehen an +Raid (falls aktiv).<br>Ignoriert die Energie-Schwelle wie +Mythisches Event." };
+HHAuto_ToolTips.de['raidStarsOff'] = { version: "7.35.5", elementText: "Aus" };
+HHAuto_ToolTips.de['raidStarsExact3'] = { version: "7.35.5", elementText: "=3 ★★★" };
+HHAuto_ToolTips.de['raidStarsMin3'] = { version: "7.35.5", elementText: "≥3 ★★★" };
+HHAuto_ToolTips.de['raidStarsExact5'] = { version: "7.35.5", elementText: "=5 ★★★★★" };
 //HHAuto_ToolTips.de['eventMythicPrio'] = { version: "5.6.24", elementText: "Priorisiere über Event Troll Reihenfolge", tooltip: "Mystische Event Mädels werden über die Event Troll Reihenfolge gestellt, sofern Teile erhältlich sind"};
 //HHAuto_ToolTips.de['autoTrollMythicByPassThreshold'] = { version: "5.6.24", elementText: "Mystische über Schwellenwert", tooltip: "Erlaubt es Punkt über den Schwellwert für das mystische Events zu nutzen"};
 HHAuto_ToolTips.de['autoTrollMythicByPassParanoia'] = { version: "5.6.24", elementText: "Mythisch über Paranoia", tooltip: "Wenn aktiv: Erlaubt es den Paranoia Modus zu übergehen. Wenn du noch kämpfen kannst oder dir Energie kaufen kannst, wird gekämpft. Sollte die nächste Welle an Splittern während der Ruhephase sein, wird der Modus unterbrochen und es wird gekämpft" };
@@ -782,6 +779,7 @@ HHAuto_ToolTips.de['autoAff'] = { version: "5.6.24", elementText: "Min Geld verb
 HHAuto_ToolTips.de['maxAff'] = { version: "5.6.24", elementText: "Max AnziehungKauf", tooltip: "Maximum an Anziehung die gekauft wird" };
 HHAuto_ToolTips.de['OpponentListBuilding'] = { version: "5.6.24", elementText: "Gegnerliste wird erstellt", tooltip: "" };
 HHAuto_ToolTips.de['OpponentParsed'] = { version: "5.6.24", elementText: "Gegner analysiert", tooltip: "" };
+HHAuto_ToolTips.de['sandalwoodMinShardsThreshold'] = { version: "7.34.16", elementText: "SW min. Shards", tooltip: "Kein Sandalwood mehr ausrüsten, wenn verbleibende Shards diesen Wert erreichen oder unterschreiten. 0 = Sandalwood immer ausrüsten." };
 HHAuto_ToolTips.de['povTitle'] = { version: "5.20.3", elementText: "Pfad der Tapferkeit (PoV)" };
 HHAuto_ToolTips.de['pogTitle'] = { version: "5.20.3", elementText: "Pfad des Ruhmes (PoG)" };
 
@@ -811,7 +809,7 @@ HHAuto_ToolTips.es['autoSalary'] = { version: "5.6.24", elementText: "AutoSal.",
 //HHAuto_ToolTips.es['autoSalaryMinTimer'] = { version: "5.6.24", elementText: "min espera", tooltip: "(Entero)<br>X segundos para recaudar salario"};
 HHAuto_ToolTips.es['autoMission'] = { version: "5.6.24", elementText: "AutoMision", tooltip: "Si habilitado: Juega misiones de manera automática" };
 HHAuto_ToolTips.es['autoMissionCollect'] = { version: "5.6.24", elementText: "Recaudar", tooltip: "Si habilitado: Recauda misiones de manera automática" };
-HHAuto_ToolTips.es['autoTrollBattle'] = { version: "5.6.24", elementText: "AutoVillano", tooltip: "Si habilitado: Combate villano seleccionado de manera automática" };
+HHAuto_ToolTips.es['autoTrollBattle'] = { version: "7.35.4", elementText: "Villano estándar on/off", tooltip: "Si habilitado: Combate automáticamente el villano estándar seleccionado" };
 HHAuto_ToolTips.es['autoTrollSelector'] = { version: "5.6.24", elementText: "Selector villano", tooltip: "Selecciona villano para luchar." };
 HHAuto_ToolTips.es['autoTrollThreshold'] = { version: "5.6.24", elementText: "Límite", tooltip: "(Entero 0 a 19)<br>Mínimo combates a guardar" };
 HHAuto_ToolTips.es['eventTrollOrder'] = { version: "5.6.24", elementText: "Orden combate villano", tooltip: "(Valores separados por ;)<br>Permite seleccionar el orden de combate automático de los villanos" };
@@ -1370,6 +1368,21 @@ class Booster {
             mythic: activeMythicSlots,
         };
         setStoredValue(HHStoredVarPrefixKey + TK.boosterStatus, JSON.stringify(boosterStatus));
+        setStoredValue(HHStoredVarPrefixKey + TK.boosterStatusLastUpdate, String(Date.now()));
+    }
+    /**
+     * Checks whether boosterStatus was refreshed from the market recently.
+     * Used to detect stale state when another browser/tab changed the equipped boosters.
+     * A missing timestamp is treated as stale (forces a market visit).
+     */
+    static hasFreshBoosterStatus() {
+        const lastUpdateRaw = getStoredValue(HHStoredVarPrefixKey + TK.boosterStatusLastUpdate);
+        if (!lastUpdateRaw)
+            return false;
+        const lastUpdate = parseInt(lastUpdateRaw, 10);
+        if (isNaN(lastUpdate))
+            return false;
+        return (Date.now() - lastUpdate) < Booster.BOOSTER_STATUS_TTL_MS;
     }
     /**
      * Checks whether booster data from a market visit is available in cache.
@@ -1523,6 +1536,14 @@ class Booster {
                 gotoPage(ConfigHelper.getHHScriptVars("pagesIDShop"));
                 return true; // Signal busy — the market visit will cache the data, next loop will equip
             }
+            // Also refresh boosterStatus if it's stale — another browser/tab may have changed
+            // the equipped boosters. Without this, getBoostersToEquip() would use stale data
+            // and repeatedly try to equip slots that are actually already occupied server-side.
+            if (!Booster.hasFreshBoosterStatus()) {
+                LogUtils_logHHAuto("Auto-equip: boosterStatus is stale or missing. Navigating to market to refresh.");
+                gotoPage(ConfigHelper.getHHScriptVars("pagesIDShop"));
+                return true; // Signal busy — market visit will refresh boosterStatus via collectBoostersFromMarket
+            }
             const boostersToEquip = Booster.getBoostersToEquip();
             if (boostersToEquip.length === 0) {
                 LogUtils_logHHAuto("Auto-equip: All booster slots active.");
@@ -1661,6 +1682,14 @@ class Booster {
             }
         }
     }
+    /**
+     * Returns the user-configured minimum shards threshold for Sandalwood.
+     * When remaining shards fall to this value or below, Sandalwood won't be equipped.
+     * Default 0 = always equip Sandalwood.
+     */
+    static getSandalwoodMinShardsThreshold() {
+        return Number(getStoredValue(HHStoredVarPrefixKey + SK.sandalwoodMinShardsThreshold)) || 0;
+    }
     static needSandalWoodEvent(nextTrollChoosen, eventGirl = null) {
         if (!eventGirl) {
             eventGirl = EventModule.getEventGirl();
@@ -1670,19 +1699,21 @@ class Booster {
         const activated = getStoredValue(HHStoredVarPrefixKey + SK.plusEvent) === "true" && getStoredValue(HHStoredVarPrefixKey + SK.plusEventSandalWood) === "true";
         const correctTrollTargetted = eventGirl.troll_id == nextTrollChoosen;
         const remainingShards = Number(100 - Number(eventGirl.shards));
-        if (remainingShards <= 10) {
-            LogUtils_logHHAuto(`[SW-DEBUG] Not equipping sandalwood for event, only ${remainingShards} shards remaining`);
+        const threshold = Booster.getSandalwoodMinShardsThreshold();
+        if (remainingShards <= threshold) {
+            LogUtils_logHHAuto(`[SW-DEBUG] Not equipping sandalwood for event, only ${remainingShards} shards remaining (threshold: ${threshold})`);
         }
-        return activated && correctTrollTargetted && remainingShards > 10;
+        return activated && correctTrollTargetted && remainingShards > threshold;
     }
     static needSandalWoodMythic(nextTrollChoosen, eventMythicGirl = null) {
         const activated = getStoredValue(HHStoredVarPrefixKey + SK.plusEventMythic) === "true" && getStoredValue(HHStoredVarPrefixKey + SK.plusEventMythicSandalWood) === "true";
         const correctTrollTargetted = eventMythicGirl.is_mythic && eventMythicGirl.troll_id == nextTrollChoosen;
         const remainingShards = Number(100 - Number(eventMythicGirl.shards));
-        if (remainingShards <= 10) {
-            LogUtils_logHHAuto(`[SW-DEBUG] Not equipping sandalwood for mythic, only ${remainingShards} shards remaining`);
+        const threshold = Booster.getSandalwoodMinShardsThreshold();
+        if (remainingShards <= threshold) {
+            LogUtils_logHHAuto(`[SW-DEBUG] Not equipping sandalwood for mythic, only ${remainingShards} shards remaining (threshold: ${threshold})`);
         }
-        return activated && correctTrollTargetted && remainingShards > 10;
+        return activated && correctTrollTargetted && remainingShards > threshold;
     }
     static needSandalWoodLoveRaid(nextTrollChoosen, loveRaid = null) {
         if (!loveRaid)
@@ -1690,10 +1721,11 @@ class Booster {
         const activated = LoveRaidManager.isAnyActivated() && getStoredValue(HHStoredVarPrefixKey + SK.plusEventLoveRaidSandalWood) === "true";
         const correctTrollTargetted = loveRaid.girl_to_win && loveRaid.trollId == nextTrollChoosen;
         const remainingShards = Number(100 - Number(loveRaid.girl_shards));
-        if (remainingShards <= 10) {
-            LogUtils_logHHAuto(`[SW-DEBUG] Not equipping sandalwood for love raid, only ${remainingShards} shards remaining`);
+        const threshold = Booster.getSandalwoodMinShardsThreshold();
+        if (remainingShards <= threshold) {
+            LogUtils_logHHAuto(`[SW-DEBUG] Not equipping sandalwood for love raid, only ${remainingShards} shards remaining (threshold: ${threshold})`);
         }
-        return activated && correctTrollTargetted && remainingShards > 10;
+        return activated && correctTrollTargetted && remainingShards > threshold;
     }
     static equipeSandalWoodIfNeeded(nextTrollChoosen, settingKey = SK.plusEventMythicSandalWood) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -1790,51 +1822,6 @@ class Booster {
             return null;
         return sandalwood.usages_remaining;
     }
-    /**
-     * Determines the maximum recommended batch size (1, 10, or 50) based on
-     * remaining shards, Sandalwood doses, and user settings.
-     *
-     * The most restrictive constraint wins.
-     */
-    static getRecommendedBatchSize(minRemainingShards, dosesRemaining, userSettings) {
-        LogUtils_logHHAuto(`[SW-DEBUG] getRecommendedBatchSize: minRemainingShards=${minRemainingShards}, dosesRemaining=${dosesRemaining}, settings=${JSON.stringify(userSettings)}`);
-        let maxBatch = 50;
-        // User preference caps
-        if (!userSettings.useX50) {
-            maxBatch = 10;
-            LogUtils_logHHAuto('[SW-DEBUG] batch cap: useX50=false → max 10');
-        }
-        if (!userSettings.useX10) {
-            maxBatch = 1;
-            LogUtils_logHHAuto('[SW-DEBUG] batch cap: useX10=false → max 1');
-        }
-        // If Sandalwood is not equipped, no dose-based restrictions apply
-        if (dosesRemaining === null) {
-            LogUtils_logHHAuto(`[SW-DEBUG] getRecommendedBatchSize: no Sandalwood equipped → returning ${maxBatch}`);
-            return maxBatch;
-        }
-        // Dose-based limits (check most restrictive first)
-        if (dosesRemaining <= userSettings.sandalwoodDosesX1Limit) {
-            LogUtils_logHHAuto(`[SW-DEBUG] batch cap: doses ${dosesRemaining} <= dosesX1Limit ${userSettings.sandalwoodDosesX1Limit} → max 1`);
-            maxBatch = 1;
-        }
-        else if (dosesRemaining <= userSettings.sandalwoodDosesX10Limit && maxBatch > 10) {
-            LogUtils_logHHAuto(`[SW-DEBUG] batch cap: doses ${dosesRemaining} <= dosesX10Limit ${userSettings.sandalwoodDosesX10Limit} → max 10`);
-            maxBatch = 10;
-        }
-        // Shard-based limits: collectedShards = 100 - minRemainingShards
-        const collectedShards = 100 - minRemainingShards;
-        if (collectedShards >= userSettings.sandalwoodShardsX1Limit) {
-            LogUtils_logHHAuto(`[SW-DEBUG] batch cap: collectedShards ${collectedShards} >= shardsX1Limit ${userSettings.sandalwoodShardsX1Limit} → max 1`);
-            maxBatch = 1;
-        }
-        else if (collectedShards >= userSettings.sandalwoodShardsX10Limit && maxBatch > 10) {
-            LogUtils_logHHAuto(`[SW-DEBUG] batch cap: collectedShards ${collectedShards} >= shardsX10Limit ${userSettings.sandalwoodShardsX10Limit} → max 10`);
-            maxBatch = 10;
-        }
-        LogUtils_logHHAuto(`[SW-DEBUG] getRecommendedBatchSize: final recommendation → ${maxBatch}`);
-        return maxBatch;
-    }
 }
 /** Sandalwood identifier constant — id_item is resolved from market data or env config at runtime. */
 Booster.SANDALWOOD_IDENTIFIER = "MB1";
@@ -1842,6 +1829,8 @@ Booster.SANDALWOOD_IDENTIFIER = "MB1";
 Booster._battleResponseReady = false;
 /** Resolver: set when waitForBattleResponse() is waiting; called by notifyBattleResponseProcessed() */
 Booster._battleResponseResolve = null;
+/** TTL for boosterStatus freshness in milliseconds (10 minutes). */
+Booster.BOOSTER_STATUS_TTL_MS = 10 * 60 * 1000;
 
 ;// CONCATENATED MODULE: ./src/Module/Bundles.ts
 // Bundles.ts -- Collects free daily and periodic bundles from the shop popup.
@@ -3876,21 +3865,47 @@ class LoveRaidManager {
         return LoveRaidManager.isEnabled() && getStoredValue(HHStoredVarPrefixKey + SK.plusLoveRaid) === "true";
     }
     /**
-     * Returns the minimum girl grade for +Raid Stars filtering.
-     * Stored value is the grade directly: 0 = off, 3 = rare+, 5 = legendary+, 6 = mythic only.
+     * Returns the +Raid Stars selection. Stored as string:
+     * "off" = disabled, "exact3" = only 3★, "min3" = 3★ and up, "exact5" = only 5★.
      */
-    static getMinRaidStars() {
+    static getRaidStarsSelection() {
         if (!LoveRaidManager.isEnabled())
-            return 0;
-        const val = Number(getStoredValue(HHStoredVarPrefixKey + SK.plusLoveRaidMythic));
-        return isNaN(val) ? 0 : val;
+            return "off";
+        const val = getStoredValue(HHStoredVarPrefixKey + SK.plusLoveRaidMythic);
+        return val || "off";
     }
     static isRaidStarsActivated() {
-        return LoveRaidManager.getMinRaidStars() > 0;
+        return LoveRaidManager.getRaidStarsSelection() !== "off";
     }
-    /** @deprecated Use isRaidStarsActivated() — kept for backward compat */
-    static isMythicActivated() {
-        return LoveRaidManager.isRaidStarsActivated();
+    /**
+     * Filters raids according to the +Raid Stars selection.
+     */
+    static filterByRaidStars(raids) {
+        const selection = LoveRaidManager.getRaidStarsSelection();
+        switch (selection) {
+            case "exact3": return raids.filter(r => r.girlGrade === 3);
+            case "min3": return raids.filter(r => r.girlGrade >= 3);
+            case "exact5": return raids.filter(r => r.girlGrade === 5);
+            default: return [];
+        }
+    }
+    /**
+     * Picks a raid for +Raid Stars. Independent from the +Raid "Raid selector"
+     * dropdown: uses "first ending raid" logic (first raid in list with shards
+     * left; when +Girl Skins is ON, falls back to first raid with skin to win).
+     */
+    static getRaidStarsRaidToFight(raids, logging = false) {
+        if (!raids || raids.length === 0)
+            return undefined;
+        const plusGirlSkins = getStoredValue(HHStoredVarPrefixKey + SK.plusGirlSkins) === "true";
+        let raid = raids.find(r => r.girl_shards < 100);
+        if (!raid && plusGirlSkins) {
+            raid = raids.find(r => r.skin_to_win);
+        }
+        if (logging && raid) {
+            LogUtils_logHHAuto(`+Raid Stars picked troll ${raid.trollId} with girl ${raid.id_girl} (grade ${raid.girlGrade})`);
+        }
+        return raid;
     }
     static isAnyActivated() {
         return LoveRaidManager.isActivated() || LoveRaidManager.isRaidStarsActivated();
@@ -4477,9 +4492,14 @@ class Season {
                         LogUtils_logHHAuto("Girl shard reward found for chosen opponent");
                     }
                     if (stopIfNoEventGirl && girlShardsReward.length <= 0) {
-                        LogUtils_logHHAuto("Ignoring season fights as no girl to win on fight reward");
-                        setTimer('nextSeasonTime', randomInterval(30 * 60, 35 * 60));
-                        return false;
+                        if (!isMaxTierSet || maxTierReached) {
+                            LogUtils_logHHAuto("Ignoring season fights as no girl to win on fight reward");
+                            setTimer('nextSeasonTime', randomInterval(30 * 60, 35 * 60));
+                            return false;
+                        }
+                        else {
+                            LogUtils_logHHAuto("Below max tier, fighting regardless of event girls.");
+                        }
                     }
                     if (runThreshold > 0) {
                         setStoredValue(HHStoredVarPrefixKey + TK.SeasonHumanLikeRun, "true");
@@ -6155,7 +6175,6 @@ class Contest {
         return $(".contest .ended button[rel='claim']");
     }
     static run() {
-        var _a;
         if (getPage() !== ConfigHelper.getHHScriptVars("pagesIDContests")) {
             LogUtils_logHHAuto("Navigating to contests page.");
             gotoPage(ConfigHelper.getHHScriptVars("pagesIDContests"));
@@ -6169,8 +6188,12 @@ class Contest {
             LogUtils_logHHAuto(`Found ${contest_list.length} contest to be collected`);
             if (contest_list.length > 0) {
                 const firstContestEnded = contest_list.first();
-                LogUtils_logHHAuto(`Collected contest id : ${(_a = firstContestEnded.parents('.contest')) === null || _a === void 0 ? void 0 : _a.attr('id_contest')}.`);
+                const contestContainer = firstContestEnded.parents('.contest');
+                LogUtils_logHHAuto(`Collected contest id : ${contestContainer === null || contestContainer === void 0 ? void 0 : contestContainer.attr('id_contest')}.`);
                 firstContestEnded.trigger('click');
+                // Remove the claimed contest from the DOM so setTimers() won't
+                // see stale claim buttons and create an infinite collect loop.
+                contestContainer.remove();
                 if (contest_list.length > 1) {
                     gotoPage(ConfigHelper.getHHScriptVars("pagesIDContests"));
                     return true;
@@ -6530,6 +6553,8 @@ class Harem {
         deleteStoredValue(HHStoredVarPrefixKey + TK.haremTeam);
         deleteStoredValue(HHStoredVarPrefixKey + TK.haremTeamScrolls);
         deleteStoredValue(HHStoredVarPrefixKey + TK.haremTeamSettings);
+        setStoredValue(HHStoredVarPrefixKey + TK.autoLoop, "true");
+        LogUtils_logHHAuto("clearHaremToolVariables: re-enabling autoLoop.");
         const lastActionPerformed = getStoredValue(HHStoredVarPrefixKey + TK.lastActionPerformed);
         if (lastActionPerformed == Harem.HAREM_UPGRADE_LAST_ACTION) {
             setStoredValue(HHStoredVarPrefixKey + TK.lastActionPerformed, "none");
@@ -6730,8 +6755,8 @@ class Harem {
                 const haremItem = getStoredValue(HHStoredVarPrefixKey + TK.haremGirlActions);
                 const haremGirlMode = getStoredValue(HHStoredVarPrefixKey + TK.haremGirlMode);
                 if (getPage() === ConfigHelper.getHHScriptVars("pagesIDWaifu")) {
-                    HaremGirl.HaremDisplayGirlPopup(HaremGirl.SKILLS_TYPE, "Get scrolls", 1, 0);
                     if (!!haremItem && haremGirlMode === 'team') {
+                        HaremGirl.HaremDisplayGirlPopup(HaremGirl.SKILLS_TYPE, "Get scrolls", 1, 0);
                         if (debugEnabled)
                             LogUtils_logHHAuto("Waifu page detected, get girls with skills");
                         const girlDictionary = getHHVars("girls_data_list");
@@ -6848,7 +6873,7 @@ class Harem {
                             return true;
                         }
                         else {
-                            // Harem.clearHaremToolVariables();
+                            Harem.clearHaremToolVariables();
                         }
                     }
                 }
@@ -7261,8 +7286,7 @@ class Troll {
         const eventGirl = EventModule.getEventGirl();
         const eventMythicGirl = EventModule.getEventMythicGirl();
         const allTrollRaids = LoveRaidManager.isAnyActivated() ? LoveRaidManager.getTrollRaids() : [];
-        const minRaidStars = LoveRaidManager.getMinRaidStars();
-        const raidStarsRaids = minRaidStars > 0 ? allTrollRaids.filter(raid => raid.girlGrade >= minRaidStars) : [];
+        const raidStarsRaids = LoveRaidManager.filterByRaidStars(allTrollRaids);
         // +Raid: user-selected girl bypasses grade filter, auto-mode ("first") respects it
         const loveRaids = LoveRaidManager.isActivated() ? allTrollRaids : [];
         if (debugEnabled && logging) {
@@ -7277,8 +7301,8 @@ class Troll {
         }
         else if (raidStarsRaids.length > 0) {
             if (logging)
-                LogUtils_logHHAuto("Raid Stars troll fight (min grade " + minRaidStars + ")");
-            const loveRaid = LoveRaidManager.getRaidToFight(raidStarsRaids, logging);
+                LogUtils_logHHAuto("Raid Stars troll fight (selection " + LoveRaidManager.getRaidStarsSelection() + ")");
+            const loveRaid = LoveRaidManager.getRaidStarsRaidToFight(raidStarsRaids, logging);
             if (loveRaid) {
                 TTF = loveRaid.trollId;
             }
@@ -7307,13 +7331,35 @@ class Troll {
                     if (debugEnabled && logging)
                         LogUtils_logHHAuto("First troll with girls from storage");
                     TTF = trollWithGirls.findIndex((troll) => troll > 0) + 1;
+                    if (TTF > lastTrollIdAvailable) {
+                        if (logging)
+                            LogUtils_logHHAuto(`First troll with girls (${TTF}) is beyond last available (${lastTrollIdAvailable}), no valid troll target.`);
+                        TTF = 0;
+                    }
                 }
                 else if (autoTrollSelectedIndex === 99) {
                     if (debugEnabled && logging)
                         LogUtils_logHHAuto("Last troll with girls from storage");
                     TTF = trollWithGirls.findLastIndex((troll) => troll > 0) + 1;
                     if (TTF > lastTrollIdAvailable) {
-                        TTF = lastTrollIdAvailable;
+                        // Find the last troll with girls that is actually unlocked
+                        let found = false;
+                        for (let i = lastTrollIdAvailable - 1; i >= 0; i--) {
+                            if (trollWithGirls[i] > 0) {
+                                TTF = i + 1;
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found) {
+                            if (logging)
+                                LogUtils_logHHAuto(`No unlocked troll has girls (last available: ${lastTrollIdAvailable}), no valid troll target.`);
+                            TTF = 0;
+                        }
+                        else {
+                            if (logging)
+                                LogUtils_logHHAuto(`Last troll with girls capped to ${TTF} (last available: ${lastTrollIdAvailable}).`);
+                        }
                     }
                 }
             }
@@ -7326,6 +7372,17 @@ class Troll {
                 if (logging)
                     LogUtils_logHHAuto("Can't get troll with girls, going to last troll.");
                 TTF = lastTrollIdAvailable;
+            }
+            // No troll with girls found - fall through to love raids before giving up
+            if (TTF <= 0 && LoveRaidManager.isActivated() && loveRaids.length > 0) {
+                if (logging)
+                    LogUtils_logHHAuto("No troll with girls, checking love raids as fallback.");
+                const loveRaid = LoveRaidManager.getRaidToFight(loveRaids, logging);
+                if (loveRaid) {
+                    TTF = loveRaid.trollId;
+                    if (logging)
+                        LogUtils_logHHAuto(`Love raid fallback: fighting troll ${TTF} for raid girl ${loveRaid.id_girl}.`);
+                }
             }
         }
         else if (LoveRaidManager.isActivated() && loveRaids.length > 0) {
@@ -7360,16 +7417,17 @@ class Troll {
             TTF = 0;
         }
         if (TTF <= 0) {
-            if (getStoredValue(HHStoredVarPrefixKey + SK.autoTrollBattle) === "true") {
-                // Only fallback to last troll if normal troll fighting is enabled
+            if (getStoredValue(HHStoredVarPrefixKey + SK.autoTrollBattle) === "true"
+                && autoTrollSelectedIndex !== 98 && autoTrollSelectedIndex !== 99) {
+                // Only fallback to last troll when not using first/last troll with girls mode
                 TTF = lastTrollIdAvailable > 0 ? lastTrollIdAvailable : 1;
                 if (logging)
                     LogUtils_logHHAuto(`Error: wrong troll target found. Backup to ${TTF}`);
             }
             else {
-                // Events/Raids only mode — no target available, skip fight
+                // First/last troll with girls found no valid target, or events/raids only mode
                 if (logging)
-                    LogUtils_logHHAuto("No event/raid troll target available, skipping.");
+                    LogUtils_logHHAuto("No valid troll target found, skipping.");
                 return 0;
             }
         }
@@ -7397,10 +7455,15 @@ class Troll {
             if (currentPower < 1) {
                 const eventGirl = EventModule.getEventGirl();
                 const eventMythicGirl = EventModule.getEventMythicGirl();
-                const loveRaid = LoveRaidManager.isAnyActivated() ? LoveRaidManager.getRaidToFight(LoveRaidManager.getTrollRaids(), false) : undefined;
+                const allTrollRaids = LoveRaidManager.isAnyActivated() ? LoveRaidManager.getTrollRaids() : [];
+                const raidStarsFiltered = LoveRaidManager.filterByRaidStars(allTrollRaids);
+                const raidStarsRaid = LoveRaidManager.getRaidStarsRaidToFight(raidStarsFiltered);
+                const loveRaid = LoveRaidManager.isActivated()
+                    ? LoveRaidManager.getRaidToFight(allTrollRaids, false)
+                    : undefined;
                 //logHHAuto("No power for battle.");
                 if (!Troll.canBuyFight(eventGirl).canBuy && !Troll.canBuyFight(eventMythicGirl).canBuy &&
-                    !Troll.canBuyFightForRaid(loveRaid).canBuy) {
+                    !Troll.canBuyFightForRaid(loveRaid).canBuy && !Troll.canBuyFightForRaid(raidStarsRaid).canBuy) {
                     return false;
                 }
             }
@@ -7412,7 +7475,10 @@ class Troll {
             const trollz = ConfigHelper.getHHScriptVars("trollzList");
             const currentPage = getPage();
             if (!TTF || TTF <= 0) {
-                if (getStoredValue(HHStoredVarPrefixKey + SK.autoTrollBattle) === "true") {
+                const autoTrollSelectedIndex = Troll.getTrollSelectedIndex();
+                if (getStoredValue(HHStoredVarPrefixKey + SK.autoTrollBattle) === "true"
+                    && autoTrollSelectedIndex !== 98 && autoTrollSelectedIndex !== 99) {
+                    // Fixed troll or "last troll" mode: retry once, then fallback to troll 1
                     if (getStoredValue(HHStoredVarPrefixKey + TK.TrollInvalid) === "true") {
                         LogUtils_logHHAuto(`ERROR: Invalid troll N°${TTF}, again, going to first troll`);
                         TTF = 1;
@@ -7424,7 +7490,8 @@ class Troll {
                     }
                 }
                 else {
-                    LogUtils_logHHAuto("No troll target found (events/raids only mode), skipping fight.");
+                    // First/last troll with girls found no valid target, or events/raids only mode
+                    LogUtils_logHHAuto("No troll target found, skipping fight.");
                     return false;
                 }
             }
@@ -7521,15 +7588,17 @@ class Troll {
                     if (rewardGirlz.length === 0 && (autoTrollSelectedIndex === 98 || autoTrollSelectedIndex === 99)) {
                         LogUtils_logHHAuto(`Seems no more girls available at troll ${trollz[Number(TTF)]}, looking for next troll.`);
                         let trollWithGirls = getStoredJSON(HHStoredVarPrefixKey + TK.trollWithGirls, []);
-                        trollWithGirls[TTF] = 0;
+                        trollWithGirls[TTF - 1] = 0;
                         setStoredValue(HHStoredVarPrefixKey + TK.trollWithGirls, JSON.stringify(trollWithGirls));
                         const newTroll = Troll.getTrollIdToFight();
-                        if (TTF != newTroll) {
+                        if (newTroll > 0 && TTF != newTroll) {
                             gotoPage(ConfigHelper.getHHScriptVars("pagesIDTrollPreBattle"), { id_opponent: newTroll });
                             return true;
                         }
                         else {
-                            LogUtils_logHHAuto(`Same troll found, go for it.`);
+                            LogUtils_logHHAuto(`Same troll found and no girls available, stopping troll fight.`);
+                            gotoPage(ConfigHelper.getHHScriptVars("pagesIDHome"));
+                            return;
                         }
                     }
                     let canBuyFightsResult = Troll.canBuyFight(eventTrollGirl);
@@ -7593,18 +7662,6 @@ class Troll {
                             && canBuyFightsResult.canBuy) // eventGirl available and buy comb true
                             || ((eventTrollGirl === null || eventTrollGirl === void 0 ? void 0 : eventTrollGirl.is_mythic) && getStoredValue(HHStoredVarPrefixKey + SK.plusEventMythic) === "true")
                             || ((loveRaid === null || loveRaid === void 0 ? void 0 : loveRaid.girl_to_win) && getStoredValue(HHStoredVarPrefixKey + SK.autoTrollLoveRaidByPassThreshold) === "true"));
-                        // Sandalwood batch-sizing: compute recommended batch based on doses + shards
-                        const dosesRemaining = Booster.getSandalwoodDosesRemaining();
-                        LogUtils_logHHAuto(`[SW-DEBUG] CrushThemFights: eventShards=${remainingEventShards}, raidShards=${remainingLoveRaidShards}, totalRemaining=${remainingShards}, dosesRemaining=${dosesRemaining}, isMythic=${eventTrollGirl === null || eventTrollGirl === void 0 ? void 0 : eventTrollGirl.is_mythic}, power=${currentPower}`);
-                        const recommendedBatch = Booster.getRecommendedBatchSize(Math.min(remainingEventShards || 100, remainingLoveRaidShards || 100), dosesRemaining, {
-                            useX50: getStoredValue(HHStoredVarPrefixKey + SK.useX50Fights) === "true",
-                            useX10: getStoredValue(HHStoredVarPrefixKey + SK.useX10Fights) === "true",
-                            sandalwoodShardsX10Limit: Number(getStoredValue(HHStoredVarPrefixKey + SK.sandalwoodShardsX10Limit)) || 80,
-                            sandalwoodShardsX1Limit: Number(getStoredValue(HHStoredVarPrefixKey + SK.sandalwoodShardsX1Limit)) || 95,
-                            sandalwoodDosesX10Limit: Number(getStoredValue(HHStoredVarPrefixKey + SK.sandalwoodDosesX10Limit)) || 6,
-                            sandalwoodDosesX1Limit: Number(getStoredValue(HHStoredVarPrefixKey + SK.sandalwoodDosesX1Limit)) || 3,
-                        });
-                        LogUtils_logHHAuto(`[SW-DEBUG] CrushThemFights: recommendedBatch=${recommendedBatch}`);
                         const minShardsx50 = getStoredValue(HHStoredVarPrefixKey + SK.minShardsX50);
                         if (getStoredValue(HHStoredVarPrefixKey + SK.useX50Fights) === "true"
                             && minShardsx50 && Number.isInteger(Number(minShardsx50)) && remainingShards >= Number(minShardsx50)
@@ -7612,8 +7669,7 @@ class Troll {
                             && currentPower >= 50
                             && (currentPower >= (Number(getStoredValue(HHStoredVarPrefixKey + SK.autoTrollThreshold)) + 50)
                                 || bypassThreshold)
-                            && ((eventTrollGirl === null || eventTrollGirl === void 0 ? void 0 : eventTrollGirl.is_mythic) || getStoredValue(HHStoredVarPrefixKey + SK.useX50FightsAllowNormalEvent) === "true")
-                            && recommendedBatch >= 50) {
+                            && ((eventTrollGirl === null || eventTrollGirl === void 0 ? void 0 : eventTrollGirl.is_mythic) || getStoredValue(HHStoredVarPrefixKey + SK.useX50FightsAllowNormalEvent) === "true")) {
                             LogUtils_logHHAuto("Going to crush 50 times: " + trollz[Number(TTF)] + ' for ' + battleButtonX50Price + ' kobans.');
                             setHHVars('Hero.infos.hc_confirm', true);
                             // We have the power.
@@ -7635,8 +7691,7 @@ class Troll {
                         }
                         else {
                             if (getStoredValue(HHStoredVarPrefixKey + SK.useX50Fights) === "true") {
-                                const x50BlockedBy = recommendedBatch < 50 ? ` (SW batch cap: ${recommendedBatch})` : '';
-                                LogUtils_logHHAuto(`Unable to use x50 for ${battleButtonX50Price} kobans,fights : ${Troll.getEnergy()}/50, remaining shards : ${remainingShards}/${getStoredValue(HHStoredVarPrefixKey + SK.minShardsX50)}, kobans : ${HeroHelper.getKoban()}/${Number(getStoredValue(HHStoredVarPrefixKey + SK.kobanBank))}${x50BlockedBy}`);
+                                LogUtils_logHHAuto(`Unable to use x50 for ${battleButtonX50Price} kobans,fights : ${Troll.getEnergy()}/50, remaining shards : ${remainingShards}/${getStoredValue(HHStoredVarPrefixKey + SK.minShardsX50)}, kobans : ${HeroHelper.getKoban()}/${Number(getStoredValue(HHStoredVarPrefixKey + SK.kobanBank))}`);
                             }
                         }
                         const minShardsX10 = getStoredValue(HHStoredVarPrefixKey + SK.minShardsX10);
@@ -7646,8 +7701,7 @@ class Troll {
                             && currentPower >= 10
                             && (currentPower >= (Number(getStoredValue(HHStoredVarPrefixKey + SK.autoTrollThreshold)) + 10)
                                 || bypassThreshold)
-                            && ((eventTrollGirl === null || eventTrollGirl === void 0 ? void 0 : eventTrollGirl.is_mythic) || getStoredValue(HHStoredVarPrefixKey + SK.useX10FightsAllowNormalEvent) === "true")
-                            && recommendedBatch >= 10) {
+                            && ((eventTrollGirl === null || eventTrollGirl === void 0 ? void 0 : eventTrollGirl.is_mythic) || getStoredValue(HHStoredVarPrefixKey + SK.useX10FightsAllowNormalEvent) === "true")) {
                             LogUtils_logHHAuto(`Going to crush 10 times: ${trollz[Number(TTF)]} for ${battleButtonX10Price} kobans.`);
                             setHHVars('Hero.infos.hc_confirm', true);
                             // We have the power.
@@ -7669,8 +7723,7 @@ class Troll {
                         }
                         else {
                             if (getStoredValue(HHStoredVarPrefixKey + SK.useX10Fights) === "true") {
-                                const x10BlockedBy = recommendedBatch < 10 ? ` (SW batch cap: ${recommendedBatch})` : '';
-                                LogUtils_logHHAuto(`Unable to use x10 for ${battleButtonX10Price} kobans,fights : ${Troll.getEnergy()}/10, remaining shards : ${remainingShards}/${getStoredValue(HHStoredVarPrefixKey + SK.minShardsX10)}, kobans : ${HeroHelper.getKoban()}/${Number(getStoredValue(HHStoredVarPrefixKey + SK.kobanBank))}${x10BlockedBy}`);
+                                LogUtils_logHHAuto(`Unable to use x10 for ${battleButtonX10Price} kobans,fights : ${Troll.getEnergy()}/10, remaining shards : ${remainingShards}/${getStoredValue(HHStoredVarPrefixKey + SK.minShardsX10)}, kobans : ${HeroHelper.getKoban()}/${Number(getStoredValue(HHStoredVarPrefixKey + SK.kobanBank))}`);
                             }
                         }
                     }
@@ -7754,19 +7807,16 @@ class Troll {
         const mythicAutoBuy = Math.min(Number(getStoredValue(HHStoredVarPrefixKey + SK.autoBuyMythicTrollNumber)) || maxx20, MAX_BUY - currentFight);
         const pricePerFight = hero.energies[type].seconds_per_point * (unsafeWindow.hh_prices[type + '_cost_per_minute'] / 60);
         let remainingShards;
-        if (Number.isInteger(eventGirl === null || eventGirl === void 0 ? void 0 : eventGirl.shards)) {
+        // #1565: only buy when energy is empty (0) and girl not yet won (shards < 100)
+        if (Number.isInteger(eventGirl === null || eventGirl === void 0 ? void 0 : eventGirl.shards) && currentFight === 0 && eventGirl.shards < 100) {
             if ((getStoredValue(HHStoredVarPrefixKey + SK.buyCombat) == "true"
                 && getStoredValue(HHStoredVarPrefixKey + SK.plusEvent) === "true"
                 && getSecondsLeft("eventGoing") !== 0
-                && !Number.isNaN(Number(getStoredValue(HHStoredVarPrefixKey + SK.buyCombTimer)))
-                && getSecondsLeft("eventGoing") < getStoredValue(HHStoredVarPrefixKey + SK.buyCombTimer) * 3600
                 && eventGirl.girl_id && !eventGirl.is_mythic)
                 ||
                     (getStoredValue(HHStoredVarPrefixKey + SK.plusEventMythic) === "true"
                         && getStoredValue(HHStoredVarPrefixKey + SK.buyMythicCombat) === "true"
                         && getSecondsLeft("eventMythicGoing") !== 0
-                        && !Number.isNaN(Number(getStoredValue(HHStoredVarPrefixKey + SK.buyMythicCombTimer)))
-                        && getSecondsLeft("eventMythicGoing") < getStoredValue(HHStoredVarPrefixKey + SK.buyMythicCombTimer) * 3600
                         && eventGirl.is_mythic)) {
                 result.event_mythic = eventGirl.is_mythic.toString();
             }
@@ -7816,7 +7866,8 @@ class Troll {
         const maxx50 = Math.max(50, eventAutoBuy);
         const pricePerFight = hero.energies[type].seconds_per_point * (unsafeWindow.hh_prices[type + '_cost_per_minute'] / 60);
         let remainingShards;
-        if (Number.isInteger(raid === null || raid === void 0 ? void 0 : raid.girl_shards)) {
+        // #1565: only buy when energy is empty (0) and girl not yet won (shards < 100)
+        if (Number.isInteger(raid === null || raid === void 0 ? void 0 : raid.girl_shards) && currentFight === 0 && raid.girl_shards < 100) {
             if (getStoredValue(HHStoredVarPrefixKey + SK.buyLoveRaidCombat) == "true"
                 && LoveRaidManager.isAnyActivated()
                 && raid.seconds_until_event_end > 0 // new Date() < new Date(raid.end_datetime)
@@ -8200,6 +8251,15 @@ function randomInterval(min, max) {
  * Usage:
  *   import { SK } from '../config/StorageKeys';
  *   getStoredValue(HHStoredVarPrefixKey + SK.autoTrollBattle)
+ *
+ * IMPORTANT: Adding an entry here is NOT enough to make the key work at
+ * runtime. StorageHelper.getStoredValue / setStoredValue / deleteStoredValue
+ * silently ignore any key that isn't registered in HHStoredVars.ts. When
+ * you add a new SK / TK entry below, you MUST also add a matching
+ * registration in config/HHStoredVars.ts with the correct storage type
+ * ("localStorage" | "sessionStorage" | "Storage()") and HHType
+ * ("Setting" | "Temp"), otherwise reads return undefined and writes are
+ * dropped without any warning.
  */
 // ── Setting_ keys (user settings) ─────────────────────────────────
 const SK = {
@@ -8221,10 +8281,7 @@ const SK = {
     useX50FightsAllowNormalEvent: "Setting_useX50FightsAllowNormalEvent",
     minShardsX10: "Setting_minShardsX10",
     minShardsX50: "Setting_minShardsX50",
-    sandalwoodShardsX10Limit: "Setting_sandalwoodShardsX10Limit",
-    sandalwoodShardsX1Limit: "Setting_sandalwoodShardsX1Limit",
-    sandalwoodDosesX10Limit: "Setting_sandalwoodDosesX10Limit",
-    sandalwoodDosesX1Limit: "Setting_sandalwoodDosesX1Limit",
+    sandalwoodMinShardsThreshold: "Setting_sandalwoodMinShardsThreshold",
     kobanBank: "Setting_kobanBank",
     buyCombat: "Setting_buyCombat",
     buyCombTimer: "Setting_buyCombTimer",
@@ -8447,6 +8504,7 @@ const TK = {
     charLevel: "Temp_charLevel",
     storeContents: "Temp_storeContents",
     boosterStatus: "Temp_boosterStatus",
+    boosterStatusLastUpdate: "Temp_boosterStatusLastUpdate",
     boosterIdMap: "Temp_boosterIdMap",
     // Troll
     TrollHumanLikeRun: "Temp_TrollHumanLikeRun",
@@ -8519,6 +8577,9 @@ const TK = {
     surveyShown: "Temp_surveyShown",
     surveyDismissCount: "Temp_surveyDismissCount",
     surveyLastHash: "Temp_surveyLastHash",
+    // Feature Popup (What's New)
+    featurePopupShown: "Temp_featurePopupShown",
+    featurePopupDismissCount: "Temp_featurePopupDismissCount",
 };
 
 ;// CONCATENATED MODULE: ./src/config/HHStoredVars.ts
@@ -9724,42 +9785,9 @@ HHStoredVars_HHStoredVars[HHStoredVarPrefixKey + SK.minShardsX50] =
         menuType: "value",
         kobanUsing: false
     };
-HHStoredVars_HHStoredVars[HHStoredVarPrefixKey + SK.sandalwoodShardsX10Limit] =
+HHStoredVars_HHStoredVars[HHStoredVarPrefixKey + SK.sandalwoodMinShardsThreshold] =
     {
-        default: "80",
-        storage: "Storage()",
-        HHType: "Setting",
-        valueType: "Small Integer",
-        getMenu: true,
-        setMenu: true,
-        menuType: "value",
-        kobanUsing: false
-    };
-HHStoredVars_HHStoredVars[HHStoredVarPrefixKey + SK.sandalwoodShardsX1Limit] =
-    {
-        default: "95",
-        storage: "Storage()",
-        HHType: "Setting",
-        valueType: "Small Integer",
-        getMenu: true,
-        setMenu: true,
-        menuType: "value",
-        kobanUsing: false
-    };
-HHStoredVars_HHStoredVars[HHStoredVarPrefixKey + SK.sandalwoodDosesX10Limit] =
-    {
-        default: "6",
-        storage: "Storage()",
-        HHType: "Setting",
-        valueType: "Small Integer",
-        getMenu: true,
-        setMenu: true,
-        menuType: "value",
-        kobanUsing: false
-    };
-HHStoredVars_HHStoredVars[HHStoredVarPrefixKey + SK.sandalwoodDosesX1Limit] =
-    {
-        default: "3",
+        default: "0",
         storage: "Storage()",
         HHType: "Setting",
         valueType: "Small Integer",
@@ -9845,16 +9873,16 @@ HHStoredVars_HHStoredVars[HHStoredVarPrefixKey + SK.autoTrollLoveRaidByPassThres
     };
 HHStoredVars_HHStoredVars[HHStoredVarPrefixKey + SK.plusLoveRaidMythic] =
     {
-        default: "0",
+        default: "off",
         storage: "Storage()",
         HHType: "Setting",
-        valueType: "Small Integer",
+        valueType: "String",
         customMenuID: "raidStarsSelector",
         getMenu: true,
         setMenu: true,
         menuType: "value",
         kobanUsing: false,
-        isValid: /^[0356]$/
+        isValid: /^(off|exact3|min3|exact5)$/
     };
 HHStoredVars_HHStoredVars[HHStoredVarPrefixKey + SK.plusLoveRaid] =
     {
@@ -10919,6 +10947,11 @@ HHStoredVars_HHStoredVars[HHStoredVarPrefixKey + TK.boosterStatus] =
         storage: "sessionStorage",
         HHType: "Temp"
     };
+HHStoredVars_HHStoredVars[HHStoredVarPrefixKey + TK.boosterStatusLastUpdate] =
+    {
+        storage: "sessionStorage",
+        HHType: "Temp"
+    };
 HHStoredVars_HHStoredVars[HHStoredVarPrefixKey + TK.boosterIdMap] =
     {
         storage: "sessionStorage",
@@ -11029,7 +11062,7 @@ HHStoredVars_HHStoredVars[HHStoredVarPrefixKey + TK.trollPoints] =
 // Survey
 HHStoredVars_HHStoredVars[HHStoredVarPrefixKey + TK.surveyShown] =
     {
-        default: "false",
+        default: "0",
         storage: "localStorage",
         HHType: "Temp"
     };
@@ -11041,6 +11074,19 @@ HHStoredVars_HHStoredVars[HHStoredVarPrefixKey + TK.surveyDismissCount] =
     };
 HHStoredVars_HHStoredVars[HHStoredVarPrefixKey + TK.surveyLastHash] =
     {
+        storage: "localStorage",
+        HHType: "Temp"
+    };
+// Feature Popup (What's New)
+HHStoredVars_HHStoredVars[HHStoredVarPrefixKey + TK.featurePopupShown] =
+    {
+        default: "0",
+        storage: "localStorage",
+        HHType: "Temp"
+    };
+HHStoredVars_HHStoredVars[HHStoredVarPrefixKey + TK.featurePopupDismissCount] =
+    {
+        default: "0",
         storage: "localStorage",
         HHType: "Temp"
     };
@@ -11623,9 +11669,6 @@ class HaremGirl {
             if (getStoredValue(HHStoredVarPrefixKey + SK.showHaremTools) === "true") {
                 HaremGirl.addGirlMenu();
             }
-            if (getStoredValue(HHStoredVarPrefixKey + SK.showHaremSkillsButtons) === "true") {
-                HaremGirl.showSkillButtons();
-            }
         }
         catch ({ errName, message }) {
             LogUtils_logHHAuto(`ERROR: Can't add menu girl: ${errName}, ${message}`);
@@ -11633,7 +11676,7 @@ class HaremGirl {
         }
     }
     static showSkillButtons() {
-        const showSkillButtons = true; // Todo add settings
+        const showSkillButtons = getStoredValue(HHStoredVarPrefixKey + SK.showHaremSkillsButtons) === "true";
         if (showSkillButtons && $('.hhsingleskill').length <= 0) {
             $('.skill-upgrade-row ').each((index, row) => {
                 const rowHasButton = $('button.blue_button_L:not([disabled])', $(row)).length > 0;
@@ -11798,6 +11841,7 @@ class HaremGirl {
                         HaremGirl.HaremDisplayGirlPopup(HaremGirl.EQUIPMENT_TYPE, getTextForUI("giveMaxingOut", "elementText") + ' ' + girl.name + ' : ' + girlListProgress, (remainingGirls + 1) * 5, haremGirlSpent);
                         $('#girl-equip').trigger('click');
                         yield TimeHelper.sleep(randomInterval(400, 700));
+                        yield HaremGirl.optimizeEquipmentSlots(girl);
                     }
                     if (upgradeSkill) {
                         HaremGirl.switchTabs(HaremGirl.SKILLS_TYPE);
@@ -11829,10 +11873,9 @@ class HaremGirl {
                 console.error(message);
                 setStoredValue(HHStoredVarPrefixKey + TK.autoLoop, "true");
                 Harem.clearHaremToolVariables();
-            }
-            finally {
                 return false;
             }
+            return false;
         });
     }
     static singleSkillsUpgrade(skillId) {
@@ -11856,8 +11899,13 @@ class HaremGirl {
     static fullSkillsUpgrade(maxTier = 5) {
         return HaremGirl_awaiter(this, void 0, void 0, function* () {
             try {
-                let skillButton = $(HaremGirl.SKILL_BUTTON_SELECTOR_PRIO).first(); // First percentage skills
-                if (skillButton.length == 0) {
+                let skillButton = null;
+                for (let i = 0; i < HaremGirl.SKILL_ORDER_PRIO.length; i++) {
+                    skillButton = $(`#skills .skill-upgrade [skill-id='${HaremGirl.SKILL_ORDER_PRIO[i]}'] button.blue_button_L:not([disabled])`).first();
+                    if (skillButton.length > 0)
+                        break; // break loop at first found skill to upgrade
+                }
+                if (!skillButton || skillButton.length == 0) {
                     skillButton = $(HaremGirl.SKILL_BUTTON_SELECTOR).first();
                 }
                 if (skillButton.length > 0) {
@@ -11902,6 +11950,294 @@ class HaremGirl {
             LogUtils_logHHAuto("Can't remove popup_message_harem");
         }
     }
+    static equipItem(girlId, armorId) {
+        return new Promise((resolve) => {
+            $.ajax({
+                url: '/ajax.php',
+                type: 'POST',
+                data: {
+                    action: 'girl_equipment_equip',
+                    id_girl: girlId,
+                    id_girl_armor: armorId,
+                    sort_by: 'rarity',
+                    sorting_order: 'asc'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    LogUtils_logHHAuto(`equipItem response for armor ${armorId}: success=${data === null || data === void 0 ? void 0 : data.success}, keys=${JSON.stringify(Object.keys(data || {}))}`);
+                    resolve(data);
+                },
+                error: function (xhr, status, error) {
+                    var _a;
+                    LogUtils_logHHAuto(`equipItem HTTP error for armor ${armorId}: status=${status}, error=${error}, response=${(_a = xhr === null || xhr === void 0 ? void 0 : xhr.responseText) === null || _a === void 0 ? void 0 : _a.substring(0, 200)}`);
+                    resolve(null);
+                }
+            });
+        });
+    }
+    static scoreItem(item, girl) {
+        const c = item.caracs;
+        const caracSum = (c.carac1 || 0) + (c.carac2 || 0) + (c.carac3 || 0) + (c.damage || 0) + (c.defense || 0) + (c.ego || 0);
+        let resonanceMatches = 0;
+        if (item.resonance_bonuses && !Array.isArray(item.resonance_bonuses)) {
+            const rb = item.resonance_bonuses;
+            if (rb.class && String(rb.class.identifier) === String(girl.class))
+                resonanceMatches++;
+            if (rb.element && String(rb.element.identifier) === String(girl.element))
+                resonanceMatches++;
+            if (rb.figure && String(rb.figure.identifier) === String(girl.figure))
+                resonanceMatches++;
+        }
+        return { caracSum, resonanceMatches };
+    }
+    static findBestItem(items, girl) {
+        if (items.length === 0)
+            return null;
+        return items.sort((a, b) => {
+            const sa = HaremGirl.scoreItem(a, girl);
+            const sb = HaremGirl.scoreItem(b, girl);
+            if (sb.caracSum !== sa.caracSum)
+                return sb.caracSum - sa.caracSum;
+            if (sb.resonanceMatches !== sa.resonanceMatches)
+                return sb.resonanceMatches - sa.resonanceMatches;
+            return ((b.caracs.carac1 || 0) + (b.caracs.carac2 || 0) + (b.caracs.carac3 || 0))
+                - ((a.caracs.carac1 || 0) + (a.caracs.carac2 || 0) + (a.caracs.carac3 || 0));
+        })[0];
+    }
+    static isBetter(candidate, current, girl) {
+        if (!current || !current.caracs)
+            return true;
+        const sc = HaremGirl.scoreItem(candidate, girl);
+        const se = HaremGirl.scoreItem(current, girl);
+        if (sc.caracSum > se.caracSum)
+            return true;
+        if (sc.caracSum === se.caracSum && sc.resonanceMatches > se.resonanceMatches)
+            return true;
+        return false;
+    }
+    /**
+     * Force the game's lazy-loaded inventory panel to render all items.
+     * The game renders inventory items on-demand as the container is scrolled.
+     * We scroll to the bottom repeatedly until the item count stabilises, then
+     * back to the top so the game has rendered every item into the DOM.
+     */
+    static forceLoadAllInventoryItems() {
+        return HaremGirl_awaiter(this, void 0, void 0, function* () {
+            const countItems = () => $('.right-section .slot[data-d]').length;
+            // Find ALL scrollable elements in the right section (element with scrollHeight > clientHeight)
+            const scrollables = [];
+            document.querySelectorAll('.right-section, .right-section *').forEach((el) => {
+                const h = el;
+                if (h.scrollHeight > h.clientHeight + 5)
+                    scrollables.push(h);
+            });
+            // Also try the document/body as fallback
+            scrollables.push(document.scrollingElement || document.body);
+            let prevCount = countItems();
+            LogUtils_logHHAuto(`forceLoadAllInventoryItems: found ${scrollables.length} scrollable elements, initial item count=${prevCount}`);
+            // Require 2 consecutive stable iterations before breaking — a single
+            // stable iteration can happen during a network hiccup while more items
+            // are still loading (see issue #1573).
+            let stableIterations = 0;
+            for (let iter = 0; iter < 15; iter++) {
+                // scroll each scrollable to its bottom and dispatch a scroll event
+                for (const s of scrollables) {
+                    try {
+                        s.scrollTop = s.scrollHeight;
+                        s.dispatchEvent(new Event('scroll', { bubbles: true }));
+                    }
+                    catch ( /* ignore */_a) { /* ignore */ }
+                }
+                yield TimeHelper.sleep(randomInterval(250, 400));
+                const curCount = countItems();
+                if (curCount === prevCount) {
+                    stableIterations++;
+                    if (stableIterations >= 2)
+                        break;
+                }
+                else {
+                    stableIterations = 0;
+                    prevCount = curCount;
+                }
+            }
+            // scroll back up so the chosen item's scrollIntoView works reliably
+            for (const s of scrollables) {
+                try {
+                    s.scrollTop = 0;
+                }
+                catch ( /* ignore */_b) { /* ignore */ }
+            }
+            return countItems();
+        });
+    }
+    static optimizeEquipmentSlots(girl) {
+        var _a, _b, _c, _d, _e, _f;
+        return HaremGirl_awaiter(this, void 0, void 0, function* () {
+            const equipmentSlots = $('.equipment_slot');
+            const slotCount = equipmentSlots.length;
+            LogUtils_logHHAuto(`Optimize equipment: checking ${slotCount} slots for ${girl.name}`);
+            for (let i = 0; i < slotCount; i++) {
+                const slot = equipmentSlots.eq(i);
+                slot.trigger('click');
+                // Short wait so the game kicks off its inventory request for this slot
+                yield TimeHelper.sleep(randomInterval(100, 200));
+                // Force game to render all lazy-loaded inventory items into the DOM
+                const totalItems = yield HaremGirl.forceLoadAllInventoryItems();
+                const equippedEl = slot.find('.slot[data-d]');
+                let equippedData = null;
+                if (equippedEl.length > 0 && equippedEl.attr('data-d')) {
+                    try {
+                        equippedData = JSON.parse(equippedEl.attr('data-d'));
+                    }
+                    catch ( /* ignore */_g) { /* ignore */ }
+                }
+                const targetSlotIndex = (_a = equippedData === null || equippedData === void 0 ? void 0 : equippedData.slot_index) !== null && _a !== void 0 ? _a : (i + 1);
+                const allDomItems = [];
+                $('.right-section .slot[data-d]').each(function () {
+                    const $el = $(this);
+                    const raw = $el.attr('data-d');
+                    if (!raw)
+                        return;
+                    try {
+                        const data = JSON.parse(raw);
+                        if (data && data.caracs)
+                            allDomItems.push({ el: $el, data });
+                    }
+                    catch ( /* ignore */_a) { /* ignore */ }
+                });
+                // Filter candidates by slot_index so we don't compare pants to necklaces
+                const inventoryItems = allDomItems.filter(it => Number(it.data.slot_index) === Number(targetSlotIndex));
+                LogUtils_logHHAuto(`Slot ${i}: ${inventoryItems.length} candidates, equipped=${equippedData ? `L${equippedData.level} ${equippedData.rarity}` : 'none'}`);
+                if (inventoryItems.length === 0) {
+                    LogUtils_logHHAuto(`Slot ${i}: no inventory items for slot_index=${targetSlotIndex}, skipping`);
+                    continue;
+                }
+                // Rank candidates: total stats, then resonance, then individual stats
+                const sorted = inventoryItems.slice().sort((a, b) => {
+                    const sa = HaremGirl.scoreItem(a.data, girl);
+                    const sb = HaremGirl.scoreItem(b.data, girl);
+                    if (sb.caracSum !== sa.caracSum)
+                        return sb.caracSum - sa.caracSum;
+                    if (sb.resonanceMatches !== sa.resonanceMatches)
+                        return sb.resonanceMatches - sa.resonanceMatches;
+                    const ca = a.data.caracs, cb = b.data.caracs;
+                    return ((cb.carac1 || 0) + (cb.carac2 || 0) + (cb.carac3 || 0)) - ((ca.carac1 || 0) + (ca.carac2 || 0) + (ca.carac3 || 0));
+                });
+                const bestInventory = sorted[0];
+                const bestScore = HaremGirl.scoreItem(bestInventory.data, girl);
+                const shouldReplace = HaremGirl.isBetter(bestInventory.data, equippedData, girl);
+                if (shouldReplace) {
+                    LogUtils_logHHAuto(`Slot ${i}: replacing with better item (L${bestInventory.data.level} ${bestInventory.data.rarity}, score=${bestScore.caracSum}, resonance=${bestScore.resonanceMatches})`);
+                    // Capture previous equipped identity so we can verify a real change below (see issue #1573)
+                    const previousEquippedKey = equippedData ? ((_c = (_b = equippedData.id_item) !== null && _b !== void 0 ? _b : equippedData.id_equipement) !== null && _c !== void 0 ? _c : JSON.stringify(equippedData)) : null;
+                    const MAX_EQUIP_ATTEMPTS = 3;
+                    let equipSucceeded = false;
+                    for (let attempt = 1; attempt <= MAX_EQUIP_ATTEMPTS; attempt++) {
+                        // Scroll the chosen item into view
+                        const rawPreScroll = bestInventory.el.get(0);
+                        if (rawPreScroll && typeof rawPreScroll.scrollIntoView === 'function') {
+                            rawPreScroll.scrollIntoView({ block: 'center' });
+                            yield TimeHelper.sleep(randomInterval(50, 100));
+                        }
+                        // Issue #1573: virtualized rendering can detach the original
+                        // node during scroll. Re-query by id_girl_armor and swap to the
+                        // fresh node before clicking.
+                        let raw = bestInventory.el.get(0);
+                        if (!raw || !raw.isConnected) {
+                            const targetArmorId = (_d = bestInventory.data) === null || _d === void 0 ? void 0 : _d.id_girl_armor;
+                            if (targetArmorId != null) {
+                                const $fresh = $('.right-section .slot[data-d]').filter(function () {
+                                    try {
+                                        const d = JSON.parse($(this).attr('data-d') || '{}');
+                                        return d.id_girl_armor === targetArmorId;
+                                    }
+                                    catch (_a) {
+                                        return false;
+                                    }
+                                }).filter(function () {
+                                    const r = $(this).get(0);
+                                    return !!r && r.isConnected;
+                                }).first();
+                                if ($fresh.length > 0) {
+                                    bestInventory.el = $fresh;
+                                    raw = $fresh.get(0);
+                                    LogUtils_logHHAuto(`Slot ${i}: item was detached, re-queried fresh node`);
+                                    if (typeof raw.scrollIntoView === 'function') {
+                                        raw.scrollIntoView({ block: 'center' });
+                                        yield TimeHelper.sleep(randomInterval(50, 100));
+                                    }
+                                }
+                                else {
+                                    LogUtils_logHHAuto(`Slot ${i}: no connected candidate after re-query, aborting attempts`);
+                                    break;
+                                }
+                            }
+                            else {
+                                LogUtils_logHHAuto(`Slot ${i}: detached and no id_girl_armor to re-query, aborting attempts`);
+                                break;
+                            }
+                        }
+                        // Primary click on the item
+                        if (raw && typeof raw.click === 'function') {
+                            raw.click();
+                        }
+                        else {
+                            bestInventory.el.trigger('click');
+                        }
+                        yield TimeHelper.sleep(randomInterval(100, 200));
+                        // Click the Equip confirm button (revealed after item selection)
+                        let $equipBtn = $('#girl-equipment-equip').removeClass('hidden').removeAttr('hidden');
+                        // Wait up to ~500ms for the button to become enabled
+                        for (let waitIter = 0; waitIter < 5 && $equipBtn.length > 0
+                            && ($equipBtn.prop('disabled') === true || $equipBtn.hasClass('disabled')); waitIter++) {
+                            yield TimeHelper.sleep(100);
+                            $equipBtn = $('#girl-equipment-equip').removeClass('hidden').removeAttr('hidden');
+                        }
+                        if ($equipBtn.length > 0) {
+                            const btnRaw = $equipBtn.get(0);
+                            if (btnRaw && typeof btnRaw.click === 'function')
+                                btnRaw.click();
+                            else
+                                $equipBtn.trigger('click');
+                            yield TimeHelper.sleep(randomInterval(200, 300));
+                            LogUtils_logHHAuto(`Slot ${i}: equip button clicked (attempt ${attempt}/${MAX_EQUIP_ATTEMPTS})`);
+                        }
+                        else {
+                            LogUtils_logHHAuto(`Slot ${i}: #girl-equipment-equip not found (attempt ${attempt}/${MAX_EQUIP_ATTEMPTS})`);
+                        }
+                        // Verify the equipped item actually changed (see issue #1573)
+                        yield TimeHelper.sleep(randomInterval(100, 200));
+                        const verifyEl = slot.find('.slot[data-d]');
+                        let verifyData = null;
+                        if (verifyEl.length > 0 && verifyEl.attr('data-d')) {
+                            try {
+                                verifyData = JSON.parse(verifyEl.attr('data-d'));
+                            }
+                            catch ( /* ignore */_h) { /* ignore */ }
+                        }
+                        const verifyKey = verifyData ? ((_f = (_e = verifyData.id_item) !== null && _e !== void 0 ? _e : verifyData.id_equipement) !== null && _f !== void 0 ? _f : JSON.stringify(verifyData)) : null;
+                        if (verifyKey !== previousEquippedKey) {
+                            LogUtils_logHHAuto(`Slot ${i}: equip verified (L${verifyData === null || verifyData === void 0 ? void 0 : verifyData.level} ${verifyData === null || verifyData === void 0 ? void 0 : verifyData.rarity})`);
+                            equipSucceeded = true;
+                            break;
+                        }
+                        LogUtils_logHHAuto(`Slot ${i}: equip NOT verified, previous item still equipped (attempt ${attempt}/${MAX_EQUIP_ATTEMPTS})`);
+                        if (attempt < MAX_EQUIP_ATTEMPTS) {
+                            yield TimeHelper.sleep(randomInterval(200, 300));
+                        }
+                    }
+                    if (!equipSucceeded) {
+                        LogUtils_logHHAuto(`Slot ${i}: equip failed after ${MAX_EQUIP_ATTEMPTS} attempts, skipping`);
+                    }
+                }
+                else {
+                    const eqScore = equippedData ? HaremGirl.scoreItem(equippedData, girl) : null;
+                    LogUtils_logHHAuto(`Slot ${i}: current item is optimal (L${equippedData === null || equippedData === void 0 ? void 0 : equippedData.level} ${equippedData === null || equippedData === void 0 ? void 0 : equippedData.rarity}, score=${eqScore === null || eqScore === void 0 ? void 0 : eqScore.caracSum})`);
+                }
+            }
+            LogUtils_logHHAuto('Equipment optimization complete');
+        });
+    }
 }
 HaremGirl.AFFECTION_TYPE = 'affection';
 HaremGirl.EXPERIENCE_TYPE = 'experience';
@@ -11932,7 +12268,7 @@ HaremGirl.SCROLLS_NEED_4 = {
     'common_1': 9
 };
 HaremGirl.SKILL_BUTTON_SELECTOR = "#skills .skill-upgrade button.blue_button_L:not([disabled])";
-HaremGirl.SKILL_BUTTON_SELECTOR_PRIO = "#skills .skill-upgrade [skill-id='2'] button.blue_button_L:not([disabled]),#skills .skill-upgrade [skill-id='4'] button.blue_button_L:not([disabled])";
+HaremGirl.SKILL_ORDER_PRIO = [2, 5, 4, 8];
 
 ;// CONCATENATED MODULE: ./src/Module/harem/HaremSalary.ts
 var HaremSalary_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -13835,9 +14171,9 @@ class LeagueHelper {
                         maxLeague = leagues.length;
                     }
                     if (leagueTargetValue === Number(getPlayerCurrentLevel) && leagueTargetValue < maxLeague) {
-                        var rankStay = 16;
-                        if (currentRank > 15) {
-                            rankStay = 15;
+                        var rankStay = 21;
+                        if (currentRank > 20) {
+                            rankStay = 20;
                         }
                         LogUtils_logHHAuto("Current league is target (" + Number(getPlayerCurrentLevel) + "/" + leagueTargetValue + "), needs to stay. max rank : " + rankStay);
                         let getRankStay = $(".data-list .data-row.body-row .data-column[column='place']:contains(" + rankStay + ")").filter(function () {
@@ -16621,6 +16957,487 @@ Spreadsheet.LINK_CLASS = 'hhauto-spreadsheet-link';
 Spreadsheet.BDSMPP_CLASS = 'script-blessing-spreadsheet-link';
 Spreadsheet.POPUP_SELECTOR = '#blessings_popup .blessings_wrapper';
 
+;// CONCATENATED MODULE: ./src/Service/TeamScoringService.ts
+// TeamScoringService.ts -- Scoring engine for team selection v3.
+//
+// Provides Tier 3 trait matching, element synergy calculations,
+// and leader skill evaluation for team optimization.
+//
+// Two modes (both filter Mythic + Legendary only):
+//   - "Current Best": uses current stats (blessed)
+//   - "Best Possible": projects stats to max level + full grades
+// Synergy bonus multiplier per girl of each element in the team
+const ELEMENT_SYNERGY_PER_GIRL = {
+    fire: { field: 'critDamage', bonus: 0.10 },
+    water: { field: 'healOnHit', bonus: 0.03 },
+    nature: { field: 'ego', bonus: 0.03 },
+    stone: { field: 'critChance', bonus: 0.02 },
+    sun: { field: 'defReduce', bonus: 0.02 },
+    darkness: { field: 'damage', bonus: 0.02 },
+    psychic: { field: 'defense', bonus: 0.02 },
+    light: { field: 'harmony', bonus: 0.02 },
+};
+// Tier-5 skill mapping by element, with priority ranking
+// Priority: Shield (light/stone) > Stun (sun/darkness) > Execute (fire/water) > Reflect
+const ELEMENT_TO_TIER5 = {
+    light: { id: 12, name: 'Shield', priority: 4 },
+    stone: { id: 12, name: 'Shield', priority: 4 },
+    sun: { id: 11, name: 'Stun', priority: 3 },
+    darkness: { id: 11, name: 'Stun', priority: 3 },
+    fire: { id: 14, name: 'Execute', priority: 2 },
+    water: { id: 14, name: 'Execute', priority: 2 },
+    psychic: { id: 13, name: 'Reflect', priority: 1 },
+    nature: { id: 13, name: 'Reflect', priority: 1 },
+};
+// Each element's Tier 3 bonus is based on a specific trait category.
+// Girls from the same element pair share the same trait category.
+const ELEMENT_TO_TRAIT_CATEGORY = {
+    darkness: 'eyeColor', // Black
+    fire: 'eyeColor', // Red
+    light: 'hairColor', // White
+    nature: 'hairColor', // Green
+    stone: 'zodiac', // Orange
+    psychic: 'zodiac', // Purple
+    water: 'position', // Blue
+    sun: 'position', // Yellow
+};
+// Element pairs that share a trait category
+const ELEMENT_PAIRS = [
+    { elements: ['darkness', 'fire'], trait: 'eyeColor' },
+    { elements: ['light', 'nature'], trait: 'hairColor' },
+    { elements: ['stone', 'psychic'], trait: 'zodiac' },
+    { elements: ['water', 'sun'], trait: 'position' },
+];
+// Position penalty factor (position trait reduces attack stats via equipment)
+const POSITION_TRAIT_PENALTY = 0.80;
+// Rarities allowed for team selection (both modes)
+const HIGH_RARITIES = new Set(['mythic', 'legendary']);
+// Tier 3 bonus per matching teammate: 1.0% for Mythic, 0.8% for Legendary
+const TIER3_BONUS_MYTHIC = 0.01;
+const TIER3_BONUS_LEGENDARY = 0.008;
+class TeamScoringService {
+    /**
+     * Get the raw stat sum for a girl (carac1 + carac2 + carac3).
+     * Uses caracs sub-object if available, falls back to direct fields.
+     */
+    static getStatSum(girl) {
+        if (girl.caracs) {
+            return girl.caracs.carac1 + girl.caracs.carac2 + girl.caracs.carac3;
+        }
+        return girl.carac1 + girl.carac2 + girl.carac3;
+    }
+    /**
+     * Score a girl for "Current Best" mode.
+     * Simply returns the current stat sum (already includes blessings).
+     */
+    static scoreCurrentBest(girl) {
+        return TeamScoringService.getStatSum(girl);
+    }
+    /**
+     * Score a girl for "Best Possible" mode.
+     * Projects stats to max level and full grades.
+     *
+     * Formula:
+     *   potential = currentStats / level × playerLevel / (1 + 0.3 × currentGrades) × (1 + 0.3 × maxGrades)
+     */
+    static scoreBestPossible(girl, playerLevel) {
+        const currentStats = TeamScoringService.getStatSum(girl);
+        const level = girl.level || 1;
+        const currentGrades = girl.graded || 0;
+        const maxGrades = girl.nb_grades || 0;
+        const levelFactor = playerLevel / Math.max(level, 1);
+        const gradeDeflator = 1 + 0.3 * currentGrades;
+        const gradeInflator = 1 + 0.3 * maxGrades;
+        return (currentStats * levelFactor / gradeDeflator) * gradeInflator;
+    }
+    /**
+     * Filter girls: only Mythic and Legendary (both modes).
+     */
+    static filterHighRarity(girls) {
+        return girls.filter(g => {
+            if (g.rarity === 'mythic')
+                return true;
+            if (g.rarity === 'legendary')
+                return g.nb_grades >= 5;
+            return false;
+        });
+    }
+    /**
+     * Get the Tier-5 skill info for a given element.
+     */
+    static getTier5Skill(element) {
+        return ELEMENT_TO_TIER5[element];
+    }
+    // ─── Trait / Tier 3 Logic ─────────────────────────────────────────
+    /**
+     * Get the trait category for a girl based on her element.
+     */
+    static getTraitCategory(element) {
+        return ELEMENT_TO_TRAIT_CATEGORY[element];
+    }
+    /**
+     * Get the trait value for a girl based on her element's trait category.
+     * Returns undefined if the trait data is not available.
+     */
+    static getTraitValue(girl) {
+        const category = ELEMENT_TO_TRAIT_CATEGORY[girl.element];
+        switch (category) {
+            case 'eyeColor': return girl.eyeColor;
+            case 'hairColor': return girl.hairColor;
+            case 'zodiac': return girl.zodiac;
+            case 'position': return girl.position;
+        }
+    }
+    /**
+     * Calculate the total Tier 3 bonus percentage for a team.
+     *
+     * Each girl checks how many teammates share her element pair's trait value.
+     * Mythic: 1.0% per matching teammate, Legendary: 0.8% per matching teammate.
+     * The bonus is calculated per girl and summed for the team total.
+     */
+    static calculateTier3TeamBonus(team) {
+        let totalBonus = 0;
+        for (const girl of team) {
+            const category = ELEMENT_TO_TRAIT_CATEGORY[girl.element];
+            const myValue = TeamScoringService.getTraitValue(girl);
+            if (!myValue)
+                continue;
+            let matchCount = 0;
+            for (const teammate of team) {
+                if (teammate.id_girl === girl.id_girl)
+                    continue;
+                const teammateCategory = ELEMENT_TO_TRAIT_CATEGORY[teammate.element];
+                if (teammateCategory !== category)
+                    continue;
+                const teammateValue = TeamScoringService.getTraitValue(teammate);
+                if (teammateValue === myValue) {
+                    matchCount++;
+                }
+            }
+            const bonusPerMatch = girl.rarity === 'mythic' ? TIER3_BONUS_MYTHIC : TIER3_BONUS_LEGENDARY;
+            totalBonus += matchCount * bonusPerMatch;
+        }
+        return totalBonus;
+    }
+    /**
+     * Find all possible trait groups from a pool of girls.
+     *
+     * For each element pair, groups girls by their shared trait value
+     * and scores each group. Position groups receive a penalty.
+     *
+     * Returns groups sorted by score descending.
+     */
+    static findTraitGroups(girls) {
+        const results = [];
+        for (const pair of ELEMENT_PAIRS) {
+            const pairGirls = girls.filter(g => pair.elements.includes(g.element));
+            if (pairGirls.length === 0)
+                continue;
+            // Group by trait value
+            const groups = new Map();
+            for (const girl of pairGirls) {
+                const value = TeamScoringService.getTraitValue(girl);
+                if (!value)
+                    continue;
+                if (!groups.has(value))
+                    groups.set(value, []);
+                groups.get(value).push(girl);
+            }
+            for (const [traitValue, groupGirls] of groups) {
+                const avgStats = groupGirls.reduce((sum, g) => sum + TeamScoringService.getStatSum(g), 0) / groupGirls.length;
+                let score = groupGirls.length * avgStats;
+                // Position trait penalty (reduces attack stats via equipment)
+                if (pair.trait === 'position') {
+                    score *= POSITION_TRAIT_PENALTY;
+                }
+                results.push({
+                    traitCategory: pair.trait,
+                    traitValue,
+                    girls: groupGirls,
+                    score,
+                });
+            }
+        }
+        return results.sort((a, b) => b.score - a.score);
+    }
+    // ─── Synergy Calculations (secondary factor) ─────────────────────
+    /**
+     * Calculate synergy bonuses for a set of elements (one per team member).
+     */
+    static calculateSynergies(elements) {
+        const synergies = {
+            critDamage: 0,
+            healOnHit: 0,
+            ego: 0,
+            critChance: 0,
+            defReduce: 0,
+            damage: 0,
+            defense: 0,
+            harmony: 0,
+        };
+        for (const element of elements) {
+            const mapping = ELEMENT_SYNERGY_PER_GIRL[element];
+            if (mapping) {
+                synergies[mapping.field] += mapping.bonus;
+            }
+        }
+        return synergies;
+    }
+    /**
+     * Calculate a numeric "synergy value" for a team composition.
+     * Weighs each synergy type by its combat impact.
+     */
+    static calculateSynergyValue(elements) {
+        const syn = TeamScoringService.calculateSynergies(elements);
+        return (syn.critDamage * 1.0 +
+            syn.critChance * 2.0 +
+            syn.defReduce * 2.0 +
+            syn.healOnHit * 1.5 +
+            syn.damage * 1.5 +
+            syn.ego * 1.0 +
+            syn.defense * 1.0 +
+            syn.harmony * 1.0);
+    }
+    /**
+     * Score a girl's contribution to a team, considering both stats and
+     * the synergy bonus she adds. Used as tiebreaker when filling remaining slots.
+     */
+    static scoreWithSynergy(girl, teamElements, statScore, maxStatInPool, synergyWeight = 0.05) {
+        const currentSynergyValue = TeamScoringService.calculateSynergyValue(teamElements);
+        const newSynergyValue = TeamScoringService.calculateSynergyValue([...teamElements, girl.element]);
+        const synergyDelta = newSynergyValue - currentSynergyValue;
+        const normalizedSynergyBonus = maxStatInPool > 0
+            ? (synergyDelta / maxStatInPool) * maxStatInPool
+            : 0;
+        return statScore + synergyWeight * normalizedSynergyBonus;
+    }
+    // ─── Tier 3 Delta Estimation ────────────────────────────────────
+    /**
+     * Estimate the stat-equivalent value of adding a candidate to the team,
+     * considering the marginal Tier 3 bonus she would provide.
+     *
+     * Returns 0 if the candidate does not match the target trait.
+     * Otherwise returns marginalPct × teamStatTotal, where marginalPct
+     * accounts for both the new girl's bonus and the boost to existing
+     * trait teammates.
+     */
+    static estimateTier3Delta(candidate, currentTeam, traitCategory, traitValue, teamStatTotal) {
+        const candidateCategory = ELEMENT_TO_TRAIT_CATEGORY[candidate.element];
+        if (candidateCategory !== traitCategory)
+            return 0;
+        const candidateValue = TeamScoringService.getTraitValue(candidate);
+        if (candidateValue !== traitValue)
+            return 0;
+        // Count existing trait-matching teammates and sum their bonus rates
+        let existingTraitCount = 0;
+        let existingBoostSum = 0;
+        for (const member of currentTeam) {
+            const memberCategory = ELEMENT_TO_TRAIT_CATEGORY[member.element];
+            if (memberCategory !== traitCategory)
+                continue;
+            const memberValue = TeamScoringService.getTraitValue(member);
+            if (memberValue !== traitValue)
+                continue;
+            existingTraitCount++;
+            existingBoostSum += member.rarity === 'mythic' ? TIER3_BONUS_MYTHIC : TIER3_BONUS_LEGENDARY;
+        }
+        // New girl sees existingTraitCount matches
+        const candidateBonusRate = candidate.rarity === 'mythic' ? TIER3_BONUS_MYTHIC : TIER3_BONUS_LEGENDARY;
+        const newGirlBonus = existingTraitCount * candidateBonusRate;
+        // Each existing trait teammate gains +1 match from this girl
+        const existingBoost = existingBoostSum;
+        const marginalPct = newGirlBonus + existingBoost;
+        return marginalPct * teamStatTotal;
+    }
+    // ─── Leader Selection ────────────────────────────────────────────
+    /**
+     * Rank leader candidates by element priority (Shield > Stun > Execute > Reflect).
+     * Leader must be Mythic. Among same priority: prefer trait match, then highest stats.
+     *
+     * @param traitCategory - The team's chosen trait category
+     * @param traitValue    - The team's chosen trait value
+     */
+    static rankLeaderCandidates(girls, statScores, traitCategory, traitValue) {
+        // Only Mythic girls can be leaders
+        const mythicGirls = girls.filter(g => g.rarity === 'mythic');
+        if (mythicGirls.length === 0) {
+            // Fallback: allow all girls if no mythics available
+            return TeamScoringService._sortLeaderCandidates(girls, statScores, traitCategory, traitValue);
+        }
+        return TeamScoringService._sortLeaderCandidates(mythicGirls, statScores, traitCategory, traitValue);
+    }
+    static _sortLeaderCandidates(girls, statScores, traitCategory, traitValue) {
+        return [...girls].sort((a, b) => {
+            const tier5A = ELEMENT_TO_TIER5[a.element];
+            const tier5B = ELEMENT_TO_TIER5[b.element];
+            // Primary: Tier-5 priority (Shield > Stun > Execute > Reflect)
+            if (tier5A.priority !== tier5B.priority) {
+                return tier5B.priority - tier5A.priority;
+            }
+            // Secondary: trait match bonus (does the leader match the team's trait?)
+            if (traitCategory && traitValue) {
+                const aMatches = TeamScoringService._leaderMatchesTrait(a, traitCategory, traitValue);
+                const bMatches = TeamScoringService._leaderMatchesTrait(b, traitCategory, traitValue);
+                if (aMatches !== bMatches) {
+                    return aMatches ? -1 : 1;
+                }
+            }
+            // Tertiary: stat score
+            const scoreA = statScores.get(a.id_girl) || 0;
+            const scoreB = statScores.get(b.id_girl) || 0;
+            return scoreB - scoreA;
+        });
+    }
+    /**
+     * Check if a leader candidate matches the team's trait.
+     * The leader's own element determines her trait category —
+     * she only matches if her element uses the same trait category as the team.
+     */
+    static _leaderMatchesTrait(girl, teamTraitCategory, teamTraitValue) {
+        const girlCategory = ELEMENT_TO_TRAIT_CATEGORY[girl.element];
+        if (girlCategory !== teamTraitCategory)
+            return false;
+        const girlValue = TeamScoringService.getTraitValue(girl);
+        return girlValue === teamTraitValue;
+    }
+}
+
+;// CONCATENATED MODULE: ./src/Service/TeamBuilderService.ts
+// TeamBuilderService.ts -- Builds optimal 7-girl teams using Tier 3
+// trait-group optimization.
+//
+// Two modes (both filter Mythic + Legendary only):
+//   Mode 1 "Current Best": current blessed stats
+//   Mode 2 "Best Possible": projected stats at max level + grades
+//
+// Algorithm:
+//   1. Filter to M+L, score all girls
+//   2. Find best trait group (element pair + shared trait value)
+//   3. Select Mythic leader (Shield/Stun priority)
+//   4. Fill slots 2-7 from trait group, then by stats
+
+const TEAM_SIZE = 7;
+const CANDIDATE_POOL_SIZE = 50;
+// Default fallback trait when no good group is found
+const FALLBACK_TRAIT_CATEGORY = 'eyeColor';
+class TeamBuilderService {
+    /**
+     * Build the optimal team for the given mode.
+     *
+     * @param allGirls    - All available girls (from availableGirls)
+     * @param mode        - 1 = Current Best, 2 = Best Possible
+     * @param playerLevel - Player's current level (needed for mode 2)
+     * @returns TeamResult with the selected 7 girls, or null if not enough girls
+     */
+    static buildTeam(allGirls, mode, playerLevel) {
+        // Phase 1: Filter to Mythic + Legendary only (both modes)
+        const candidates = TeamScoringService.filterHighRarity(allGirls);
+        if (candidates.length < TEAM_SIZE) {
+            return null;
+        }
+        // Phase 2: Score all candidates
+        const scoreMap = new Map();
+        for (const girl of candidates) {
+            const score = mode === 1
+                ? TeamScoringService.scoreCurrentBest(girl)
+                : TeamScoringService.scoreBestPossible(girl, playerLevel);
+            scoreMap.set(girl.id_girl, score);
+        }
+        // Pre-sort by score for pool selection
+        const sorted = [...candidates].sort((a, b) => (scoreMap.get(b.id_girl) || 0) - (scoreMap.get(a.id_girl) || 0));
+        const pool = sorted.slice(0, CANDIDATE_POOL_SIZE);
+        const maxStat = scoreMap.get(pool[0].id_girl) || 1;
+        // Phase 3: Find best trait group
+        const traitGroups = TeamScoringService.findTraitGroups(pool);
+        let bestGroup = null;
+        if (traitGroups.length > 0 && traitGroups[0].girls.length >= 3) {
+            bestGroup = traitGroups[0];
+        }
+        // Fallback: use eyeColor category, pick the largest group
+        if (!bestGroup) {
+            const eyeGroups = traitGroups.filter(g => g.traitCategory === FALLBACK_TRAIT_CATEGORY);
+            if (eyeGroups.length > 0) {
+                bestGroup = eyeGroups[0];
+            }
+        }
+        // If still no group found, use first available or create a dummy
+        const traitCategory = (bestGroup === null || bestGroup === void 0 ? void 0 : bestGroup.traitCategory) || FALLBACK_TRAIT_CATEGORY;
+        const traitValue = (bestGroup === null || bestGroup === void 0 ? void 0 : bestGroup.traitValue) || '';
+        const traitGroupGirls = (bestGroup === null || bestGroup === void 0 ? void 0 : bestGroup.girls) || [];
+        // Phase 4: Select Leader
+        const rankedLeaders = TeamScoringService.rankLeaderCandidates(pool, scoreMap, traitCategory, traitValue);
+        const leader = rankedLeaders[0];
+        // Phase 5: Fill slots 2-7 (unified: trait group + stats + synergy + tier 3)
+        const team = [leader];
+        const teamElements = [leader.element];
+        const used = new Set([leader.id_girl]);
+        for (let slot = 1; slot < TEAM_SIZE; slot++) {
+            let bestGirl = null;
+            let bestCombinedScore = -Infinity;
+            const teamStatTotal = team.reduce((sum, g) => sum + (scoreMap.get(g.id_girl) || 0), 0);
+            for (const candidate of pool) {
+                if (used.has(candidate.id_girl))
+                    continue;
+                const statScore = scoreMap.get(candidate.id_girl) || 0;
+                const synergyScore = TeamScoringService.scoreWithSynergy(candidate, teamElements, statScore, maxStat, 0.05);
+                const tier3Delta = TeamScoringService.estimateTier3Delta(candidate, team, traitCategory, traitValue, teamStatTotal);
+                const combinedScore = synergyScore + tier3Delta;
+                if (combinedScore > bestCombinedScore) {
+                    bestCombinedScore = combinedScore;
+                    bestGirl = candidate;
+                }
+            }
+            if (!bestGirl)
+                break;
+            team.push(bestGirl);
+            teamElements.push(bestGirl.element);
+            used.add(bestGirl.id_girl);
+        }
+        if (team.length < TEAM_SIZE) {
+            return null;
+        }
+        // Phase 6: Build result
+        const statScores = team.map(g => scoreMap.get(g.id_girl) || 0);
+        const synergyValue = TeamScoringService.calculateSynergyValue(teamElements);
+        const leaderTier5 = TeamScoringService.getTier5Skill(leader.element);
+        const tier3Bonus = TeamScoringService.calculateTier3TeamBonus(team);
+        // Count how many girls match the chosen trait
+        let traitMatchCount = 0;
+        for (const girl of team) {
+            const girlCategory = TeamScoringService.getTraitCategory(girl.element);
+            if (girlCategory === traitCategory) {
+                const girlValue = TeamScoringService.getTraitValue(girl);
+                if (girlValue === traitValue) {
+                    traitMatchCount++;
+                }
+            }
+        }
+        return {
+            girls: team,
+            statScores,
+            synergyValue,
+            leaderTier5,
+            elements: teamElements,
+            traitCategory,
+            traitValue,
+            tier3Bonus,
+            traitMatchCount,
+        };
+    }
+    /**
+     * Get a summary of element distribution in the team.
+     */
+    static getElementDistribution(team) {
+        const counts = new Map();
+        for (const el of team.elements) {
+            counts.set(el, (counts.get(el) || 0) + 1);
+        }
+        return Array.from(counts.entries())
+            .map(([element, count]) => ({ element, count }))
+            .sort((a, b) => b.count - a.count);
+    }
+}
+
 ;// CONCATENATED MODULE: ./src/Module/TeamModule.ts
 // TeamModule.ts -- Team management: auto-selects optimal teams for different
 // battle modes.
@@ -16632,6 +17449,7 @@ Spreadsheet.POPUP_SELECTOR = '#blessings_popup .blessings_wrapper';
 //
 // Used by: League.ts, Troll.ts, Labyrinth.ts, Season.ts, and other fight modules
 //
+
 
 
 
@@ -17014,10 +17832,62 @@ class TeamModule {
         let topNumbers = $('.topNumber');
         if (topNumbers.length > 0) {
             TeamModule.resetTeam();
-            assignToTeam(1, true); // true = jump to best team directly
+            setTimeout(function () { assignToTeam(1, true); }, randomInterval(300, 600)); // wait for clear-team UI to settle before assigning
         }
     }
     static setTopTeam(sumFormulaType) {
+        const availableGirls = getHHVars("availableGirls", false);
+        if (availableGirls && Array.isArray(availableGirls) && availableGirls.length > 0) {
+            TeamModule.setTopTeamV2(sumFormulaType, availableGirls);
+        }
+        else {
+            LogUtils_logHHAuto('availableGirls not found, falling back to legacy team selection');
+            TeamModule.setTopTeamLegacy(sumFormulaType);
+        }
+    }
+    static setTopTeamV2(mode, availableGirls) {
+        const playerLevel = Number(HeroHelper.getLevel());
+        // Map availableGirls to GirlData interface
+        const girls = availableGirls.map(g => {
+            var _a;
+            return ({
+                id_girl: Number(g.id_girl),
+                name: g.name || '',
+                carac1: Number(g.carac1 || 0),
+                carac2: Number(g.carac2 || 0),
+                carac3: Number(g.carac3 || 0),
+                level: Number(g.level || 1),
+                element: (((_a = g.element_data) === null || _a === void 0 ? void 0 : _a.type) || g.element || 'fire'),
+                rarity: (g.rarity || 'common'),
+                graded: Number(g.graded || 0),
+                nb_grades: Number(g.nb_grades || 0),
+                caracs: g.caracs ? {
+                    carac1: Number(g.caracs.carac1 || 0),
+                    carac2: Number(g.caracs.carac2 || 0),
+                    carac3: Number(g.caracs.carac3 || 0),
+                } : undefined,
+                skill_tiers_info: g.skill_tiers_info,
+                zodiac: g.zodiac ? g.zodiac.substring(3).trim() : undefined,
+                hairColor: g.hair_color1 || undefined,
+                eyeColor: g.eye_color1 || undefined,
+                position: g.position_img ? String(g.position_img).replace('.png', '') : undefined,
+            });
+        });
+        const result = TeamBuilderService.buildTeam(girls, mode, playerLevel);
+        if (!result) {
+            LogUtils_logHHAuto('Not enough girls for team selection v2 (mode ' + mode + '), falling back to legacy');
+            TeamModule.setTopTeamLegacy(mode);
+            return;
+        }
+        const deckID = result.girls.map(g => g.id_girl);
+        const modeName = mode === 1 ? 'Current Best' : 'Best Possible';
+        const dist = TeamBuilderService.getElementDistribution(result);
+        const distStr = dist.map(d => `${d.count}x ${d.element}`).join(', ');
+        LogUtils_logHHAuto(`Team v2 [${modeName}]: Leader=${result.girls[0].name} (${result.leaderTier5.name}), Trait: ${result.traitCategory}=${result.traitValue} (${result.traitMatchCount}/7), Tier3: ${(result.tier3Bonus * 100).toFixed(1)}%, Elements: ${distStr}`);
+        // UI update: same approach as legacy — hide non-selected, show + number selected
+        TeamModule.updateTeamUI(deckID, result);
+    }
+    static setTopTeamLegacy(sumFormulaType) {
         let arr = $('div[id_girl]');
         let numTop = 16;
         if (numTop > arr.length)
@@ -17032,29 +17902,23 @@ class TeamModule {
         for (let i = arr.length - 1; i > -1; i--) {
             let gID = Number($(arr[i]).attr('id_girl'));
             const tooltipData = $('.girl_img', $(arr[i])).attr(ConfigHelper.getHHScriptVars('girlToolTipData')) || '';
-            //const girlData = Harem.getGirlData(gID);
             if (tooltipData == '') {
                 LogUtils_logHHAuto('ERROR, no girl information found');
                 return;
             }
             let obj = JSON.parse(tooltipData);
-            //sum formula
             let tempGrades = obj.graded2;
-            //console.log(obj,tempGrades);
             let countTotalGrades = (tempGrades.match(/<g/g) || []).length;
             let countFreeGrades = (tempGrades.match(/grey/g) || []).length;
             let currentStat = obj.caracs.carac1 + obj.caracs.carac2 + obj.caracs.carac3;
-            //console.log(currentStat);
             if (sumFormulaType == 1) {
                 currentStat = obj.caracs.carac1 + obj.caracs.carac2 + obj.caracs.carac3;
             }
             else if (sumFormulaType == 2) {
                 currentStat = (obj.caracs.carac1 + obj.caracs.carac2 + obj.caracs.carac3) / obj.level * levelPlayer / (1 + 0.3 * (countTotalGrades - countFreeGrades)) * (1 + 0.3 * (countTotalGrades));
             }
-            //console.log(obj.level,levelPlayer,countTotalGrades,countFreeGrades);
-            //console.log(currentStat);
-            let lowNum = 0; //num
-            let lowStat = deckStat[0]; //stat
+            let lowNum = 0;
+            let lowStat = deckStat[0];
             for (let j = 1; j < deckID.length; j++) {
                 if (deckStat[j] < lowStat) {
                     lowNum = j;
@@ -17068,7 +17932,6 @@ class TeamModule {
         }
         let tmpID = 0;
         let tmpStat = 0;
-        //console.log(deckStat,deckID);
         for (let i = 0; i < deckStat.length; i++) {
             for (let j = i; j < deckStat.length; j++) {
                 if (deckStat[j] > deckStat[i]) {
@@ -17081,7 +17944,14 @@ class TeamModule {
                 }
             }
         }
-        //console.log(deckStat,deckID);
+        TeamModule.updateTeamUI(deckID);
+    }
+    static updateTeamUI(deckID, teamResult) {
+        const arr = $('div[id_girl]');
+        // Remove all existing topNumber elements to prevent stale entries
+        // from a previous team calculation (e.g. Current Best) interfering
+        // with the current one (e.g. Best Possible) during assignTopTeam.
+        $('.topNumber').remove();
         for (let i = arr.length - 1; i > -1; i--) {
             let gID = Number($(arr[i]).attr('id_girl'));
             if (!deckID.includes(gID)) {
@@ -17104,11 +17974,46 @@ class TeamModule {
                 newDiv = $(arrSort[0]).find('.topNumber')[0];
             }
             $(arrSort[0]).find('.topNumber')[0];
-            newDiv.innerText = j + 1;
+            // Show position label with element emoji and leader skill
+            if (teamResult && j < teamResult.girls.length) {
+                const girl = teamResult.girls[j];
+                const emoji = TeamModule.ELEMENT_EMOJI[girl.element] || '';
+                if (j === 0) {
+                    newDiv.innerText = `${emoji} ★ ${teamResult.leaderTier5.name}`;
+                }
+                else {
+                    newDiv.innerText = `${j + 1} ${emoji}`;
+                }
+            }
+            else {
+                newDiv.innerText = j + 1;
+            }
             newDiv.setAttribute('position', j + 1);
-            // Go to girl update page on double click
             newDiv.setAttribute("ondblclick", "window.location.href='/characters/" + deckID[j] + "'");
             mainTeamPanel.append(arrSort[0]);
+        }
+        // Show team synergy info panel
+        $('.hhTeamSynergyInfo').remove();
+        if (teamResult) {
+            const dist = TeamBuilderService.getElementDistribution(teamResult);
+            const distHtml = dist.map(d => {
+                const emoji = TeamModule.ELEMENT_EMOJI[d.element] || '';
+                return `${emoji}${d.count}`;
+            }).join(' ');
+            const traitEmoji = TeamModule.TRAIT_EMOJI[teamResult.traitCategory] || '🎯';
+            const tier3Pct = (teamResult.tier3Bonus * 100).toFixed(1);
+            const synergyInfo = $(`<div class="hhTeamSynergyInfo" style="
+                position: absolute; top: 60px; left: 50%; transform: translateX(-50%); width: 180px; z-index: 10;
+                background: rgba(0,0,0,0.7); color: #fff; padding: 4px 8px;
+                border-radius: 4px; font-size: 11px; line-height: 1.4;
+            ">
+                <div style="font-weight:bold; margin-bottom: 2px;">Team Info</div>
+                <div>${traitEmoji} ${teamResult.traitValue || '?'} (${teamResult.traitMatchCount}/7)</div>
+                <div>Tier 3: ${tier3Pct}%</div>
+                <div>Leader: ${teamResult.leaderTier5.name} (${TeamModule.ELEMENT_EMOJI[teamResult.girls[0].element] || ''} ${teamResult.girls[0].element})</div>
+                <div>Elements: ${distHtml}</div>
+            </div>`);
+            $("#contains_all section").append(synergyInfo);
         }
         if (document.getElementById("AssignTopTeam") !== null) {
             return;
@@ -17120,6 +18025,13 @@ class TeamModule {
         }
     }
 }
+TeamModule.ELEMENT_EMOJI = {
+    fire: '🔥', water: '💧', nature: '🌿', stone: '🪨',
+    sun: '☀️', darkness: '🌑', psychic: '🔮', light: '✨',
+};
+TeamModule.TRAIT_EMOJI = {
+    eyeColor: '👁', hairColor: '💇', zodiac: '♋', position: '🔄',
+};
 
 ;// CONCATENATED MODULE: ./src/Module/index.ts
 // Module/index.ts -- Barrel file re-exporting all game automation modules.
@@ -17583,7 +18495,8 @@ class TransPornstarHarem {
             'CEO Ramona',
             'Mama Bee',
             'Officer Jolie',
-            'Ariel in Wonderland'];
+            'Ariel in Wonderland',
+            'Rex & Kate'];
     }
     static getTrollGirlsId() {
         return [
@@ -17597,13 +18510,14 @@ class TransPornstarHarem {
             [['692804877', '984917842', '581358076'], ['397703278', '704166982', '483645616'], ['349968569', '970429531', '954328841']],
             [[0], [0], [0]],
             [[0], [0], [0]],
+            [[0], [0], [0]],
         ];
     }
     static updateFeatures(envVariables) {
         envVariables.isEnabledSpreadsheets = false;
     }
 }
-TransPornstarHarem.trollIdMapping = { 2: 1, 3: 2, 5: 3, 6: 4, 7: 5, 8: 6, 9: 7, 11: 8, 13: 9, 14: 10 };
+TransPornstarHarem.trollIdMapping = { 2: 1, 3: 2, 5: 3, 6: 4, 7: 5, 8: 6, 9: 7, 11: 8, 13: 9, 14: 10, 15: 11 };
 TransPornstarHarem.lastQuestId = -1; //  TODO update when new quest comes
 
 ;// CONCATENATED MODULE: ./src/config/game/index.ts
@@ -18355,10 +19269,10 @@ class HHMenu {
     }
     fillRaidStarsMenu() {
         var raidStarsOptions = document.getElementById("raidStarsSelector");
-        raidStarsOptions.add(this._createHtmlOption('0', getTextForUI("raidStarsOff", "elementText")));
-        raidStarsOptions.add(this._createHtmlOption('3', getTextForUI("raidStars3", "elementText")));
-        raidStarsOptions.add(this._createHtmlOption('5', getTextForUI("raidStars5", "elementText")));
-        raidStarsOptions.add(this._createHtmlOption('6', getTextForUI("raidStars6", "elementText")));
+        raidStarsOptions.add(this._createHtmlOption('off', getTextForUI("raidStarsOff", "elementText")));
+        raidStarsOptions.add(this._createHtmlOption('exact3', getTextForUI("raidStarsExact3", "elementText")));
+        raidStarsOptions.add(this._createHtmlOption('min3', getTextForUI("raidStarsMin3", "elementText")));
+        raidStarsOptions.add(this._createHtmlOption('exact5', getTextForUI("raidStarsExact5", "elementText")));
     }
     fillLabyDifficultyMenu() {
         var sortsOptions = document.getElementById("autoLabyDifficulty");
@@ -18823,7 +19737,9 @@ function getMenu() {
             + hhMenuSwitch('autoSeasonIgnoreNoGirls')
             + `</div>`
             + `<div class="internalOptionsRow">`
+            + `<div style="${debugEnabled ? '' : 'display:none;'}">` // #1533 hidden: 0% usage in survey (168 responses). Remove div wrapper to restore.
             + hhMenuSwitch('autoSeasonPassReds', '', true)
+            + `</div>`
             + hhMenuSwitch('autoSeasonBoostedOnly')
             + hhMenuSwitch('autoSeasonSkipLowMojo')
             + `<div class="labelAndButton" style="width: 70px;">`
@@ -18886,26 +19802,23 @@ function getMenu() {
             + `<div style="border-left:1px solid #ffa23e;height:36px;"> </div>`
             + `</div>`
             + `<div class="internalOptionsRow">`
+            + `<div style="${debugEnabled ? '' : 'display:none;'}">` // #1533 hidden: 0% usage in survey (168 responses). Remove div wrapper to restore.
             + hhMenuSwitch('useX10Fights', '', true)
             + hhMenuSwitch('useX10FightsAllowNormalEvent')
             + hhMenuInput('minShardsX10', HHAuto_inputPattern.minShardsX, 'text-align:center; width:7em')
             + hhMenuSwitch('useX50Fights', '', true)
             + hhMenuSwitch('useX50FightsAllowNormalEvent')
             + hhMenuInput('minShardsX50', HHAuto_inputPattern.minShardsX, 'text-align:center; width:7em')
+            + `</div>`
             + hhMenuSwitch('plusGirlSkins')
+            + hhMenuInput('sandalwoodMinShardsThreshold', HHAuto_inputPattern.sandalwoodLimit, 'text-align:center; width:7em')
             + `</div>`
-            + `<div class="internalOptionsRow">`
-            + hhMenuInput('sandalwoodShardsX10Limit', HHAuto_inputPattern.sandalwoodLimit, 'text-align:center; width:7em')
-            + hhMenuInput('sandalwoodShardsX1Limit', HHAuto_inputPattern.sandalwoodLimit, 'text-align:center; width:7em')
-            + hhMenuInput('sandalwoodDosesX10Limit', HHAuto_inputPattern.sandalwoodLimit, 'text-align:center; width:7em')
-            + hhMenuInput('sandalwoodDosesX1Limit', HHAuto_inputPattern.sandalwoodLimit, 'text-align:center; width:7em')
-            + `</div>`
-            + `<div class="internalOptionsRow">`
+            + `<div class="internalOptionsRow separator">`
             + hhMenuSwitch('plusEvent')
             + hhMenuInput('eventTrollOrder', HHAuto_inputPattern.eventTrollOrder, 'width:150px')
             + hhMenuSwitch('buyCombat', '', true)
+            + `<div style="${debugEnabled ? '' : 'display:none;'}">` + hhMenuInput('buyCombTimer', HHAuto_inputPattern.buyCombTimer, 'text-align:center; width:40px', '', 'numeric') + `</div>` // #1565 hidden: replaced by immediate buy when energy empty and girl not won
             + hhMenuInput('autoBuyTrollNumber', HHAuto_inputPattern.autoBuyTrollNumber, 'width:40px')
-            + hhMenuInput('buyCombTimer', HHAuto_inputPattern.buyCombTimer, 'text-align:center; width:40px', '', 'numeric')
             + hhMenuSwitch('plusEventSandalWood')
             + `</div>`
             + `<div class="internalOptionsRow separator">`
@@ -18913,7 +19826,7 @@ function getMenu() {
             + hhMenuSwitch('autoTrollMythicByPassParanoia')
             + hhMenuSwitch('buyMythicCombat', '', true)
             + hhMenuInput('autoBuyMythicTrollNumber', HHAuto_inputPattern.autoBuyTrollNumber, 'width:40px')
-            + hhMenuInput('buyMythicCombTimer', HHAuto_inputPattern.buyMythicCombTimer, 'text-align:center; width:40px', '', 'numeric')
+            + `<div style="${debugEnabled ? '' : 'display:none;'}">` + hhMenuInput('buyMythicCombTimer', HHAuto_inputPattern.buyMythicCombTimer, 'text-align:center; width:40px', '', 'numeric') + `</div>` // #1565 hidden: replaced by immediate buy when energy empty and girl not won
             + hhMenuSwitch('plusEventMythicSandalWood')
             + `</div>`
             + `<div class="internalOptionsRow separator">`
@@ -19129,6 +20042,14 @@ function getMenu() {
 // persisting all HHAuto settings and temporary state. Every stored
 // variable is registered in HHStoredVars (config/HHStoredVars.ts) with
 // a storage type, default value, and optional validation regex.
+//
+// IMPORTANT: getStoredValue / setStoredValue / deleteStoredValue ONLY
+// work for keys that are registered in HHStoredVars. Unregistered keys
+// are silently dropped on write and return undefined on read — no error,
+// no log, just a no-op. When adding a new SK/TK entry in StorageKeys.ts,
+// you MUST also register it in HHStoredVars.ts (with its storage type
+// "localStorage" | "sessionStorage" | "Storage()" and HHType
+// "Setting" | "Temp"), otherwise nothing will be persisted.
 //
 // Key design decisions:
 //   - Settings use localStorage (survive tab close); temp vars use
@@ -20468,6 +21389,32 @@ class HeroHelper {
                 // change referer
                 const currentPath = window.location.href.replace('http://', '').replace('https://', '').replace(window.location.hostname, '');
                 window.history.replaceState(null, '', addNutakuSession('/shop.html'));
+                // Guard: ensure we resolve exactly once, even if both AJAX callback and timeout fire.
+                let settled = false;
+                let timeoutId = null;
+                const settle = (value) => {
+                    if (settled)
+                        return;
+                    settled = true;
+                    if (timeoutId !== null)
+                        clearTimeout(timeoutId);
+                    setStoredValue(HHStoredVarPrefixKey + TK.autoLoop, "true");
+                    setTimeout(autoLoop, randomInterval(500, 800));
+                    resolve(value);
+                };
+                // Option C: Safety timeout in case the AJAX call never invokes either callback
+                // (seen in the wild when the referer swap collides with navigation). Without
+                // this, the promise would hang forever and the autoLoop stays paused.
+                timeoutId = setTimeout(() => {
+                    if (settled)
+                        return;
+                    LogUtils_logHHAuto('equipBooster: AJAX timeout after 15s — resolving with false and invalidating boosterStatus');
+                    // Treat a hang as "state unknown": drop the freshness stamp so the next
+                    // auto-equip cycle re-reads boosterStatus from the market.
+                    deleteStoredValue(HHStoredVarPrefixKey + TK.boosterStatusLastUpdate);
+                    HeroHelper.getSandalWoodEquipFailure(true);
+                    settle(false);
+                }, 15000);
                 getHHAjax()(params, function (data) {
                     LogUtils_logHHAuto(`equipBooster: AJAX success callback, data.success=${data.success}, full response=${JSON.stringify(data)}`);
                     if (data.success) {
@@ -20475,19 +21422,22 @@ class HeroHelper {
                     }
                     else {
                         LogUtils_logHHAuto('equipBooster: Server returned success:false (may already be equipped)');
+                        // Option D: a success:false response means our local boosterStatus is
+                        // out of sync with the server (another browser/tab probably equipped
+                        // boosters while we were paused). Invalidate the freshness timestamp
+                        // so autoEquipBoosters refreshes from the market before retrying.
+                        deleteStoredValue(HHStoredVarPrefixKey + TK.boosterStatusLastUpdate);
                         HeroHelper.getSandalWoodEquipFailure(true); // Increase failure
                     }
-                    setStoredValue(HHStoredVarPrefixKey + TK.autoLoop, "true");
-                    setTimeout(autoLoop, randomInterval(500, 800));
                     LogUtils_logHHAuto(`equipBooster: resolving with ${data.success}`);
-                    resolve(data.success);
+                    settle(!!data.success);
                 }, function (err) {
                     LogUtils_logHHAuto('equipBooster: AJAX error callback - ' + err);
-                    setStoredValue(HHStoredVarPrefixKey + TK.autoLoop, "true");
-                    setTimeout(autoLoop, randomInterval(500, 800));
+                    // Network/server error also implies our cached state may be wrong — invalidate.
+                    deleteStoredValue(HHStoredVarPrefixKey + TK.boosterStatusLastUpdate);
                     HeroHelper.getSandalWoodEquipFailure(true); // Increase failure
                     LogUtils_logHHAuto('equipBooster: resolving with false');
-                    resolve(false);
+                    settle(false);
                 });
                 // change referer
                 window.history.replaceState(null, '', addNutakuSession(currentPath));
@@ -21394,7 +22344,7 @@ class ConfigHelper {
             environnement = HHKnownEnvironnements[window.location.hostname].name;
         }
         else {
-            fillHHPopUp("unknownURL", "Game URL unknown", '<p>This HH URL is unknown to the script.<br>To add it please open an issue in <a href="https://github.com/Roukys/HHauto/issues" target="_blank">Github</a> with following informations : <br>Hostname : ' + window.location.hostname + '<br>gameID : ' + $('body[page][id]').attr('id') + '<br>You can also use this direct link : <a  target="_blank" href="https://github.com/Roukys/HHauto/issues/new?template=enhancement_request.md&title=Support%20for%20' + window.location.hostname + '&body=Please%20add%20new%20URL%20with%20these%20infos%20%3A%20%0A-%20hostname%20%3A%20' + window.location.hostname + '%0A-%20gameID%20%3A%20' + $('body[page][id]').attr('id') + '%0AThanks">Github issue</a></p>');
+            fillHHPopUp("unknownURL", "Game URL unknown", '<p>This HH URL is unknown to the script.<br>To add it please open an issue in <a href="https://github.com/OldRon1977/HHauto/issues" target="_blank">Github</a> with following informations : <br>Hostname : ' + window.location.hostname + '<br>gameID : ' + $('body[page][id]').attr('id') + '<br>You can also use this direct link : <a  target="_blank" href="https://github.com/OldRon1977/HHauto/issues/new?template=enhancement_request.md&title=Support%20for%20' + window.location.hostname + '&body=Please%20add%20new%20URL%20with%20these%20infos%20%3A%20%0A-%20hostname%20%3A%20' + window.location.hostname + '%0A-%20gameID%20%3A%20' + $('body[page][id]').attr('id') + '%0AThanks">Github issue</a></p>');
         }
         return environnement;
     }
@@ -21710,11 +22660,8 @@ function handleTrollBattle(ctx) {
             const eventGirl = EventModule.getEventGirl();
             const eventMythicGirl = EventModule.getEventMythicGirl();
             const allTrollRaids = LoveRaidManager.isAnyActivated() ? LoveRaidManager.getTrollRaids() : [];
-            const minRaidStars = LoveRaidManager.getMinRaidStars();
-            const raidStarsFiltered = minRaidStars > 0 ? allTrollRaids.filter(r => r.girlGrade >= minRaidStars) : [];
-            const raidStarsRaid = raidStarsFiltered.length > 0
-                ? LoveRaidManager.getRaidToFight(raidStarsFiltered)
-                : undefined;
+            const raidStarsFiltered = LoveRaidManager.filterByRaidStars(allTrollRaids);
+            const raidStarsRaid = LoveRaidManager.getRaidStarsRaidToFight(raidStarsFiltered);
             // +Raid: user-selected girl bypasses grade filter, auto-mode respects it
             const loveRaid = LoveRaidManager.isActivated()
                 ? LoveRaidManager.getRaidToFight(allTrollRaids)
@@ -22507,6 +23454,9 @@ function handlePageSpecific(ctx) {
                     Booster.collectBoostersFromMarket = callItOnce(Booster.collectBoostersFromMarket);
                     setTimeout(Booster.collectBoostersFromMarket, 200);
                 }
+                if (!Booster.hasBoosterDataFromMarket()) {
+                    setTimeout(() => Shop.updateShop(), 300);
+                }
                 break;
             case ConfigHelper.getHHScriptVars("pagesIDHome"):
                 setTimeout(Season.displayRemainingTime, 500);
@@ -22535,6 +23485,7 @@ function handlePageSpecific(ctx) {
             case ConfigHelper.getHHScriptVars("pagesIDGirlPage"):
                 HaremGirl.moduleHaremGirl = callItOnce(HaremGirl.moduleHaremGirl);
                 HaremGirl.moduleHaremGirl();
+                HaremGirl.showSkillButtons();
                 HaremGirl.run = callItOnce(HaremGirl.run);
                 ctx.busy = yield HaremGirl.run();
                 break;
@@ -22861,6 +23812,159 @@ function autoLoop() {
             LogUtils_logHHAuto("autoLoop Disabled");
         }
     });
+}
+
+;// CONCATENATED MODULE: ./src/Service/FeaturePopupService.ts
+// FeaturePopupService.ts
+//
+// Version-gated "What's New" popup to inform users about important changes
+// such as breaking changes, reset settings, or new features that require
+// attention.
+//
+// Activation: Set FEATURE_POPUP_VERSION to a specific version string
+// (e.g. "7.34.2") to show the popup for that version. Set to "0" to
+// deactivate (default). The popup only appears when the current script
+// version matches FEATURE_POPUP_VERSION exactly.
+//
+// Users can:
+//   - "Remind me later" (up to FEATURE_POPUP_MAX_REMINDERS times)
+//   - Close button (permanently dismiss for this version)
+//
+// When activated for a new version, dismiss counters reset automatically.
+
+
+
+/**
+ * Maximum number of "Remind me later" clicks before the popup is suppressed
+ * for the current version. Default: 3 for normal "What's New" popups. Set to
+ * Number.MAX_SAFE_INTEGER to disable the limit (popup keeps reappearing until
+ * the user clicks the close button).
+ */
+const FEATURE_POPUP_MAX_REMINDERS = Number.MAX_SAFE_INTEGER;
+/**
+ * Label of the close button. Default: "Close" for normal "What's New" popups.
+ */
+const FEATURE_POPUP_CLOSE_LABEL = "OK";
+/**
+ * Set to a specific version (e.g. "7.34.2") to activate the feature popup
+ * for that version. Set to "0" to deactivate (default).
+ */
+const FEATURE_POPUP_VERSION = "7.35.15";
+/**
+ * Title shown in the popup header.
+ */
+const FEATURE_POPUP_TITLE = "HHAuto repository is moving";
+/**
+ * HTML content for the feature popup.
+ * Update this each time you activate the popup for a new version.
+ */
+const FEATURE_POPUP_CONTENT = `
+  <div style="padding:10px; max-width:520px; color:#333;">
+    <p style="font-size:15px; font-weight:bold; margin-bottom:10px;">HHAuto repository is moving</p>
+    <p style="margin-bottom:10px;">The HHAuto GitHub repository is being transferred to a new owner in the coming days:</p>
+    <ul style="margin-bottom:10px;">
+      <li>Old: <code>github.com/Roukys/HHauto</code></li>
+      <li>New: <b style="color:#d00;">github.com/OldRon1977/HHauto</b></li>
+    </ul>
+    <p style="margin-bottom:6px;"><b>What this means for you:</b></p>
+    <ul style="margin-bottom:10px; font-size:12px;">
+      <li>GitHub redirects old URLs to the new owner automatically — no action needed in most cases.</li>
+      <li>Tampermonkey will pick up future updates from the new URL on its next auto-update cycle.</li>
+      <li>Your settings and data are stored locally in Tampermonkey and remain untouched.</li>
+    </ul>
+    <p style="margin-bottom:10px; font-size:12px;">If updates ever stop arriving after the transfer, reinstall HHAuto from the new URL above.</p>
+    <p style="margin-bottom:15px; font-size:13px;">
+      Big thanks to <b>Roukys</b> for providing the home of HHAuto for so many years.<br>
+      Special thanks to <b>deuxge</b>, the main maintainer in recent years, who continues to keep HHAuto alive!
+    </p>
+    <p style="margin-bottom:10px; font-size:11px; color:#888; font-style:italic;">
+      This reminder will reappear with future versions until the transfer is complete. Click "OK" to dismiss it for the current version.
+    </p>
+  </div>
+`;
+class FeaturePopupService {
+    /**
+     * Check whether the feature popup should be shown.
+     * Only active when FEATURE_POPUP_VERSION matches the current script version.
+     * Dismiss counters reset automatically when activated for a new version.
+     */
+    static shouldShowPopup() {
+        if (FEATURE_POPUP_VERSION === "0")
+            return false;
+        const currentVersion = GM.info.script.version;
+        if (currentVersion !== FEATURE_POPUP_VERSION)
+            return false;
+        // Reset dismiss state when activated for a new version
+        const shownForVersion = getStoredValue(HHStoredVarPrefixKey + TK.featurePopupShown);
+        if (shownForVersion !== "0" && shownForVersion !== FEATURE_POPUP_VERSION) {
+            setStoredValue(HHStoredVarPrefixKey + TK.featurePopupShown, "0");
+            setStoredValue(HHStoredVarPrefixKey + TK.featurePopupDismissCount, "0");
+        }
+        if (shownForVersion === FEATURE_POPUP_VERSION)
+            return false;
+        const dismissCount = Number(getStoredValue(HHStoredVarPrefixKey + TK.featurePopupDismissCount) || "0");
+        if (dismissCount >= FEATURE_POPUP_MAX_REMINDERS)
+            return false;
+        return true;
+    }
+    /**
+     * Show the feature popup.
+     */
+    static showPopup() {
+        const content = FeaturePopupService.buildPopupContent();
+        fillHHPopUp("featurePopup", FEATURE_POPUP_TITLE, content);
+        FeaturePopupService.bindPopupEvents();
+    }
+    /**
+     * Mark popup as shown for the current active version.
+     */
+    static markAsShown() {
+        setStoredValue(HHStoredVarPrefixKey + TK.featurePopupShown, FEATURE_POPUP_VERSION);
+    }
+    /**
+     * Increment dismiss counter for "Remind me later".
+     */
+    static remindLater() {
+        const count = Number(getStoredValue(HHStoredVarPrefixKey + TK.featurePopupDismissCount) || "0");
+        setStoredValue(HHStoredVarPrefixKey + TK.featurePopupDismissCount, String(count + 1));
+        const limitDisplay = FEATURE_POPUP_MAX_REMINDERS >= Number.MAX_SAFE_INTEGER ? '∞' : String(FEATURE_POPUP_MAX_REMINDERS);
+        LogUtils_logHHAuto(`Feature popup postponed (${count + 1}/${limitDisplay}).`);
+        maskHHPopUp();
+    }
+    /**
+     * Permanently dismiss the popup for this version.
+     */
+    static dismiss() {
+        FeaturePopupService.markAsShown();
+        LogUtils_logHHAuto("Feature popup dismissed for version " + FEATURE_POPUP_VERSION + ".");
+        maskHHPopUp();
+    }
+    // ── Private helpers ──
+    static buildPopupContent() {
+        const dismissCount = Number(getStoredValue(HHStoredVarPrefixKey + TK.featurePopupDismissCount) || "0");
+        const isUnlimited = FEATURE_POPUP_MAX_REMINDERS >= Number.MAX_SAFE_INTEGER;
+        const remainingReminders = FEATURE_POPUP_MAX_REMINDERS - dismissCount;
+        const showRemind = isUnlimited || remainingReminders > 0;
+        const remindLabel = isUnlimited
+            ? 'Remind me later'
+            : 'Remind me later (' + remainingReminders + ' left)';
+        return FEATURE_POPUP_CONTENT
+            + '<div style="display:flex; justify-content:space-between; margin-top:15px; padding:0 10px 10px 10px; font-size:12px;">'
+            + (showRemind
+                ? '<a id="featurePopupRemind" href="#" style="color:#666;">' + remindLabel + '</a>'
+                : '<span></span>')
+            + '<label class="myButton" id="featurePopupClose" style="cursor:pointer; padding:6px 16px;">' + FEATURE_POPUP_CLOSE_LABEL + '</label>'
+            + '</div>';
+    }
+    static bindPopupEvents() {
+        $('#featurePopupRemind').off('click').on('click', function (e) {
+            e.preventDefault();
+            FeaturePopupService.remindLater();
+        });
+        $('#featurePopupClose').off('click').on('click', function () {
+            FeaturePopupService.dismiss();
+        });
+    }
 }
 
 ;// CONCATENATED MODULE: ./src/Service/InfoService.ts
@@ -23399,7 +24503,11 @@ function reviverMap(key, value) {
 // settings they actually use. Data is collected to identify unused
 // features that can be removed to reduce complexity.
 //
-// Triggered once after a version upgrade. Users can:
+// Version-gated: The popup only appears when SURVEY_ACTIVE_IN_VERSION
+// is set to a specific version string AND the current script version
+// matches. Set to "0" to deactivate (default).
+//
+// Users can:
 //   - Share anonymously via Google Form (POST with GM_xmlhttpRequest)
 //   - Copy to clipboard
 //   - Dismiss (permanently) or "Remind me later" (up to 3 times)
@@ -23416,14 +24524,31 @@ function reviverMap(key, value) {
 const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSe1_iM197Xfq2kEKR2jBA64_r28BpOerTlMywVfMEmsvXvDMQ/formResponse';
 const GOOGLE_FORM_ENTRY = 'entry.875507092';
 const MAX_REMIND_COUNT = 3;
+/**
+ * Set to a specific version (e.g. "7.34.0") to activate the survey popup
+ * for that version. Set to "0" to deactivate (default).
+ */
+const SURVEY_ACTIVE_IN_VERSION = "0";
 class SurveyService {
     /**
      * Check whether the survey popup should be shown.
-     * Called from StartService after a version upgrade is detected.
+     * Only active when SURVEY_ACTIVE_IN_VERSION matches the current script version.
+     * Dismiss counters reset automatically when activated for a new version.
      */
     static shouldShowSurvey() {
-        const alreadyShown = getStoredValue(HHStoredVarPrefixKey + TK.surveyShown);
-        if (alreadyShown === "true")
+        if (SURVEY_ACTIVE_IN_VERSION === "0")
+            return false;
+        const currentVersion = GM.info.script.version;
+        if (currentVersion !== SURVEY_ACTIVE_IN_VERSION)
+            return false;
+        // Reset dismiss state when activated for a new version
+        const shownForVersion = getStoredValue(HHStoredVarPrefixKey + TK.surveyShown);
+        if (shownForVersion !== "0" && shownForVersion !== SURVEY_ACTIVE_IN_VERSION) {
+            // Different version was tracked before → reset for the new activation
+            setStoredValue(HHStoredVarPrefixKey + TK.surveyShown, "0");
+            setStoredValue(HHStoredVarPrefixKey + TK.surveyDismissCount, "0");
+        }
+        if (shownForVersion === SURVEY_ACTIVE_IN_VERSION)
             return false;
         const dismissCount = Number(getStoredValue(HHStoredVarPrefixKey + TK.surveyDismissCount) || "0");
         if (dismissCount >= MAX_REMIND_COUNT)
@@ -23534,10 +24659,10 @@ class SurveyService {
         }
     }
     /**
-     * Mark survey as permanently shown (won't appear again).
+     * Mark survey as shown for the current active version (won't appear again for this version).
      */
     static markAsShown() {
-        setStoredValue(HHStoredVarPrefixKey + TK.surveyShown, "true");
+        setStoredValue(HHStoredVarPrefixKey + TK.surveyShown, SURVEY_ACTIVE_IN_VERSION);
     }
     /**
      * Increment dismiss counter for "Remind me later".
@@ -23722,8 +24847,12 @@ function disableToolTipsDisplay(important = false) {
 
 
 
+
 var started = false;
 var debugMenuID;
+var heroRetryTimer = null;
+var heroRetryCount = 0;
+const HERO_MAX_RETRIES = 15;
 class StartService {
     static checkVersion() {
         let previousScriptVersion = getStoredValue(HHStoredVarPrefixKey + TK.scriptversion);
@@ -23809,11 +24938,22 @@ function hardened_start() {
 function start() {
     var _a, _b;
     if (((_a = unsafeWindow.shared) === null || _a === void 0 ? void 0 : _a.Hero) === undefined) {
-        LogUtils_logHHAuto('???no Hero???');
-        $('.hh_logo').trigger('click');
-        setTimeout(hardened_start, 5000);
+        heroRetryCount++;
+        if (heroRetryCount > HERO_MAX_RETRIES) {
+            LogUtils_logHHAuto('Hero object not available after ' + HERO_MAX_RETRIES + ' retries. Giving up. Try reloading the page.');
+            return;
+        }
+        LogUtils_logHHAuto('???no Hero??? (attempt ' + heroRetryCount + '/' + HERO_MAX_RETRIES + ')');
+        started = false;
+        heroRetryTimer = setTimeout(hardened_start, 5000);
         return;
     }
+    // Hero available, cancel any pending retry and reset counter
+    if (heroRetryTimer !== null) {
+        clearTimeout(heroRetryTimer);
+        heroRetryTimer = null;
+    }
+    heroRetryCount = 0;
     if ($("a[rel='phoenix_member_login']").length > 0) {
         LogUtils_logHHAuto('Not logged in, please login first!');
         return;
@@ -23841,18 +24981,20 @@ function start() {
         setTimers(getStoredJSON(HHStoredVarPrefixKey + TK.Timers, {}));
     }
     // clearEventData("onlyCheckEventsHHScript");
-    // Migrate +Raid Stars stored value to grade-based format (runs every load)
-    // Handles: old boolean ("true"/"false"), old selectedIndex ("1"/"2"/"3"), valid grades ("0"/"3"/"5"/"6")
+    // Migrate +Raid Stars stored value to string-based selection (runs every load).
+    // Handles: old boolean ("true"/"false"), old selectedIndex ("1"/"2"/"4"),
+    // old grade-based ("0"/"3"/"5"/"6"), current string ("off"/"exact3"/"min3"/"exact5").
     const raidStarsVal = getStoredValue(HHStoredVarPrefixKey + SK.plusLoveRaidMythic);
     if (raidStarsVal !== undefined && raidStarsVal !== null) {
-        const gradeMap = {
-            "true": "6", "false": "0", // old boolean format
-            "1": "3", "2": "5", "4": "5" // old selectedIndex format (1→3★, 2→5★)
-            // "0","3","5","6" are already valid grade values
+        const selectionMap = {
+            "true": "exact5", "false": "off", // old boolean format
+            "1": "exact3", "2": "exact5", "4": "exact5", // old selectedIndex format
+            "0": "off", "3": "exact3", "5": "exact5", "6": "exact5" // old grade-based format
+            // "off","exact3","min3","exact5" are already valid
         };
-        if (gradeMap[raidStarsVal] !== undefined) {
-            setStoredValue(HHStoredVarPrefixKey + SK.plusLoveRaidMythic, gradeMap[raidStarsVal]);
-            LogUtils_logHHAuto("Migrated +Raid Stars value '" + raidStarsVal + "' → '" + gradeMap[raidStarsVal] + "'");
+        if (selectionMap[raidStarsVal] !== undefined) {
+            setStoredValue(HHStoredVarPrefixKey + SK.plusLoveRaidMythic, selectionMap[raidStarsVal]);
+            LogUtils_logHHAuto("Migrated +Raid Stars value '" + raidStarsVal + "' → '" + selectionMap[raidStarsVal] + "'");
         }
     }
     setDefaults();
@@ -23904,8 +25046,8 @@ function start() {
     setMenuValues();
     getMenuValues();
     manageToolTipsDisplay();
-    $("#git").on("click", function () { window.open("https://github.com/Roukys/HHauto/wiki"); });
-    $("#ReportBugs").on("click", function () { window.open("https://github.com/Roukys/HHauto/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc"); });
+    $("#git").on("click", function () { window.open("https://github.com/OldRon1977/HHauto/wiki"); });
+    $("#ReportBugs").on("click", function () { window.open("https://github.com/OldRon1977/HHauto/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc"); });
     $("#loadConfig").on("click", function () {
         let LoadDialog = '<p>After you select the file the settings will be automatically updated.</p><p> If nothing happened, then the selected file contains errors.</p><p id="LoadConfError"style="color:#f53939;"></p><p><label><input type="file" id="myfile" accept=".json" name="myfile"> </label></p>';
         fillHHPopUp("loadConfig", getTextForUI("loadConfig", "elementText"), LoadDialog);
@@ -23999,7 +25141,13 @@ function start() {
         });
         currentInput.checkValidity();
     });
-    setStoredValue(HHStoredVarPrefixKey + TK.autoLoop, "true");
+    // Don't re-enable autoLoop if a harem tool flow (Stuff Team, Give XP, etc.)
+    // is in progress — these multi-page flows rely on autoLoop staying disabled
+    // to prevent action handlers from interrupting with page navigations.
+    const activeHaremFlow = getStoredValue(HHStoredVarPrefixKey + TK.haremGirlMode);
+    if (!activeHaremFlow) {
+        setStoredValue(HHStoredVarPrefixKey + TK.autoLoop, "true");
+    }
     if (typeof getStoredValue(HHStoredVarPrefixKey + TK.freshStart) == "undefined" || isNaN(Number(getStoredValue(HHStoredVarPrefixKey + TK.autoLoopTimeMili)))) {
         setDefaults(true);
     }
@@ -24028,14 +25176,14 @@ function start() {
         deleteStoredValue(HHStoredVarPrefixKey + TK.LastPageCalled);
     }
     getPage(true);
-    // Settings survey: show popup on version upgrade, delay autoLoop while visible
+    // Version-gated popups: show but don't block autoLoop
+    if (FeaturePopupService.shouldShowPopup()) {
+        FeaturePopupService.showPopup();
+    }
     if (SurveyService.shouldShowSurvey()) {
         SurveyService.showSurveyPopup();
-        setTimeout(autoLoop, 30000);
     }
-    else {
-        setTimeout(autoLoop, 1000);
-    }
+    setTimeout(autoLoop, 1000);
     // Manual survey button
     $("#settingsSurvey").on("click", function () {
         SurveyService.showSurveyPopup();
@@ -24077,6 +25225,9 @@ function start() {
 
 
 
+
+
+
 ;// CONCATENATED MODULE: ./src/index.ts
 // index.ts - HHAuto entry point
 //
@@ -24093,10 +25244,7 @@ function start() {
 // error pages, and delegates to start() which sets up the full menu,
 // timers, and auto-loop.
 
-setTimeout(hardened_start, 5000);
-(function () {
-    hardened_start();
-})();
+hardened_start();
 
 /******/ })()
 ;

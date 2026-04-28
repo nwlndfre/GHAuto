@@ -42,7 +42,7 @@ HHAuto_ToolTips.en['autoMissionCollect'] = { version: "5.6.24", elementText: "Co
 HHAuto_ToolTips.en['compactMissions'] = { version: "5.24.0", elementText: "Compact", tooltip: "Add styles to compact missions display"};
 HHAuto_ToolTips.en['invertMissions'] = { version: "7.16.2", elementText: "Invert", tooltip: "Start with longer mission instead of shorter"};
 HHAuto_ToolTips.en['autoTrollTitle'] = { version: "5.6.24", elementText: "Battle Troll"};
-HHAuto_ToolTips.en['autoTrollBattle'] = { version: "5.6.24", elementText: "Enable", tooltip: "if enabled : Automatically battle troll selected"};
+HHAuto_ToolTips.en['autoTrollBattle'] = { version: "7.35.4", elementText: "Standard Troll on/off", tooltip: "if enabled : Automatically battle standard troll selected"};
 HHAuto_ToolTips.en['autoTrollSelector'] = { version: "5.6.24", elementText: "Troll selector", tooltip: "Select troll to be fought."};
 HHAuto_ToolTips.en['autoTrollThreshold'] = { version: "5.6.24", elementText: "Threshold", tooltip: "(Integer 0 to 19)<br>Minimum troll fight to keep"};
 HHAuto_ToolTips.en['autoTrollRunThreshold'] = { version: "6.8.0", elementText: "Run Threshold", tooltip: "Minimum troll fights before script start spending<br> 0 to spend as soon as energy above threshold"};
@@ -56,11 +56,11 @@ HHAuto_ToolTips.en['plusLoveRaid'] = { version: "7.32.1", elementText: "+Raid", 
 HHAuto_ToolTips.en['loveRaidSelector'] = { version: "7.32.5", elementText: "Raid selector", tooltip: "Select girl to be targeted during Love Raid.<br>Resets to 'Choose a girl' when girl is won (and skins are done or +Girl Skins is OFF)."};
 HHAuto_ToolTips.en['plusGirlSkins'] = { version: "7.32.5", elementText: "+Girl Skins", tooltip: "Continue fighting after girl shards are complete to collect girl skins.<br>Applies to both Events and Raids.<br>When OFF: stops fighting once girl is won (100 shards).<br>When ON: continues if skin shards are still available." };
 HHAuto_ToolTips.en['autoTrollLoveRaidByPassThreshold'] = { version: "7.32.1", elementText: "Bypass reserve", tooltip: "Bypass energy threshold for +Raid fights as long as a raid girl is available."};
-HHAuto_ToolTips.en['raidStarsSelector'] = { version: "7.32.3", elementText: "+Raid Stars", tooltip: "Fight Love Raids by minimum girl grade. Independent from +Raid and Auto Troll.<br>Raids matching the selected grade are claimed by +Raid Stars; remaining raids go to +Raid (if enabled).<br>Bypasses energy threshold like +Mythic Event."};
-HHAuto_ToolTips.en['raidStarsOff'] = { version: "7.32.3", elementText: "Off"};
-HHAuto_ToolTips.en['raidStars3'] = { version: "7.32.3", elementText: "≥3 ★★★"};
-HHAuto_ToolTips.en['raidStars5'] = { version: "7.32.3", elementText: "≥5 ★★★★★"};
-HHAuto_ToolTips.en['raidStars6'] = { version: "7.32.3", elementText: "6 ★★★★★★"};
+HHAuto_ToolTips.en['raidStarsSelector'] = { version: "7.35.5", elementText: "+Raid Stars", tooltip: "Fight Love Raids by girl grade. Independent from +Raid and Auto Troll.<br>Picks the first ending raid matching the selected grade (ignores the Raid selector dropdown).<br>Raids matching the grade are claimed by +Raid Stars; remaining raids go to +Raid (if enabled).<br>Bypasses energy threshold like +Mythic Event."};
+HHAuto_ToolTips.en['raidStarsOff'] = { version: "7.35.5", elementText: "Off"};
+HHAuto_ToolTips.en['raidStarsExact3'] = { version: "7.35.5", elementText: "=3 ★★★"};
+HHAuto_ToolTips.en['raidStarsMin3'] = { version: "7.35.5", elementText: "≥3 ★★★"};
+HHAuto_ToolTips.en['raidStarsExact5'] = { version: "7.35.5", elementText: "=5 ★★★★★"};
 HHAuto_ToolTips.en['buyLoveRaidCombat'] = { version: "7.25.6", elementText: "Buy comb.for Raid", tooltip: "<p style = 'color:red'>/ !\\ Kobans spending function /!\\<br>("+HHAuto_ToolTips.en['spendKobans0'].elementText+" must be ON)</p > If enabled: <br>Buying combat point during Love Raid event (if not going under Koban bank value), this will bypass threshold if event girl shards available."};
 HHAuto_ToolTips.en['autoBuyLoveRaidTrollNumber'] = { version: "7.25.6", elementText: "Raid auto buy", tooltip: "Number of combat points to be bought during an love raid event"};
 HHAuto_ToolTips.en['plusEventLoveRaidSandalWood'] = { version: "7.25.8", elementText: "Equip Sandalwood", tooltip: "Will equip sandalwood before LoveRaid fight if enough in inventory<br>Do not equip if less than 10 shards to win<br>Will not buy any." };
@@ -256,10 +256,7 @@ HHAuto_ToolTips.en['useX50FightsAllowNormalEvent'] = { version: "5.6.24", elemen
 HHAuto_ToolTips.en['autoBuy'] = { version: "5.6.24", elementText: "Market"};
 HHAuto_ToolTips.en['minShardsX50'] = { version: "5.6.24", elementText: "Min. shards x50", tooltip: "Only use x50 button if remaining shards of current girl is equal or above this limit."};
 HHAuto_ToolTips.en['minShardsX10'] = { version: "5.6.24", elementText: "Min. shards x10", tooltip: "Only use x10 button if remaining shards of current girl is equal or above this limit."};
-HHAuto_ToolTips.en['sandalwoodShardsX10Limit'] = { version: "7.33.0", elementText: "SW shards x10 limit", tooltip: "When collected shards reach this percentage, downgrade from x50 to x10 battles to avoid wasting Sandalwood doses."};
-HHAuto_ToolTips.en['sandalwoodShardsX1Limit'] = { version: "7.33.0", elementText: "SW shards x1 limit", tooltip: "When collected shards reach this percentage, downgrade from x10 to x1 battles to avoid wasting Sandalwood doses."};
-HHAuto_ToolTips.en['sandalwoodDosesX10Limit'] = { version: "7.33.0", elementText: "SW doses x10 limit", tooltip: "When remaining Sandalwood doses drop to this number or below, downgrade from x50 to x10 battles."};
-HHAuto_ToolTips.en['sandalwoodDosesX1Limit'] = { version: "7.33.0", elementText: "SW doses x1 limit", tooltip: "When remaining Sandalwood doses drop to this number or below, downgrade from x10 to x1 battles."};
+HHAuto_ToolTips.en['sandalwoodMinShardsThreshold'] = { version: "7.34.16", elementText: "SW min shards", tooltip: "Stop equipping Sandalwood when remaining shards fall to this value or below. 0 = always equip Sandalwood."};
 HHAuto_ToolTips.en['mythicGirlNext'] = { version: "5.6.24", elementText: "Mythic girl wave"};
 HHAuto_ToolTips.en['RefreshOppoList'] = { version: "5.6.24", elementText: "Refresh Opponent list", tooltip: "Allow to force a refresh of opponent list."};
 HHAuto_ToolTips.en['HideBeatenOppo'] = { version: "5.7.1", elementText: "Hide", tooltip: "Allow to hide beaten opponent from the list."};
@@ -334,7 +331,7 @@ HHAuto_ToolTips.en['Name'] = { version: "5.6.24", elementText: "Name", tooltip: 
 HHAuto_ToolTips.en['sortPowerCalc'] = { version: "5.6.24", elementText: "Sort by score", tooltip: "Sorting opponents by score."};
 HHAuto_ToolTips.en['translate'] = { version: "5.6.25", elementText: "Translate", tooltip: ""};
 HHAuto_ToolTips.en['saveTranslation'] = { version: "5.6.25", elementText: "Save translation"};
-HHAuto_ToolTips.en['saveTranslationText'] = { version: "5.6.25", elementText: "Below you'll find all text that can be translated.<br>To contribute, modify directly in the cell the translation (if empty click on the blue part ;))<br><p style='margin-block-start:0px;margin-block-end:0px;color:gray'>Gray cells are translations needing update.</p><p style='margin-block-start:0px;margin-block-end:0px;color:blue'>Blue cell are missing translations</p><p style='margin-block-start:0px;margin-block-end:0px;color:red'>Please try to keep the text length to prevent UI issues.</p>At the bottom you'll find a button to generate a txt file with your modification.<br>Please upload it to : <a target='_blank' href='https://github.com/Roukys/HHauto/issues/426'>Github</a>", tooltip: ""};
+HHAuto_ToolTips.en['saveTranslationText'] = { version: "5.6.25", elementText: "Below you'll find all text that can be translated.<br>To contribute, modify directly in the cell the translation (if empty click on the blue part ;))<br><p style='margin-block-start:0px;margin-block-end:0px;color:gray'>Gray cells are translations needing update.</p><p style='margin-block-start:0px;margin-block-end:0px;color:blue'>Blue cell are missing translations</p><p style='margin-block-start:0px;margin-block-end:0px;color:red'>Please try to keep the text length to prevent UI issues.</p>At the bottom you'll find a button to generate a txt file with your modification.<br>Please upload it to : <a target='_blank' href='https://github.com/OldRon1977/HHauto/issues/426'>Github</a>", tooltip: ""};
 HHAuto_ToolTips.en['menuCollectable'] = { version: "5.6.47", elementText: "Collectable preferences.", tooltip: ""};
 HHAuto_ToolTips.en['menuCollectableText'] = { version: "5.6.47", elementText: "Please select the collectables you want to be automatically collected.", tooltip: ""};
 HHAuto_ToolTips.en['menuDailyCollectableText'] = { version: "5.6.49", elementText: "Please select the collectables you want to be immediately collected.", tooltip: ""};

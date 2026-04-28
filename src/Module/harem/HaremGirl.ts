@@ -24,7 +24,7 @@ import {
 } from "../../Helper/index";
 import { Harem } from "../index";
 import { gotoPage } from "../../Service/index";
-import { displayHHPopUp, fillHHPopUp, isJSON, logHHAuto, maskHHPopUp } from "../../Utils/index";
+import { displayHHPopUp, fillHHPopUp, logHHAuto, maskHHPopUp } from "../../Utils/index";
 import { HHAuto_inputPattern, HHStoredVarPrefixKey, SK, TK } from "../../config/index";
 import { KKHaremGirl, TeamData } from "../../model/index";
 
@@ -60,7 +60,7 @@ export class HaremGirl {
     }
 
     static SKILL_BUTTON_SELECTOR = "#skills .skill-upgrade button.blue_button_L:not([disabled])";
-    static SKILL_BUTTON_SELECTOR_PRIO = "#skills .skill-upgrade [skill-id='2'] button.blue_button_L:not([disabled]),#skills .skill-upgrade [skill-id='4'] button.blue_button_L:not([disabled])";
+    static SKILL_ORDER_PRIO = [2,5,4,8];
 
     static getCurrentGirl(): KKHaremGirl {
         return unsafeWindow.girl;
@@ -529,9 +529,6 @@ export class HaremGirl {
             if (getStoredValue(HHStoredVarPrefixKey + SK.showHaremTools) === "true") {
                 HaremGirl.addGirlMenu();
             }
-            if (getStoredValue(HHStoredVarPrefixKey + SK.showHaremSkillsButtons) === "true") {
-                HaremGirl.showSkillButtons();
-            }
 
         } catch ({ errName, message }) {
             logHHAuto(`ERROR: Can't add menu girl: ${errName}, ${message}`);
@@ -540,7 +537,7 @@ export class HaremGirl {
     }
 
     static showSkillButtons() {
-        const showSkillButtons = true; // Todo add settings
+        const showSkillButtons = getStoredValue(HHStoredVarPrefixKey + SK.showHaremSkillsButtons) === "true";
         if (showSkillButtons && $('.hhsingleskill').length <= 0) {
             $('.skill-upgrade-row ').each((index, row) => {
                 const rowHasButton = $('button.blue_button_L:not([disabled])', $(row)).length > 0;
@@ -718,6 +715,7 @@ export class HaremGirl {
                     $('#girl-equip').trigger('click');
                     await TimeHelper.sleep(randomInterval(400, 700));
 
+                    await HaremGirl.optimizeEquipmentSlots(girl);
                 }
                 if (upgradeSkill) {
                     HaremGirl.switchTabs(HaremGirl.SKILLS_TYPE);
@@ -750,9 +748,9 @@ export class HaremGirl {
             console.error(message);
             setStoredValue(HHStoredVarPrefixKey + TK.autoLoop, "true");
             Harem.clearHaremToolVariables();
-        } finally {
             return false;
         }
+        return false;
     }
 
     static async singleSkillsUpgrade(skillId: string) {
@@ -773,8 +771,12 @@ export class HaremGirl {
 
     static async fullSkillsUpgrade(maxTier=5) {
         try {
-            let skillButton = $(HaremGirl.SKILL_BUTTON_SELECTOR_PRIO).first(); // First percentage skills
-            if(skillButton.length == 0) {
+            let skillButton:JQuery<HTMLElement> | null = null;
+            for(let i=0; i< HaremGirl.SKILL_ORDER_PRIO.length; i++) {
+                skillButton = $(`#skills .skill-upgrade [skill-id='${HaremGirl.SKILL_ORDER_PRIO[i]}'] button.blue_button_L:not([disabled])`).first();
+                if (skillButton.length > 0) break; // break loop at first found skill to upgrade
+            }
+            if (!skillButton || skillButton.length == 0) {
                 skillButton = $(HaremGirl.SKILL_BUTTON_SELECTOR).first();
             }
             if(skillButton.length > 0) {
@@ -814,12 +816,284 @@ export class HaremGirl {
     static HaremClearGirlPopup(retry = false)
     {
         try {
-            $("#popup_message_harem").remove(); 
+            $("#popup_message_harem").remove();
             if($("#popup_message_harem").length > 0 && !retry) {
                 setTimeout(() => { HaremGirl.HaremClearGirlPopup(true)}, 1500);
             }
         } catch (error) {
             logHHAuto("Can't remove popup_message_harem");
         }
+    }
+
+    private static equipItem(girlId: number | string, armorId: number | string): Promise<any> {
+        return new Promise((resolve) => {
+            $.ajax({
+                url: '/ajax.php',
+                type: 'POST',
+                data: {
+                    action: 'girl_equipment_equip',
+                    id_girl: girlId,
+                    id_girl_armor: armorId,
+                    sort_by: 'rarity',
+                    sorting_order: 'asc'
+                },
+                dataType: 'json',
+                success: function (data: any) {
+                    logHHAuto(`equipItem response for armor ${armorId}: success=${data?.success}, keys=${JSON.stringify(Object.keys(data || {}))}`);
+                    resolve(data);
+                },
+                error: function (xhr: any, status: string, error: string) {
+                    logHHAuto(`equipItem HTTP error for armor ${armorId}: status=${status}, error=${error}, response=${xhr?.responseText?.substring(0, 200)}`);
+                    resolve(null);
+                }
+            });
+        });
+    }
+
+    private static scoreItem(item: any, girl: KKHaremGirl): { caracSum: number, resonanceMatches: number } {
+        const c = item.caracs;
+        const caracSum = (c.carac1 || 0) + (c.carac2 || 0) + (c.carac3 || 0) + (c.damage || 0) + (c.defense || 0) + (c.ego || 0);
+        let resonanceMatches = 0;
+        if (item.resonance_bonuses && !Array.isArray(item.resonance_bonuses)) {
+            const rb = item.resonance_bonuses;
+            if (rb.class && String(rb.class.identifier) === String(girl.class)) resonanceMatches++;
+            if (rb.element && String(rb.element.identifier) === String(girl.element)) resonanceMatches++;
+            if (rb.figure && String(rb.figure.identifier) === String(girl.figure)) resonanceMatches++;
+        }
+        return { caracSum, resonanceMatches };
+    }
+
+    private static findBestItem(items: any[], girl: KKHaremGirl): any {
+        if (items.length === 0) return null;
+        return items.sort((a, b) => {
+            const sa = HaremGirl.scoreItem(a, girl);
+            const sb = HaremGirl.scoreItem(b, girl);
+            if (sb.caracSum !== sa.caracSum) return sb.caracSum - sa.caracSum;
+            if (sb.resonanceMatches !== sa.resonanceMatches) return sb.resonanceMatches - sa.resonanceMatches;
+            return ((b.caracs.carac1||0)+(b.caracs.carac2||0)+(b.caracs.carac3||0))
+                 - ((a.caracs.carac1||0)+(a.caracs.carac2||0)+(a.caracs.carac3||0));
+        })[0];
+    }
+
+    private static isBetter(candidate: any, current: any, girl: KKHaremGirl): boolean {
+        if (!current || !current.caracs) return true;
+        const sc = HaremGirl.scoreItem(candidate, girl);
+        const se = HaremGirl.scoreItem(current, girl);
+        if (sc.caracSum > se.caracSum) return true;
+        if (sc.caracSum === se.caracSum && sc.resonanceMatches > se.resonanceMatches) return true;
+        return false;
+    }
+
+    /**
+     * Force the game's lazy-loaded inventory panel to render all items.
+     * The game renders inventory items on-demand as the container is scrolled.
+     * We scroll to the bottom repeatedly until the item count stabilises, then
+     * back to the top so the game has rendered every item into the DOM.
+     */
+    private static async forceLoadAllInventoryItems(): Promise<number> {
+        const countItems = () => $('.right-section .slot[data-d]').length;
+
+        // Find ALL scrollable elements in the right section (element with scrollHeight > clientHeight)
+        const scrollables: HTMLElement[] = [];
+        document.querySelectorAll('.right-section, .right-section *').forEach((el) => {
+            const h = el as HTMLElement;
+            if (h.scrollHeight > h.clientHeight + 5) scrollables.push(h);
+        });
+        // Also try the document/body as fallback
+        scrollables.push(document.scrollingElement as HTMLElement || document.body);
+
+        let prevCount = countItems();
+        logHHAuto(`forceLoadAllInventoryItems: found ${scrollables.length} scrollable elements, initial item count=${prevCount}`);
+
+        // Require 2 consecutive stable iterations before breaking — a single
+        // stable iteration can happen during a network hiccup while more items
+        // are still loading (see issue #1573).
+        let stableIterations = 0;
+        for (let iter = 0; iter < 15; iter++) {
+            // scroll each scrollable to its bottom and dispatch a scroll event
+            for (const s of scrollables) {
+                try {
+                    s.scrollTop = s.scrollHeight;
+                    s.dispatchEvent(new Event('scroll', { bubbles: true }));
+                } catch { /* ignore */ }
+            }
+            await TimeHelper.sleep(randomInterval(250, 400));
+            const curCount = countItems();
+            if (curCount === prevCount) {
+                stableIterations++;
+                if (stableIterations >= 2) break;
+            } else {
+                stableIterations = 0;
+                prevCount = curCount;
+            }
+        }
+        // scroll back up so the chosen item's scrollIntoView works reliably
+        for (const s of scrollables) {
+            try { s.scrollTop = 0; } catch { /* ignore */ }
+        }
+        return countItems();
+    }
+
+    static async optimizeEquipmentSlots(girl: KKHaremGirl) {
+        const equipmentSlots = $('.equipment_slot');
+        const slotCount = equipmentSlots.length;
+
+        logHHAuto(`Optimize equipment: checking ${slotCount} slots for ${girl.name}`);
+
+        for (let i = 0; i < slotCount; i++) {
+            const slot = equipmentSlots.eq(i);
+            slot.trigger('click');
+            // Short wait so the game kicks off its inventory request for this slot
+            await TimeHelper.sleep(randomInterval(100, 200));
+
+            // Force game to render all lazy-loaded inventory items into the DOM
+            const totalItems = await HaremGirl.forceLoadAllInventoryItems();
+
+            const equippedEl = slot.find('.slot[data-d]');
+            let equippedData: any = null;
+            if (equippedEl.length > 0 && equippedEl.attr('data-d')) {
+                try { equippedData = JSON.parse(equippedEl.attr('data-d')!); } catch { /* ignore */ }
+            }
+
+            const targetSlotIndex = equippedData?.slot_index ?? (i + 1);
+
+            const allDomItems: { el: JQuery<HTMLElement>, data: any }[] = [];
+            $('.right-section .slot[data-d]').each(function () {
+                const $el = $(this);
+                const raw = $el.attr('data-d');
+                if (!raw) return;
+                try {
+                    const data = JSON.parse(raw);
+                    if (data && data.caracs) allDomItems.push({ el: $el, data });
+                } catch { /* ignore */ }
+            });
+
+            // Filter candidates by slot_index so we don't compare pants to necklaces
+            const inventoryItems = allDomItems.filter(it => Number(it.data.slot_index) === Number(targetSlotIndex));
+
+            logHHAuto(`Slot ${i}: ${inventoryItems.length} candidates, equipped=${equippedData ? `L${equippedData.level} ${equippedData.rarity}` : 'none'}`);
+
+            if (inventoryItems.length === 0) {
+                logHHAuto(`Slot ${i}: no inventory items for slot_index=${targetSlotIndex}, skipping`);
+                continue;
+            }
+
+            // Rank candidates: total stats, then resonance, then individual stats
+            const sorted = inventoryItems.slice().sort((a, b) => {
+                const sa = HaremGirl.scoreItem(a.data, girl);
+                const sb = HaremGirl.scoreItem(b.data, girl);
+                if (sb.caracSum !== sa.caracSum) return sb.caracSum - sa.caracSum;
+                if (sb.resonanceMatches !== sa.resonanceMatches) return sb.resonanceMatches - sa.resonanceMatches;
+                const ca = a.data.caracs, cb = b.data.caracs;
+                return ((cb.carac1||0)+(cb.carac2||0)+(cb.carac3||0)) - ((ca.carac1||0)+(ca.carac2||0)+(ca.carac3||0));
+            });
+            const bestInventory = sorted[0];
+
+            const bestScore = HaremGirl.scoreItem(bestInventory.data, girl);
+            const shouldReplace = HaremGirl.isBetter(bestInventory.data, equippedData, girl);
+
+            if (shouldReplace) {
+                logHHAuto(`Slot ${i}: replacing with better item (L${bestInventory.data.level} ${bestInventory.data.rarity}, score=${bestScore.caracSum}, resonance=${bestScore.resonanceMatches})`);
+                // Capture previous equipped identity so we can verify a real change below (see issue #1573)
+                const previousEquippedKey = equippedData ? (equippedData.id_item ?? equippedData.id_equipement ?? JSON.stringify(equippedData)) : null;
+                const MAX_EQUIP_ATTEMPTS = 3;
+                let equipSucceeded = false;
+
+                for (let attempt = 1; attempt <= MAX_EQUIP_ATTEMPTS; attempt++) {
+                    // Scroll the chosen item into view
+                    const rawPreScroll = bestInventory.el.get(0);
+                    if (rawPreScroll && typeof rawPreScroll.scrollIntoView === 'function') {
+                        rawPreScroll.scrollIntoView({ block: 'center' });
+                        await TimeHelper.sleep(randomInterval(50, 100));
+                    }
+
+                    // Issue #1573: virtualized rendering can detach the original
+                    // node during scroll. Re-query by id_girl_armor and swap to the
+                    // fresh node before clicking.
+                    let raw: HTMLElement | undefined = bestInventory.el.get(0);
+                    if (!raw || !raw.isConnected) {
+                        const targetArmorId = bestInventory.data?.id_girl_armor;
+                        if (targetArmorId != null) {
+                            const $fresh = $('.right-section .slot[data-d]').filter(function () {
+                                try {
+                                    const d = JSON.parse($(this).attr('data-d') || '{}');
+                                    return d.id_girl_armor === targetArmorId;
+                                } catch { return false; }
+                            }).filter(function () {
+                                const r = $(this).get(0);
+                                return !!r && r.isConnected;
+                            }).first();
+                            if ($fresh.length > 0) {
+                                bestInventory.el = $fresh;
+                                raw = $fresh.get(0)!;
+                                logHHAuto(`Slot ${i}: item was detached, re-queried fresh node`);
+                                if (typeof raw.scrollIntoView === 'function') {
+                                    raw.scrollIntoView({ block: 'center' });
+                                    await TimeHelper.sleep(randomInterval(50, 100));
+                                }
+                            } else {
+                                logHHAuto(`Slot ${i}: no connected candidate after re-query, aborting attempts`);
+                                break;
+                            }
+                        } else {
+                            logHHAuto(`Slot ${i}: detached and no id_girl_armor to re-query, aborting attempts`);
+                            break;
+                        }
+                    }
+
+                    // Primary click on the item
+                    if (raw && typeof raw.click === 'function') {
+                        raw.click();
+                    } else {
+                        bestInventory.el.trigger('click');
+                    }
+                    await TimeHelper.sleep(randomInterval(100, 200));
+
+                    // Click the Equip confirm button (revealed after item selection)
+                    let $equipBtn = $('#girl-equipment-equip').removeClass('hidden').removeAttr('hidden');
+                    // Wait up to ~500ms for the button to become enabled
+                    for (let waitIter = 0; waitIter < 5 && $equipBtn.length > 0
+                        && ($equipBtn.prop('disabled') === true || $equipBtn.hasClass('disabled')); waitIter++) {
+                        await TimeHelper.sleep(100);
+                        $equipBtn = $('#girl-equipment-equip').removeClass('hidden').removeAttr('hidden');
+                    }
+
+                    if ($equipBtn.length > 0) {
+                        const btnRaw = $equipBtn.get(0) as HTMLElement | undefined;
+                        if (btnRaw && typeof btnRaw.click === 'function') btnRaw.click();
+                        else $equipBtn.trigger('click');
+                        await TimeHelper.sleep(randomInterval(200, 300));
+                        logHHAuto(`Slot ${i}: equip button clicked (attempt ${attempt}/${MAX_EQUIP_ATTEMPTS})`);
+                    } else {
+                        logHHAuto(`Slot ${i}: #girl-equipment-equip not found (attempt ${attempt}/${MAX_EQUIP_ATTEMPTS})`);
+                    }
+
+                    // Verify the equipped item actually changed (see issue #1573)
+                    await TimeHelper.sleep(randomInterval(100, 200));
+                    const verifyEl = slot.find('.slot[data-d]');
+                    let verifyData: any = null;
+                    if (verifyEl.length > 0 && verifyEl.attr('data-d')) {
+                        try { verifyData = JSON.parse(verifyEl.attr('data-d')!); } catch { /* ignore */ }
+                    }
+                    const verifyKey = verifyData ? (verifyData.id_item ?? verifyData.id_equipement ?? JSON.stringify(verifyData)) : null;
+                    if (verifyKey !== previousEquippedKey) {
+                        logHHAuto(`Slot ${i}: equip verified (L${verifyData?.level} ${verifyData?.rarity})`);
+                        equipSucceeded = true;
+                        break;
+                    }
+                    logHHAuto(`Slot ${i}: equip NOT verified, previous item still equipped (attempt ${attempt}/${MAX_EQUIP_ATTEMPTS})`);
+                    if (attempt < MAX_EQUIP_ATTEMPTS) {
+                        await TimeHelper.sleep(randomInterval(200, 300));
+                    }
+                }
+                if (!equipSucceeded) {
+                    logHHAuto(`Slot ${i}: equip failed after ${MAX_EQUIP_ATTEMPTS} attempts, skipping`);
+                }
+            } else {
+                const eqScore = equippedData ? HaremGirl.scoreItem(equippedData, girl) : null;
+                logHHAuto(`Slot ${i}: current item is optimal (L${equippedData?.level} ${equippedData?.rarity}, score=${eqScore?.caracSum})`);
+            }
+        }
+        logHHAuto('Equipment optimization complete');
     }
 }

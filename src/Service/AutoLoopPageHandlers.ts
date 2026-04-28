@@ -192,6 +192,9 @@ export async function handlePageSpecific(ctx: AutoLoopContext): Promise<void> {
                 Booster.collectBoostersFromMarket = callItOnce(Booster.collectBoostersFromMarket);
                 setTimeout(Booster.collectBoostersFromMarket,200);
             }
+            if(!Booster.hasBoosterDataFromMarket()) {
+                setTimeout(() => Shop.updateShop(),300);
+            }
             break;
         case ConfigHelper.getHHScriptVars("pagesIDHome"):
             setTimeout(Season.displayRemainingTime,500);
@@ -223,6 +226,7 @@ export async function handlePageSpecific(ctx: AutoLoopContext): Promise<void> {
         case ConfigHelper.getHHScriptVars("pagesIDGirlPage"):
             HaremGirl.moduleHaremGirl = callItOnce(HaremGirl.moduleHaremGirl);
             HaremGirl.moduleHaremGirl();
+            HaremGirl.showSkillButtons();
             HaremGirl.run = callItOnce(HaremGirl.run);
             ctx.busy = await HaremGirl.run();
             break;

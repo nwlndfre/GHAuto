@@ -1224,42 +1224,9 @@ HHStoredVars[HHStoredVarPrefixKey + SK.minShardsX50] =
     menuType:"value",
     kobanUsing:false
 };
-HHStoredVars[HHStoredVarPrefixKey + SK.sandalwoodShardsX10Limit] =
+HHStoredVars[HHStoredVarPrefixKey + SK.sandalwoodMinShardsThreshold] =
     {
-    default:"80",
-    storage:"Storage()",
-    HHType:"Setting",
-    valueType:"Small Integer",
-    getMenu:true,
-    setMenu:true,
-    menuType:"value",
-    kobanUsing:false
-};
-HHStoredVars[HHStoredVarPrefixKey + SK.sandalwoodShardsX1Limit] =
-    {
-    default:"95",
-    storage:"Storage()",
-    HHType:"Setting",
-    valueType:"Small Integer",
-    getMenu:true,
-    setMenu:true,
-    menuType:"value",
-    kobanUsing:false
-};
-HHStoredVars[HHStoredVarPrefixKey + SK.sandalwoodDosesX10Limit] =
-    {
-    default:"6",
-    storage:"Storage()",
-    HHType:"Setting",
-    valueType:"Small Integer",
-    getMenu:true,
-    setMenu:true,
-    menuType:"value",
-    kobanUsing:false
-};
-HHStoredVars[HHStoredVarPrefixKey + SK.sandalwoodDosesX1Limit] =
-    {
-    default:"3",
+    default:"0",
     storage:"Storage()",
     HHType:"Setting",
     valueType:"Small Integer",
@@ -1345,16 +1312,16 @@ HHStoredVars[HHStoredVarPrefixKey + SK.autoTrollLoveRaidByPassThreshold] =
 };
 HHStoredVars[HHStoredVarPrefixKey + SK.plusLoveRaidMythic] =
     {
-    default:"0",
+    default:"off",
     storage:"Storage()",
     HHType:"Setting",
-    valueType:"Small Integer",
+    valueType:"String",
     customMenuID:"raidStarsSelector",
     getMenu:true,
     setMenu:true,
     menuType:"value",
     kobanUsing:false,
-    isValid: /^[0356]$/
+    isValid: /^(off|exact3|min3|exact5)$/
 };
 HHStoredVars[HHStoredVarPrefixKey + SK.plusLoveRaid] =
     {
@@ -2433,6 +2400,11 @@ HHStoredVars[HHStoredVarPrefixKey + TK.boosterStatus] =
     storage:"sessionStorage",
     HHType:"Temp"
 };
+HHStoredVars[HHStoredVarPrefixKey + TK.boosterStatusLastUpdate] =
+    {
+    storage:"sessionStorage",
+    HHType:"Temp"
+};
 HHStoredVars[HHStoredVarPrefixKey + TK.boosterIdMap] =
     {
     storage:"sessionStorage",
@@ -2543,7 +2515,7 @@ HHStoredVars[HHStoredVarPrefixKey + TK.trollPoints] =
 // Survey
 HHStoredVars[HHStoredVarPrefixKey + TK.surveyShown] =
     {
-    default: "false",
+    default: "0",
     storage: "localStorage",
     HHType: "Temp"
 };
@@ -2555,6 +2527,19 @@ HHStoredVars[HHStoredVarPrefixKey + TK.surveyDismissCount] =
 };
 HHStoredVars[HHStoredVarPrefixKey + TK.surveyLastHash] =
     {
+    storage: "localStorage",
+    HHType: "Temp"
+};
+// Feature Popup (What's New)
+HHStoredVars[HHStoredVarPrefixKey + TK.featurePopupShown] =
+    {
+    default: "0",
+    storage: "localStorage",
+    HHType: "Temp"
+};
+HHStoredVars[HHStoredVarPrefixKey + TK.featurePopupDismissCount] =
+    {
+    default: "0",
     storage: "localStorage",
     HHType: "Temp"
 };

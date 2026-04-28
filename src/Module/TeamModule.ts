@@ -12,6 +12,7 @@ import {
     ConfigHelper,
     HeroHelper,
     getHero,
+    getHHVars,
     getPage,
     getTextForUI,
     hhButton,
@@ -20,6 +21,8 @@ import {
     setStoredValue
 } from '../Helper/index';
 import { addNutakuSession, gotoPage } from '../Service/PageNavigationService';
+import { TeamBuilderService, ScoringMode, TeamResult } from '../Service/TeamBuilderService';
+import { GirlData, ElementType } from '../Service/TeamScoringService';
 import { fillHHPopUp, getHHAjax, logHHAuto } from '../Utils/index';
 import { HHStoredVarPrefixKey, TK } from '../config/index';
 import { KKTeamGirl, TeamData } from '../model/index';
@@ -446,11 +449,67 @@ export class TeamModule {
         let topNumbers = $('.topNumber')
         if (topNumbers.length > 0) {
             TeamModule.resetTeam();
-            assignToTeam(1, true); // true = jump to best team directly
+            setTimeout(function () { assignToTeam(1, true); }, randomInterval(300, 600)); // wait for clear-team UI to settle before assigning
         }
     }
 
     static setTopTeam(sumFormulaType: number) {
+        const availableGirls = getHHVars("availableGirls", false);
+
+        if (availableGirls && Array.isArray(availableGirls) && availableGirls.length > 0) {
+            TeamModule.setTopTeamV2(sumFormulaType as ScoringMode, availableGirls);
+        } else {
+            logHHAuto('availableGirls not found, falling back to legacy team selection');
+            TeamModule.setTopTeamLegacy(sumFormulaType);
+        }
+    }
+
+    private static setTopTeamV2(mode: ScoringMode, availableGirls: any[]) {
+        const playerLevel = Number(HeroHelper.getLevel());
+
+        // Map availableGirls to GirlData interface
+        const girls: GirlData[] = availableGirls.map(g => ({
+            id_girl: Number(g.id_girl),
+            name: g.name || '',
+            carac1: Number(g.carac1 || 0),
+            carac2: Number(g.carac2 || 0),
+            carac3: Number(g.carac3 || 0),
+            level: Number(g.level || 1),
+            element: (g.element_data?.type || g.element || 'fire') as ElementType,
+            rarity: (g.rarity || 'common') as any,
+            graded: Number(g.graded || 0),
+            nb_grades: Number(g.nb_grades || 0),
+            caracs: g.caracs ? {
+                carac1: Number(g.caracs.carac1 || 0),
+                carac2: Number(g.caracs.carac2 || 0),
+                carac3: Number(g.caracs.carac3 || 0),
+            } : undefined,
+            skill_tiers_info: g.skill_tiers_info,
+            zodiac: g.zodiac ? g.zodiac.substring(3).trim() : undefined,
+            hairColor: g.hair_color1 || undefined,
+            eyeColor: g.eye_color1 || undefined,
+            position: g.position_img ? String(g.position_img).replace('.png', '') : undefined,
+        }));
+
+        const result = TeamBuilderService.buildTeam(girls, mode, playerLevel);
+
+        if (!result) {
+            logHHAuto('Not enough girls for team selection v2 (mode ' + mode + '), falling back to legacy');
+            TeamModule.setTopTeamLegacy(mode);
+            return;
+        }
+
+        const deckID = result.girls.map(g => g.id_girl);
+        const modeName = mode === 1 ? 'Current Best' : 'Best Possible';
+        const dist = TeamBuilderService.getElementDistribution(result);
+        const distStr = dist.map(d => `${d.count}x ${d.element}`).join(', ');
+        logHHAuto(`Team v2 [${modeName}]: Leader=${result.girls[0].name} (${result.leaderTier5.name}), Trait: ${result.traitCategory}=${result.traitValue} (${result.traitMatchCount}/7), Tier3: ${(result.tier3Bonus * 100).toFixed(1)}%, Elements: ${distStr}`);
+
+        // UI update: same approach as legacy — hide non-selected, show + number selected
+        TeamModule.updateTeamUI(deckID, result);
+    }
+
+    private static setTopTeamLegacy(sumFormulaType: number) {
         let arr = $('div[id_girl]');
         let numTop = 16;
         if (numTop > arr.length) numTop = arr.length;
@@ -464,28 +523,22 @@ export class TeamModule {
         for (let i = arr.length - 1; i > -1; i--) {
             let gID = Number($(arr[i]).attr('id_girl'));
             const tooltipData = $('.girl_img', $(arr[i])).attr(<string>ConfigHelper.getHHScriptVars('girlToolTipData')) || '';
-            //const girlData = Harem.getGirlData(gID);
             if (tooltipData == '') {
                 logHHAuto('ERROR, no girl information found');
                 return;
             }
             let obj = JSON.parse(tooltipData);
-            //sum formula
             let tempGrades = obj.graded2;
-            //console.log(obj,tempGrades);
             let countTotalGrades = (tempGrades.match(/<g/g) || []).length;
             let countFreeGrades = (tempGrades.match(/grey/g) || []).length;
             let currentStat = obj.caracs.carac1 + obj.caracs.carac2 + obj.caracs.carac3;
-            //console.log(currentStat);
             if (sumFormulaType == 1) {
                 currentStat = obj.caracs.carac1 + obj.caracs.carac2 + obj.caracs.carac3;
             } else if (sumFormulaType == 2) {
                 currentStat = (obj.caracs.carac1 + obj.caracs.carac2 + obj.caracs.carac3) / obj.level * levelPlayer / (1 + 0.3 * (countTotalGrades - countFreeGrades)) * (1 + 0.3 * (countTotalGrades));
             }
-            //console.log(obj.level,levelPlayer,countTotalGrades,countFreeGrades);
-            //console.log(currentStat);
-            let lowNum = 0; //num
-            let lowStat = deckStat[0]; //stat
+            let lowNum = 0;
+            let lowStat = deckStat[0];
             for (let j = 1; j < deckID.length; j++) {
                 if (deckStat[j] < lowStat) {
                     lowNum = j;
@@ -499,7 +552,6 @@ export class TeamModule {
         }
         let tmpID = 0;
         let tmpStat = 0;
-        //console.log(deckStat,deckID);
         for (let i = 0; i < deckStat.length; i++) {
             for (let j = i; j < deckStat.length; j++) {
                 if (deckStat[j] > deckStat[i]) {
@@ -512,7 +564,26 @@ export class TeamModule {
                 }
             }
         }
-        //console.log(deckStat,deckID);
+
+        TeamModule.updateTeamUI(deckID);
+    }
+
+    private static readonly ELEMENT_EMOJI: Record<string, string> = {
+        fire: '🔥', water: '💧', nature: '🌿', stone: '🪨',
+        sun: '☀️', darkness: '🌑', psychic: '🔮', light: '✨',
+    };
+
+    private static readonly TRAIT_EMOJI: Record<string, string> = {
+        eyeColor: '👁', hairColor: '💇', zodiac: '♋', position: '🔄',
+    };
+
+    private static updateTeamUI(deckID: number[], teamResult?: TeamResult) {
+        const arr = $('div[id_girl]');
+        // Remove all existing topNumber elements to prevent stale entries
+        // from a previous team calculation (e.g. Current Best) interfering
+        // with the current one (e.g. Best Possible) during assignTopTeam.
+        $('.topNumber').remove();
+
         for (let i = arr.length - 1; i > -1; i--) {
             let gID = Number($(arr[i]).attr('id_girl'));
             if (!deckID.includes(gID)) {
@@ -523,7 +594,7 @@ export class TeamModule {
         }
         let mainTeamPanel = $(ConfigHelper.getHHScriptVars("IDpanelEditTeam") + ' .change-team-panel .panel-body > .harem-panel-girls');
         for (let j = 0; j < deckID.length; j++) {
-            let newDiv
+            let newDiv;
             let arrSort = $('div[id_girl=' + deckID[j] + ']');
             if ($(arrSort[0]).find('.topNumber').length == 0) {
                 newDiv = document.createElement("div");
@@ -533,12 +604,51 @@ export class TeamModule {
                 newDiv = $(arrSort[0]).find('.topNumber')[0];
             }
             $(arrSort[0]).find('.topNumber')[0];
-            newDiv.innerText = j + 1;
+
+            // Show position label with element emoji and leader skill
+            if (teamResult && j < teamResult.girls.length) {
+                const girl = teamResult.girls[j];
+                const emoji = TeamModule.ELEMENT_EMOJI[girl.element] || '';
+                if (j === 0) {
+                    newDiv.innerText = `${emoji} ★ ${teamResult.leaderTier5.name}`;
+                } else {
+                    newDiv.innerText = `${j + 1} ${emoji}`;
+                }
+            } else {
+                newDiv.innerText = j + 1;
+            }
+
             newDiv.setAttribute('position', j + 1);
-            // Go to girl update page on double click
             newDiv.setAttribute("ondblclick", "window.location.href='/characters/" + deckID[j] + "'");
             mainTeamPanel.append(arrSort[0]);
         }
+
+        // Show team synergy info panel
+        $('.hhTeamSynergyInfo').remove();
+        if (teamResult) {
+            const dist = TeamBuilderService.getElementDistribution(teamResult);
+            const distHtml = dist.map(d => {
+                const emoji = TeamModule.ELEMENT_EMOJI[d.element] || '';
+                return `${emoji}${d.count}`;
+            }).join(' ');
+
+            const traitEmoji = TeamModule.TRAIT_EMOJI[teamResult.traitCategory] || '🎯';
+            const tier3Pct = (teamResult.tier3Bonus * 100).toFixed(1);
+
+            const synergyInfo = $(`<div class="hhTeamSynergyInfo" style="
+                position: absolute; top: 60px; left: 50%; transform: translateX(-50%); width: 180px; z-index: 10;
+                background: rgba(0,0,0,0.7); color: #fff; padding: 4px 8px;
+                border-radius: 4px; font-size: 11px; line-height: 1.4;
+            ">
+                <div style="font-weight:bold; margin-bottom: 2px;">Team Info</div>
+                <div>${traitEmoji} ${teamResult.traitValue || '?'} (${teamResult.traitMatchCount}/7)</div>
+                <div>Tier 3: ${tier3Pct}%</div>
+                <div>Leader: ${teamResult.leaderTier5.name} (${TeamModule.ELEMENT_EMOJI[teamResult.girls[0].element] || ''} ${teamResult.girls[0].element})</div>
+                <div>Elements: ${distHtml}</div>
+            </div>`);
+            $("#contains_all section").append(synergyInfo);
+        }
+
         if (document.getElementById("AssignTopTeam") !== null) {
             return;
         }
