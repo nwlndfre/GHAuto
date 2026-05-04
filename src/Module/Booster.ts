@@ -329,6 +329,23 @@ export class Booster {
         }
 
         setStoredValue(HHStoredVarPrefixKey+TK.boosterStatus, JSON.stringify(boosterStatus));
+        setStoredValue(HHStoredVarPrefixKey+TK.boosterStatusLastUpdate, String(Date.now()));
+    }
+
+    /** TTL for boosterStatus freshness in milliseconds (10 minutes). */
+    static BOOSTER_STATUS_TTL_MS = 10 * 60 * 1000;
+
+    /**
+     * Checks whether boosterStatus was refreshed from the market recently.
+     * Used to detect stale state when another browser/tab changed the equipped boosters.
+     * A missing timestamp is treated as stale (forces a market visit).
+     */
+    static hasFreshBoosterStatus(): boolean {
+        const lastUpdateRaw = getStoredValue(HHStoredVarPrefixKey + TK.boosterStatusLastUpdate);
+        if (!lastUpdateRaw) return false;
+        const lastUpdate = parseInt(lastUpdateRaw, 10);
+        if (isNaN(lastUpdate)) return false;
+        return (Date.now() - lastUpdate) < Booster.BOOSTER_STATUS_TTL_MS;
     }
 
     /**
@@ -501,6 +518,15 @@ export class Booster {
             return true; // Signal busy — the market visit will cache the data, next loop will equip
         }
 
+        // Also refresh boosterStatus if it's stale — another browser/tab may have changed
+        // the equipped boosters. Without this, getBoostersToEquip() would use stale data
+        // and repeatedly try to equip slots that are actually already occupied server-side.
+        if (!Booster.hasFreshBoosterStatus()) {
+            logHHAuto("Auto-equip: boosterStatus is stale or missing. Navigating to market to refresh.");
+            gotoPage(ConfigHelper.getHHScriptVars("pagesIDShop"));
+            return true; // Signal busy — market visit will refresh boosterStatus via collectBoostersFromMarket
+        }
+
         const boostersToEquip = Booster.getBoostersToEquip();
         if (boostersToEquip.length === 0) {
             logHHAuto("Auto-equip: All booster slots active.");
@@ -654,6 +680,15 @@ export class Booster {
         }
     }
 
+    /**
+     * Returns the user-configured minimum shards threshold for Sandalwood.
+     * When remaining shards fall to this value or below, Sandalwood won't be equipped.
+     * Default 0 = always equip Sandalwood.
+     */
+    static getSandalwoodMinShardsThreshold(): number {
+        return Number(getStoredValue(HHStoredVarPrefixKey + SK.sandalwoodMinShardsThreshold)) || 0;
+    }
+
     static needSandalWoodEvent(nextTrollChoosen: number, eventGirl: EventGirl = null): boolean {
         if (!eventGirl) {
             eventGirl = EventModule.getEventGirl();
@@ -662,33 +697,36 @@ export class Booster {
         const activated = getStoredValue(HHStoredVarPrefixKey + SK.plusEvent) === "true" && getStoredValue(HHStoredVarPrefixKey + SK.plusEventSandalWood) === "true";
         const correctTrollTargetted = eventGirl.troll_id == nextTrollChoosen;
         const remainingShards = Number(100 - Number(eventGirl.shards));
-        if (remainingShards <= 10) {
-            logHHAuto(`[SW-DEBUG] Not equipping sandalwood for event, only ${remainingShards} shards remaining`);
+        const threshold = Booster.getSandalwoodMinShardsThreshold();
+        if (remainingShards <= threshold) {
+            logHHAuto(`[SW-DEBUG] Not equipping sandalwood for event, only ${remainingShards} shards remaining (threshold: ${threshold})`);
         }
 
-        return activated && correctTrollTargetted && remainingShards > 10;
+        return activated && correctTrollTargetted && remainingShards > threshold;
     }
 
     static needSandalWoodMythic(nextTrollChoosen: number, eventMythicGirl: EventGirl = null): boolean {
         const activated = getStoredValue(HHStoredVarPrefixKey + SK.plusEventMythic) === "true" && getStoredValue(HHStoredVarPrefixKey + SK.plusEventMythicSandalWood) === "true";
         const correctTrollTargetted = eventMythicGirl.is_mythic && eventMythicGirl.troll_id == nextTrollChoosen;
         const remainingShards = Number(100 - Number(eventMythicGirl.shards));
-        if (remainingShards <= 10) {
-            logHHAuto(`[SW-DEBUG] Not equipping sandalwood for mythic, only ${remainingShards} shards remaining`);
+        const threshold = Booster.getSandalwoodMinShardsThreshold();
+        if (remainingShards <= threshold) {
+            logHHAuto(`[SW-DEBUG] Not equipping sandalwood for mythic, only ${remainingShards} shards remaining (threshold: ${threshold})`);
         }
 
-        return activated && correctTrollTargetted && remainingShards > 10;
+        return activated && correctTrollTargetted && remainingShards > threshold;
     }
     static needSandalWoodLoveRaid(nextTrollChoosen: number, loveRaid: LoveRaid = null): boolean {
         if (!loveRaid) return false;
         const activated = LoveRaidManager.isAnyActivated() && getStoredValue(HHStoredVarPrefixKey + SK.plusEventLoveRaidSandalWood) === "true";
         const correctTrollTargetted = loveRaid.girl_to_win && loveRaid.trollId == nextTrollChoosen;
         const remainingShards = Number(100 - Number(loveRaid.girl_shards));
-        if(remainingShards <= 10) {
-            logHHAuto(`[SW-DEBUG] Not equipping sandalwood for love raid, only ${remainingShards} shards remaining`);
+        const threshold = Booster.getSandalwoodMinShardsThreshold();
+        if (remainingShards <= threshold) {
+            logHHAuto(`[SW-DEBUG] Not equipping sandalwood for love raid, only ${remainingShards} shards remaining (threshold: ${threshold})`);
         }
 
-        return activated && correctTrollTargetted && remainingShards > 10;
+        return activated && correctTrollTargetted && remainingShards > threshold;
     }
 
     static async equipeSandalWoodIfNeeded(nextTrollChoosen: number, settingKey: string = SK.plusEventMythicSandalWood): Promise<boolean> {
@@ -783,57 +821,4 @@ export class Booster {
         return sandalwood.usages_remaining;
     }
 
-    /**
-     * Determines the maximum recommended batch size (1, 10, or 50) based on
-     * remaining shards, Sandalwood doses, and user settings.
-     *
-     * The most restrictive constraint wins.
-     */
-    static getRecommendedBatchSize(
-        minRemainingShards: number,
-        dosesRemaining: number | null,
-        userSettings: {
-            useX50: boolean;
-            useX10: boolean;
-            sandalwoodShardsX10Limit: number;
-            sandalwoodShardsX1Limit: number;
-            sandalwoodDosesX10Limit: number;
-            sandalwoodDosesX1Limit: number;
-        }
-    ): 1 | 10 | 50 {
-        logHHAuto(`[SW-DEBUG] getRecommendedBatchSize: minRemainingShards=${minRemainingShards}, dosesRemaining=${dosesRemaining}, settings=${JSON.stringify(userSettings)}`);
-        let maxBatch: 1 | 10 | 50 = 50;
-
-        // User preference caps
-        if (!userSettings.useX50) { maxBatch = 10; logHHAuto('[SW-DEBUG] batch cap: useX50=false → max 10'); }
-        if (!userSettings.useX10) { maxBatch = 1; logHHAuto('[SW-DEBUG] batch cap: useX10=false → max 1'); }
-
-        // If Sandalwood is not equipped, no dose-based restrictions apply
-        if (dosesRemaining === null) {
-            logHHAuto(`[SW-DEBUG] getRecommendedBatchSize: no Sandalwood equipped → returning ${maxBatch}`);
-            return maxBatch;
-        }
-
-        // Dose-based limits (check most restrictive first)
-        if (dosesRemaining <= userSettings.sandalwoodDosesX1Limit) {
-            logHHAuto(`[SW-DEBUG] batch cap: doses ${dosesRemaining} <= dosesX1Limit ${userSettings.sandalwoodDosesX1Limit} → max 1`);
-            maxBatch = 1;
-        } else if (dosesRemaining <= userSettings.sandalwoodDosesX10Limit && maxBatch > 10) {
-            logHHAuto(`[SW-DEBUG] batch cap: doses ${dosesRemaining} <= dosesX10Limit ${userSettings.sandalwoodDosesX10Limit} → max 10`);
-            maxBatch = 10;
-        }
-
-        // Shard-based limits: collectedShards = 100 - minRemainingShards
-        const collectedShards = 100 - minRemainingShards;
-        if (collectedShards >= userSettings.sandalwoodShardsX1Limit) {
-            logHHAuto(`[SW-DEBUG] batch cap: collectedShards ${collectedShards} >= shardsX1Limit ${userSettings.sandalwoodShardsX1Limit} → max 1`);
-            maxBatch = 1;
-        } else if (collectedShards >= userSettings.sandalwoodShardsX10Limit && maxBatch > 10) {
-            logHHAuto(`[SW-DEBUG] batch cap: collectedShards ${collectedShards} >= shardsX10Limit ${userSettings.sandalwoodShardsX10Limit} → max 10`);
-            maxBatch = 10;
-        }
-
-        logHHAuto(`[SW-DEBUG] getRecommendedBatchSize: final recommendation → ${maxBatch}`);
-        return maxBatch;
-    }
 }

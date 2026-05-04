@@ -107,30 +107,6 @@ export async function runStandardHandler(ctx: AutoLoopContext, d: ModuleHandlerD
 //  Action handlers – called in order from autoLoop()
 // ---------------------------------------------------------------------------
 
-// 1. handleEventParsing - lines 234-253
-export async function handleEventParsing(ctx: AutoLoopContext): Promise<void> {
-    if(
-        ctx.busy === false && ConfigHelper.getHHScriptVars("isEnabledEvents",false) && (ctx.lastActionPerformed === "none" || ctx.lastActionPerformed === "event" || (getStoredValue(HHStoredVarPrefixKey+SK.autoTrollBattle) === "true" && getStoredValue(HHStoredVarPrefixKey+SK.plusEventMythic) ==="true") )
-        &&
-        (
-            (ctx.eventIDs.length > 0 && ctx.currentPage !== ConfigHelper.getHHScriptVars("pagesIDEvent"))
-            ||
-            (ctx.currentPage===ConfigHelper.getHHScriptVars("pagesIDEvent") && $("#contains_all #events[parsed]").length < ctx.eventIDs.length)
-        )
-    )
-    {
-        logHHAuto("Going to check on events.");
-        ctx.busy = true;
-        ctx.busy = await EventModule.parseEventPage(ctx.eventIDs[0]);
-        ctx.eventParsed = ctx.eventIDs[0];
-        ctx.lastActionPerformed = "event";
-        if (ctx.eventIDs.length > 1) {
-            logHHAuto("More events to be parsed.", JSON.stringify(ctx.eventIDs));
-            ctx.busy = true;
-        }
-    }
-}
-
 // 2. handleMythicWave - lines 255-261
 export async function handleMythicWave(ctx: AutoLoopContext): Promise<void> {
     if (ctx.busy === false && isAutoLoopActive() && ctx.canCollectCompetitionActive
@@ -298,11 +274,8 @@ export async function handleTrollBattle(ctx: AutoLoopContext): Promise<void> {
         const eventGirl: EventGirl = EventModule.getEventGirl();
         const eventMythicGirl: EventGirl = EventModule.getEventMythicGirl();
         const allTrollRaids = LoveRaidManager.isAnyActivated() ? LoveRaidManager.getTrollRaids() : [];
-        const minRaidStars = LoveRaidManager.getMinRaidStars();
-        const raidStarsFiltered = minRaidStars > 0 ? allTrollRaids.filter(r => r.girlGrade >= minRaidStars) : [];
-        const raidStarsRaid: LoveRaid = raidStarsFiltered.length > 0
-            ? LoveRaidManager.getRaidToFight(raidStarsFiltered)
-            : undefined;
+        const raidStarsFiltered = LoveRaidManager.filterByRaidStars(allTrollRaids);
+        const raidStarsRaid: LoveRaid = LoveRaidManager.getRaidStarsRaidToFight(raidStarsFiltered);
         // +Raid: user-selected girl bypasses grade filter, auto-mode respects it
         const loveRaid: LoveRaid = LoveRaidManager.isActivated()
             ? LoveRaidManager.getRaidToFight(allTrollRaids)
@@ -617,43 +590,6 @@ export async function handleQuest(ctx: AutoLoopContext): Promise<void> {
     else if(getStoredValue(HHStoredVarPrefixKey+SK.autoQuest) === "false" && getStoredValue(HHStoredVarPrefixKey+SK.autoSideQuest) === "false")
     {
         setStoredValue(HHStoredVarPrefixKey+TK.questRequirement, "none");
-    }
-}
-
-// 13. handleLeague - lines 665-697
-export async function handleLeague(ctx: AutoLoopContext): Promise<void> {
-    if (ctx.busy === false && LeagueHelper.isAutoLeagueActivated() && isAutoLoopActive()
-        && ctx.canCollectCompetitionActive && (ctx.lastActionPerformed === "none" || ctx.lastActionPerformed === "league")) {
-        // Navigate to leagues
-        if (LeagueHelper.isTimeToFight()) {
-            logHHAuto("Time to fight in Leagues.");
-            LeagueHelper.doLeagueBattle();
-            ctx.busy = true;
-            ctx.lastActionPerformed = "league";
-        }
-        else {
-            if (getStoredValue(HHStoredVarPrefixKey + TK.LeagueHumanLikeRun) === "true") {
-                // end run
-                setStoredValue(HHStoredVarPrefixKey + TK.LeagueHumanLikeRun, "false");
-            }
-            if (checkTimer('nextLeaguesTime')) {
-                if (getHHVars('Hero.energies.challenge.next_refresh_ts') === 0) {
-                    setTimer('nextLeaguesTime', randomInterval(15 * 60, 17 * 60));
-                }
-                else {
-                    const next_refresh = getHHVars('Hero.energies.challenge.next_refresh_ts')
-                    setTimer('nextLeaguesTime', randomInterval(next_refresh + 10, next_refresh + 180));
-                }
-            }
-            //logHHAuto("reset lastActionPerformed from league");
-            ctx.lastActionPerformed = "none";
-            /*if (ctx.currentPage === ConfigHelper.getHHScriptVars("pagesIDLeaderboard"))
-            {
-                logHHAuto("Go to home after league fight");
-                gotoPage(ConfigHelper.getHHScriptVars("pagesIDHome"));
-
-            }*/
-        }
     }
 }
 

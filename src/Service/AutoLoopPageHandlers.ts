@@ -25,6 +25,7 @@ import {
 } from '../Helper/index';
 import { PentaDrill } from '../Module/PentaDrill';
 import { Spreadsheet } from '../Module/Spreadsheet';
+import { BlessingService } from './BlessingService';
 import {
     Booster,
     BossBang,
@@ -192,6 +193,9 @@ export async function handlePageSpecific(ctx: AutoLoopContext): Promise<void> {
                 Booster.collectBoostersFromMarket = callItOnce(Booster.collectBoostersFromMarket);
                 setTimeout(Booster.collectBoostersFromMarket,200);
             }
+            if(!Booster.hasBoosterDataFromMarket()) {
+                setTimeout(() => Shop.updateShop(),300);
+            }
             break;
         case ConfigHelper.getHHScriptVars("pagesIDHome"):
             setTimeout(Season.displayRemainingTime,500);
@@ -201,6 +205,7 @@ export async function handlePageSpecific(ctx: AutoLoopContext): Promise<void> {
             setTimeout(EventModule.showCompletedEvent,500);
             Spreadsheet.run = callItOnce(Spreadsheet.run);
             Spreadsheet.run();
+            BlessingService.loadIfExpired();
             DailyGoalsIcon.styles()
 
             Harem.clearHaremToolVariables = callItOnce(Harem.clearHaremToolVariables); // Avoid wired loop, if user reach home page, ensure temp var from harem are cleared
@@ -223,6 +228,7 @@ export async function handlePageSpecific(ctx: AutoLoopContext): Promise<void> {
         case ConfigHelper.getHHScriptVars("pagesIDGirlPage"):
             HaremGirl.moduleHaremGirl = callItOnce(HaremGirl.moduleHaremGirl);
             HaremGirl.moduleHaremGirl();
+            HaremGirl.showSkillButtons();
             HaremGirl.run = callItOnce(HaremGirl.run);
             ctx.busy = await HaremGirl.run();
             break;

@@ -82,6 +82,7 @@ import {
 import { AdsService } from './AdsService';
 import { autoLoop, getBurst } from "./AutoLoop";
 import { createPInfo } from "./InfoService";
+import { FeaturePopupService } from "./FeaturePopupService";
 import { SurveyService } from "./SurveyService";
 import {
     bindMouseEvents
@@ -90,6 +91,9 @@ import { disableToolTipsDisplay, enableToolTipsDisplay, manageToolTipsDisplay } 
 
 var started=false;
 var debugMenuID;
+var heroRetryTimer: ReturnType<typeof setTimeout> | null = null;
+var heroRetryCount = 0;
+const HERO_MAX_RETRIES = 15;
 
 export class StartService {
     static checkVersion()
@@ -193,11 +197,22 @@ export function start() {
 
     if (unsafeWindow.shared?.Hero === undefined)
     {
-        logHHAuto('???no Hero???');
-        $('.hh_logo').trigger('click');
-        setTimeout(hardened_start,5000);
+        heroRetryCount++;
+        if (heroRetryCount > HERO_MAX_RETRIES) {
+            logHHAuto('Hero object not available after ' + HERO_MAX_RETRIES + ' retries. Giving up. Try reloading the page.');
+            return;
+        }
+        logHHAuto('???no Hero??? (attempt ' + heroRetryCount + '/' + HERO_MAX_RETRIES + ')');
+        started = false;
+        heroRetryTimer = setTimeout(hardened_start, 5000);
         return;
     }
+    // Hero available, cancel any pending retry and reset counter
+    if (heroRetryTimer !== null) {
+        clearTimeout(heroRetryTimer);
+        heroRetryTimer = null;
+    }
+    heroRetryCount = 0;
     if($("a[rel='phoenix_member_login']").length > 0)
     {    
         logHHAuto('Not logged in, please login first!');
@@ -233,18 +248,20 @@ export function start() {
     }
     // clearEventData("onlyCheckEventsHHScript");
 
-    // Migrate +Raid Stars stored value to grade-based format (runs every load)
-    // Handles: old boolean ("true"/"false"), old selectedIndex ("1"/"2"/"3"), valid grades ("0"/"3"/"5"/"6")
+    // Migrate +Raid Stars stored value to string-based selection (runs every load).
+    // Handles: old boolean ("true"/"false"), old selectedIndex ("1"/"2"/"4"),
+    // old grade-based ("0"/"3"/"5"/"6"), current string ("off"/"exact3"/"min3"/"exact5").
     const raidStarsVal = getStoredValue(HHStoredVarPrefixKey + SK.plusLoveRaidMythic);
     if (raidStarsVal !== undefined && raidStarsVal !== null) {
-        const gradeMap: Record<string, string> = {
-            "true": "6", "false": "0",   // old boolean format
-            "1": "3", "2": "5", "4": "5" // old selectedIndex format (1→3★, 2→5★)
-            // "0","3","5","6" are already valid grade values
+        const selectionMap: Record<string, string> = {
+            "true": "exact5", "false": "off",                           // old boolean format
+            "1": "exact3", "2": "exact5", "4": "exact5",                 // old selectedIndex format
+            "0": "off", "3": "exact3", "5": "exact5", "6": "exact5"      // old grade-based format
+            // "off","exact3","min3","exact5" are already valid
         };
-        if (gradeMap[raidStarsVal] !== undefined) {
-            setStoredValue(HHStoredVarPrefixKey + SK.plusLoveRaidMythic, gradeMap[raidStarsVal]);
-            logHHAuto("Migrated +Raid Stars value '" + raidStarsVal + "' → '" + gradeMap[raidStarsVal] + "'");
+        if (selectionMap[raidStarsVal] !== undefined) {
+            setStoredValue(HHStoredVarPrefixKey + SK.plusLoveRaidMythic, selectionMap[raidStarsVal]);
+            logHHAuto("Migrated +Raid Stars value '" + raidStarsVal + "' → '" + selectionMap[raidStarsVal] + "'");
         }
     }
 
@@ -314,8 +331,8 @@ export function start() {
     getMenuValues();
     manageToolTipsDisplay();
 
-    $("#git").on("click", function(){ window.open("https://github.com/Roukys/HHauto/wiki"); });
-    $("#ReportBugs").on("click", function(){ window.open("https://github.com/Roukys/HHauto/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc"); });
+    $("#git").on("click", function(){ window.open("https://github.com/OldRon1977/HHauto/wiki"); });
+    $("#ReportBugs").on("click", function(){ window.open("https://github.com/OldRon1977/HHauto/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc"); });
     $("#loadConfig").on("click", function(){
         let LoadDialog='<p>After you select the file the settings will be automatically updated.</p><p> If nothing happened, then the selected file contains errors.</p><p id="LoadConfError"style="color:#f53939;"></p><p><label><input type="file" id="myfile" accept=".json" name="myfile"> </label></p>';
         fillHHPopUp("loadConfig",getTextForUI("loadConfig","elementText"), LoadDialog);
@@ -422,7 +439,13 @@ export function start() {
 
 
 
-    setStoredValue(HHStoredVarPrefixKey+TK.autoLoop, "true");
+    // Don't re-enable autoLoop if a harem tool flow (Stuff Team, Give XP, etc.)
+    // is in progress — these multi-page flows rely on autoLoop staying disabled
+    // to prevent action handlers from interrupting with page navigations.
+    const activeHaremFlow = getStoredValue(HHStoredVarPrefixKey + TK.haremGirlMode);
+    if (!activeHaremFlow) {
+        setStoredValue(HHStoredVarPrefixKey+TK.autoLoop, "true");
+    }
     if (typeof getStoredValue(HHStoredVarPrefixKey+TK.freshStart) == "undefined" || isNaN(Number(getStoredValue(HHStoredVarPrefixKey+TK.autoLoopTimeMili)))) {
         setDefaults(true);
     }
@@ -460,13 +483,16 @@ export function start() {
     }
     getPage(true);
 
-    // Settings survey: show popup on version upgrade, delay autoLoop while visible
+    // Version-gated popups: show but don't block autoLoop
+    if (FeaturePopupService.shouldShowPopup()) {
+        FeaturePopupService.showPopup();
+    }
+
     if (SurveyService.shouldShowSurvey()) {
         SurveyService.showSurveyPopup();
-        setTimeout(autoLoop, 30000);
-    } else {
-        setTimeout(autoLoop, 1000);
     }
+
+    setTimeout(autoLoop, 1000);
 
     // Manual survey button
     $("#settingsSurvey").on("click", function() {
